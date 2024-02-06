@@ -1,0 +1,9 @@
+.idea/
+target/
+
+server/*
+!server/spigot-1.16.5.jar
+!server/start.bat
+!server/server-icon.png
+!server/eula.txt
+

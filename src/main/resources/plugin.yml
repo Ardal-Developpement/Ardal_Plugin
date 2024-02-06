@@ -1,0 +1,7 @@
+name: Ardal_Plugin
+version: '${project.version}'
+main: org.ardal.Ardal
+api-version: '1.16'
+commands:
+  quest:
+    description: Manage quests

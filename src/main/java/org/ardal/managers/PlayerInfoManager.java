@@ -1,0 +1,107 @@
+package org.ardal.managers;
+
+import org.ardal.Ardal;
+import org.ardal.api.players.PlayerInfo;
+import org.ardal.db.playerinfo.PlayerInfoDB;
+import org.ardal.db.playerinfo.PlayerInfoObj;
+import org.ardal.listener.PlayerJoinListener;
+import org.bukkit.OfflinePlayer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class PlayerInfoManager implements PlayerInfo {
+    private PlayerInfoDB playerInfoDB;
+    public PlayerInfoManager(Ardal plugin){
+        this.playerInfoDB = new PlayerInfoDB(plugin.getDataFolder().toPath().toAbsolutePath());
+        plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.playerInfoDB), plugin);
+    }
+
+    public void onDisable(){
+        this.playerInfoDB.saveDB();
+    }
+
+    public PlayerInfoObj getPlayerInfo(OfflinePlayer player){
+        if(player.getName() == null) { return null; }
+        return this.playerInfoDB.getPlayerInfo(player.getUniqueId());
+    }
+
+    @Override
+    public boolean addAdventureLevel(OfflinePlayer offlinePlayer, long l) {
+        if(offlinePlayer.getName() == null){
+            return false;
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        if(player == null) { return false; }
+
+        player.addAdventureLevel(l);
+        return true;
+    }
+
+    @Override
+    public long getAdventureLevel(OfflinePlayer offlinePlayer) {
+        if(offlinePlayer.getName() == null){
+            return 0;
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        return player != null ? player.getAdventureLevel() : 0;
+    }
+
+    @Override
+    public List<UUID> getPlayerActiveQuests(OfflinePlayer offlinePlayer) {
+        if(offlinePlayer.getName() == null){
+            return new ArrayList<>();
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        return player != null ? player.getActiveQuest() : new ArrayList<>();
+    }
+
+    @Override
+    public List<UUID> getPlayerFinishedQuests(OfflinePlayer offlinePlayer) {
+        if(offlinePlayer.getName() == null){
+            return new ArrayList<>();
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        return player != null ? player.getFinishedQuest() : new ArrayList<>();
+    }
+
+    @Override
+    public boolean addPlayerActiveQuest(OfflinePlayer offlinePlayer, UUID uuid) {
+        if(offlinePlayer.getName() == null){
+            return false;
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        return player != null && player.addActiveQuest(uuid);
+    }
+
+    @Override
+    public boolean removePlayerActiveQuest(OfflinePlayer offlinePlayer, UUID uuid) {
+        if(offlinePlayer.getName() == null){
+            return false;
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        return player != null && player.removeActiveQuest(uuid);
+    }
+
+    @Override
+    public boolean removePlayerFinishedQuest(OfflinePlayer offlinePlayer, UUID uuid) {
+        if(offlinePlayer.getName() == null){
+            return false;
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        return player != null && player.removeFinishedQuest(uuid);
+    }
+
+    @Override
+    public boolean isPlayerRegistered(OfflinePlayer offlinePlayer) {
+        return offlinePlayer.getName() != null && this.getPlayerInfo(offlinePlayer) != null;
+    }
+}
