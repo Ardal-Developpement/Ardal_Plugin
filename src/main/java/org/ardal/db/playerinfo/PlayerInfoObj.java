@@ -1,5 +1,6 @@
 package org.ardal.db.playerinfo;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.entity.Player;
 
@@ -21,9 +22,9 @@ public class PlayerInfoObj {
     }
 
     public PlayerInfoObj(JsonObject playerInfoObj){
-        JsonObject playerNameObj = playerInfoObj.getAsJsonObject("playerName");
-        JsonObject playerUUIDObj = playerInfoObj.getAsJsonObject("playerUUID");
-        JsonObject adventureLevelObj = playerInfoObj.getAsJsonObject("adventureLevel");
+        JsonElement playerNameObj = playerInfoObj.get("playerName");
+        JsonElement playerUUIDObj = playerInfoObj.get("playerUUID");
+        JsonElement adventureLevelObj = playerInfoObj.get("adventureLevel");
 
         if(playerNameObj == null
             || playerUUIDObj == null

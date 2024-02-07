@@ -33,6 +33,8 @@ public class QuestManager implements CommandExecutor, TabCompleter {
         this.addQuestCmd(new RemoveQuest());
         this.addQuestCmd(new SetStateQuest());
         this.addQuestCmd(new GetAdventureLevel());
+
+        plugin.getCommand("quest").setExecutor(this);
     }
 
     private void addQuestCmd(QuestCmd cmd){
