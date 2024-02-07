@@ -2,6 +2,7 @@ package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.managers.QuestManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,7 +13,7 @@ import java.util.List;
 public class ListQuest implements ArdalCmd {
     @Override
     public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
-        List<String> questList = plugin.getQuestManager().getQuestDB().getAllQuestName();
+        List<String> questList = plugin.getManager(QuestManager.class).getQuestDB().getAllQuestName();
 
         if(questList.isEmpty()){
             player.sendMessage("No quest found.");

@@ -2,11 +2,12 @@ package org.ardal.managers;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmdManager;
+import org.ardal.api.managers.ArdalManager;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.quests.*;
 import org.ardal.db.QuestDB;
 
-public class QuestManager extends ArdalCmdManager {
+public class QuestManager extends ArdalCmdManager implements ArdalManager {
     private final QuestDB questDB;
 
     public QuestManager(Ardal plugin){
@@ -24,5 +25,15 @@ public class QuestManager extends ArdalCmdManager {
 
     public QuestDB getQuestDB() {
         return questDB;
+    }
+
+    @Override
+    public void onEnable() {
+
+    }
+
+    @Override
+    public void onDisable() {
+        this.questDB.saveDB();
     }
 }

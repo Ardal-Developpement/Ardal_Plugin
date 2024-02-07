@@ -2,6 +2,7 @@ package org.ardal.managers;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmdManager;
+import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.players.PlayerInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.playerinfo.GetAdventureLevel;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo {
+public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager {
     private final PlayerInfoDB playerInfoDB;
 
     public PlayerInfoManager(Ardal plugin){
@@ -26,6 +27,12 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo {
         plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.playerInfoDB), plugin);
     }
 
+    @Override
+    public void onEnable() {
+
+    }
+
+    @Override
     public void onDisable(){
         this.playerInfoDB.saveDB();
     }

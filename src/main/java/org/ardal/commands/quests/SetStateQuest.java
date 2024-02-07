@@ -3,6 +3,7 @@ package org.ardal.commands.quests;
 import com.google.gson.JsonObject;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.managers.QuestManager;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.command.Command;
@@ -15,7 +16,7 @@ public class SetStateQuest implements ArdalCmd {
     @Override
     public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-        JsonObject questObj = plugin.getQuestManager().getQuestDB().getQuest(questName);
+        JsonObject questObj = plugin.getManager(QuestManager.class).getQuestDB().getQuest(questName);
 
         if(questObj == null){
             player.sendMessage("Unknown quest name.");
@@ -24,7 +25,7 @@ public class SetStateQuest implements ArdalCmd {
 
         boolean state = argv.get(0).toLowerCase().trim().equals("true");
         questObj.addProperty("isActive", state);
-        plugin.getQuestManager().getQuestDB().saveDB();
+        plugin.getManager(QuestManager.class).getQuestDB().saveDB();
 
         player.sendMessage("Set quest " + questName + " visibility to " + state);
     }
@@ -35,7 +36,7 @@ public class SetStateQuest implements ArdalCmd {
             return TabCompleteUtils.getTabCompleteForBool(argv.get(0));
         }
 
-        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getQuestManager().getQuestDB(), argv.subList(1, argv.size()));
+        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getManager(QuestManager.class).getQuestDB(), argv.subList(1, argv.size()));
     }
 
     @Override

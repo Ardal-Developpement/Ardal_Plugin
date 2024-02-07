@@ -2,6 +2,7 @@ package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.managers.QuestManager;
 import org.ardal.utils.QuestUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,7 +18,7 @@ import java.util.List;
 public class OpenQuestGUI implements ArdalCmd {
     @Override
     public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
-        List<ItemStack> questBooks = QuestUtils.getAllQuestBook(plugin.getQuestManager().getQuestDB(), player);
+        List<ItemStack> questBooks = QuestUtils.getAllQuestBook(plugin.getManager(QuestManager.class).getQuestDB(), player);
 
         int inventorySize = questBooks.size() / 9;
         if(questBooks.size() % 9 > 0){

@@ -2,6 +2,7 @@ package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.managers.QuestManager;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.command.Command;
@@ -21,7 +22,7 @@ public class RemoveQuest implements ArdalCmd {
         String questName = StringUtils.getStringFromConcatStringList(argv);
 
 
-        if(plugin.getQuestManager().getQuestDB().removeQuestBook(questName)){
+        if(plugin.getManager(QuestManager.class).getQuestDB().removeQuestBook(questName)){
             player.sendMessage("Success to remove quest book: " + questName);
         } else {
             player.sendMessage("Unknown quest name.");
@@ -30,7 +31,7 @@ public class RemoveQuest implements ArdalCmd {
 
     @Override
     public List<String> getTabComplete(Ardal plugin, CommandSender sender, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getQuestManager().getQuestDB(), argv);
+        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getManager(QuestManager.class).getQuestDB(), argv);
     }
 
     @Override

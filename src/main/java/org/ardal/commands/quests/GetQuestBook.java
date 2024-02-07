@@ -2,6 +2,7 @@ package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.managers.QuestManager;
 import org.ardal.utils.PlayerInventoryUtils;
 import org.ardal.utils.QuestUtils;
 import org.ardal.utils.StringUtils;
@@ -18,7 +19,7 @@ public class GetQuestBook implements ArdalCmd {
     public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
         String questName = StringUtils.getStringFromConcatStringList(argv);
 
-        ItemStack book = QuestUtils.getQuestBook(plugin.getQuestManager().getQuestDB(), player, questName);
+        ItemStack book = QuestUtils.getQuestBook(plugin.getManager(QuestManager.class).getQuestDB(), player, questName);
         if(book == null) { return; }
 
         PlayerInventoryUtils.giveItemStackToPlayer(book, player);
@@ -27,7 +28,7 @@ public class GetQuestBook implements ArdalCmd {
 
     @Override
     public List<String> getTabComplete(Ardal plugin, CommandSender player, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getQuestManager().getQuestDB(), argv);
+        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getManager(QuestManager.class).getQuestDB(), argv);
     }
 
     @Override

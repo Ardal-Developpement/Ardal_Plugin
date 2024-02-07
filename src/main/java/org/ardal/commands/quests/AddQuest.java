@@ -2,6 +2,7 @@ package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.managers.QuestManager;
 import org.ardal.utils.QuestUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -26,7 +27,7 @@ public class AddQuest implements ArdalCmd {
         }
 
         BookMeta bookMeta = (BookMeta) Objects.requireNonNull(item.getItemMeta());
-        QuestUtils.addQuestBook(plugin.getQuestManager().getQuestDB(), player, bookMeta);
+        QuestUtils.addQuestBook(plugin.getManager(QuestManager.class).getQuestDB(), player, bookMeta);
     }
 
     @Override
