@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public interface QuestCmd {
+public interface ArdalCmd {
      void execute(Ardal plugin, Player player, Command command, String s, List<String> argv);
 
      List<String> getTabComplete(Ardal plugin, CommandSender player, Command command, String s, List<String> argv);

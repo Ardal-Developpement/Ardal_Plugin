@@ -1,7 +1,10 @@
 package org.ardal.managers;
 
 import org.ardal.Ardal;
+import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.players.PlayerInfo;
+import org.ardal.commands.BaseCmdAlias;
+import org.ardal.commands.playerinfo.GetAdventureLevel;
 import org.ardal.db.playerinfo.PlayerInfoDB;
 import org.ardal.db.playerinfo.PlayerInfoObj;
 import org.ardal.listener.PlayerJoinListener;
@@ -11,10 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PlayerInfoManager implements PlayerInfo {
-    private PlayerInfoDB playerInfoDB;
+public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo {
+    private final PlayerInfoDB playerInfoDB;
+
     public PlayerInfoManager(Ardal plugin){
-        this.playerInfoDB = new PlayerInfoDB(plugin.getDataFolder().toPath().toAbsolutePath());
+        super(plugin, BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
+
+        this.registerCmd(new GetAdventureLevel());
+
+        this.playerInfoDB = new PlayerInfoDB(this.getPlugin().getDataFolder().toPath().toAbsolutePath());
         plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.playerInfoDB), plugin);
     }
 

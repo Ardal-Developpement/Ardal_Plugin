@@ -5,3 +5,5 @@ api-version: '1.16'
 commands:
   quest:
     description: Manage quests
+  ardal:
+    description: Manage player infos

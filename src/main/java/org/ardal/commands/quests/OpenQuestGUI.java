@@ -1,7 +1,7 @@
 package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
-import org.ardal.api.commands.QuestCmd;
+import org.ardal.api.commands.ArdalCmd;
 import org.ardal.utils.QuestUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenQuestGUI implements QuestCmd {
+public class OpenQuestGUI implements ArdalCmd {
     @Override
     public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
         List<ItemStack> questBooks = QuestUtils.getAllQuestBook(plugin.getQuestManager().getQuestDB(), player);

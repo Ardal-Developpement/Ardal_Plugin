@@ -2,7 +2,7 @@ package org.ardal.commands.playerinfo;
 
 
 import org.ardal.Ardal;
-import org.ardal.api.commands.QuestCmd;
+import org.ardal.api.commands.ArdalCmd;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetAdventureLevel implements QuestCmd {
+public class GetAdventureLevel implements ArdalCmd {
     @Override
     public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
         long level =  plugin.getPlayerInfoManager().getAdventureLevel(player);

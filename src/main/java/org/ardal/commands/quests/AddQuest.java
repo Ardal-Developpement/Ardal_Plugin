@@ -1,7 +1,7 @@
 package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
-import org.ardal.api.commands.QuestCmd;
+import org.ardal.api.commands.ArdalCmd;
 import org.ardal.utils.QuestUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class AddQuest implements QuestCmd {
+public class AddQuest implements ArdalCmd {
 
     @Override
     public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
