@@ -3,7 +3,6 @@ package org.ardal.commands.quests;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
-import org.ardal.utils.QuestUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,7 +18,7 @@ import java.util.Objects;
 public class AddQuest implements ArdalCmd {
 
     @Override
-    public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
+    public void execute(Player player, Command command, String s, List<String> argv) {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if(!(item.getType() == Material.WRITABLE_BOOK || item.getType() == Material.WRITTEN_BOOK)){
@@ -27,11 +26,14 @@ public class AddQuest implements ArdalCmd {
         }
 
         BookMeta bookMeta = (BookMeta) Objects.requireNonNull(item.getItemMeta());
-        QuestUtils.addQuestBook(plugin.getManager(QuestManager.class).getQuestDB(), player, bookMeta);
+        //QuestUtils.addQuestBook(plugin.getManager(QuestManager.class).getQuestDB(), player, bookMeta);
+        if(Objects.requireNonNull(Ardal.getInstance().getManager(QuestManager.class)).addQuest(player, item, new ArrayList<>(), new ArrayList<>())){
+            player.sendMessage("Success to add quest.");
+        }
     }
 
     @Override
-    public List<String> getTabComplete(Ardal plugin, CommandSender sender, Command command, String s, List<String> argv) {
+    public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         return new ArrayList<>();
     }
 

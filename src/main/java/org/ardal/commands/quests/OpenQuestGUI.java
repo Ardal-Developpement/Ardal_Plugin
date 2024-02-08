@@ -2,38 +2,40 @@ package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.db.quest.QuestObj;
 import org.ardal.managers.QuestManager;
-import org.ardal.utils.QuestUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OpenQuestGUI implements ArdalCmd {
     @Override
-    public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
-        List<ItemStack> questBooks = QuestUtils.getAllQuestBook(plugin.getManager(QuestManager.class).getQuestDB(), player);
+    public void execute(Player player, Command command, String s, List<String> argv) {
+        List<QuestObj> questObjs = Ardal.getInstance().getManager(QuestManager.class).getAllQuestObj();
 
-        int inventorySize = questBooks.size() / 9;
-        if(questBooks.size() % 9 > 0){
+
+        int inventorySize = questObjs.size() / 9;
+        if(questObjs.size() % 9 > 0){
             inventorySize++;
         }
         inventorySize *= 9;
 
         Inventory inventory = Bukkit.createInventory(player, inventorySize, ChatColor.GOLD + "Quest:");
-        questBooks.forEach(inventory::addItem);
+        for(QuestObj questObj : questObjs){
+            inventory.addItem(questObj.getBook());
+        }
 
         player.openInventory(inventory);
     }
 
     @Override
-    public List<String> getTabComplete(Ardal plugin, CommandSender sender, Command command, String s, List<String> argv) {
+    public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         return new ArrayList<>();
     }
 

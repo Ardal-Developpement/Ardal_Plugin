@@ -14,9 +14,9 @@ import java.util.List;
 
 public class SetStateQuest implements ArdalCmd {
     @Override
-    public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
+    public void execute(Player player, Command command, String s, List<String> argv) {
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-        JsonObject questObj = plugin.getManager(QuestManager.class).getQuestDB().getQuest(questName);
+        JsonObject questObj = Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getQuestAsJsonObject(questName);
 
         if(questObj == null){
             player.sendMessage("Unknown quest name.");
@@ -25,18 +25,18 @@ public class SetStateQuest implements ArdalCmd {
 
         boolean state = argv.get(0).toLowerCase().trim().equals("true");
         questObj.addProperty("isActive", state);
-        plugin.getManager(QuestManager.class).getQuestDB().saveDB();
+        Ardal.getInstance().getManager(QuestManager.class).getQuestDB().saveDB();
 
         player.sendMessage("Set quest " + questName + " visibility to " + state);
     }
 
     @Override
-    public List<String> getTabComplete(Ardal plugin, CommandSender player, Command command, String s, List<String> argv) {
+    public List<String> getTabComplete(CommandSender player, Command command, String s, List<String> argv) {
         if(argv.size() == 1){
             return TabCompleteUtils.getTabCompleteForBool(argv.get(0));
         }
 
-        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getManager(QuestManager.class).getQuestDB(), argv.subList(1, argv.size()));
+        return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv.subList(1, argv.size()));
     }
 
     @Override

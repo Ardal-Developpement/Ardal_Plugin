@@ -3,8 +3,7 @@ package org.ardal.commands.quests;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
-import org.ardal.utils.PlayerInventoryUtils;
-import org.ardal.utils.QuestUtils;
+import org.ardal.utils.ItemStackUtils;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.command.Command;
@@ -16,19 +15,19 @@ import java.util.List;
 
 public class GetQuestBook implements ArdalCmd {
     @Override
-    public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
+    public void execute(Player player, Command command, String s, List<String> argv) {
         String questName = StringUtils.getStringFromConcatStringList(argv);
 
-        ItemStack book = QuestUtils.getQuestBook(plugin.getManager(QuestManager.class).getQuestDB(), player, questName);
+        ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(player, questName);
         if(book == null) { return; }
 
-        PlayerInventoryUtils.giveItemStackToPlayer(book, player);
+        ItemStackUtils.giveItemStackToPlayer(book, player);
         player.sendMessage("Success to give quest book.");
     }
 
     @Override
-    public List<String> getTabComplete(Ardal plugin, CommandSender player, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getManager(QuestManager.class).getQuestDB(), argv);
+    public List<String> getTabComplete(CommandSender player, Command command, String s, List<String> argv) {
+        return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv);
     }
 
     @Override

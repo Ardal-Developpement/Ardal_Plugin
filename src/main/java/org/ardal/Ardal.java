@@ -11,12 +11,14 @@ import java.util.List;
 
 public final class Ardal extends JavaPlugin {
 
+    private static Ardal instance;
     private List<ArdalManager> ardalManagers;
 
     @Override
     public void onEnable() {
-        this.registerManager(new PlayerInfoManager(this));
-        this.registerManager(new QuestManager(this));
+        instance = this;
+        this.registerManager(new PlayerInfoManager());
+        this.registerManager(new QuestManager());
 
         enableManagers();
 
@@ -53,14 +55,15 @@ public final class Ardal extends JavaPlugin {
             }
         }
 
-        writeToLogger("Manager: " + managerClass.getName() + " is not registered.");
+        this.getLogger().severe("Manager: " + managerClass.getName() + " is not registered.");
         return null;
     }
 
-
+    public static Ardal getInstance(){
+        return instance;
+    }
 
     public static void writeToLogger(String msg){
-        Ardal plugin = Ardal.getPlugin(Ardal.class);
-        plugin.getLogger().info(msg);
+        Ardal.getInstance().getLogger().info(msg);
     }
 }

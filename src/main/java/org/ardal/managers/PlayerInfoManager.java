@@ -18,13 +18,13 @@ import java.util.UUID;
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager {
     private final PlayerInfoDB playerInfoDB;
 
-    public PlayerInfoManager(Ardal plugin){
-        super(plugin, BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
+    public PlayerInfoManager(){
+        super(BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
 
         this.registerCmd(new GetAdventureLevel());
 
-        this.playerInfoDB = new PlayerInfoDB(this.getPlugin().getDataFolder().toPath().toAbsolutePath());
-        plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.playerInfoDB), plugin);
+        this.playerInfoDB = new PlayerInfoDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
+        Ardal.getInstance().getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.playerInfoDB), Ardal.getInstance());
     }
 
     @Override

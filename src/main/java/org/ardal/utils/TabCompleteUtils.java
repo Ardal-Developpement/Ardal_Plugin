@@ -1,8 +1,6 @@
 package org.ardal.utils;
 
 
-import org.ardal.db.QuestDB;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +18,10 @@ public class TabCompleteUtils {
         return tabComplete;
     }
 
-    public static List<String> getTabCompleteForQuestName(QuestDB questDB, String questName){
+    public static List<String> getTabCompleteFromStrList(List<String> keySet, String questName){
         List<String> tabComplete = new ArrayList<>();
 
-        for(String name : questDB.getAllQuestName()){
+        for(String name : keySet){
             if(name.startsWith(questName)){
                 tabComplete.add(name);
             }
@@ -32,8 +30,8 @@ public class TabCompleteUtils {
         return tabComplete;
     }
 
-    public static List<String> getTabCompleteForQuestName(QuestDB questDB, List<String> questNameList){
+    public static List<String> getTabCompleteFromStrList(List<String> keySet, List<String> questNameList){
         String questName = StringUtils.getStringFromConcatStringList(questNameList);
-        return getTabCompleteForQuestName(questDB, questName);
+        return getTabCompleteFromStrList(keySet, questName);
     }
 }

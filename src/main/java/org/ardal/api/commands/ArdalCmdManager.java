@@ -13,17 +13,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class ArdalCmdManager implements CommandExecutor, TabCompleter {
-    private final Ardal plugin;
     private final List<ArdalCmd> registeredCmd;
 
     private final String baseCmdAlias;
 
-    public ArdalCmdManager(Ardal plugin, String baseCmdAlias){
-        this.plugin = plugin;
+    public ArdalCmdManager(String baseCmdAlias){
         this.registeredCmd = new ArrayList<>();
         this.baseCmdAlias = baseCmdAlias;
 
-        Objects.requireNonNull(plugin.getCommand(this.baseCmdAlias)).setExecutor(this);
+        Objects.requireNonNull(Ardal.getInstance().getCommand(this.baseCmdAlias)).setExecutor(this);
     }
 
     @Override
@@ -53,9 +51,9 @@ public class ArdalCmdManager implements CommandExecutor, TabCompleter {
             if(argv.size() > 1){
                 argv.remove(0);
             }
-            cmd.execute(this.plugin, player, command, s, argv);
+            cmd.execute(player, command, s, argv);
         } catch (Exception e){
-            this.getPlugin().getLogger().severe(e.toString());
+            Ardal.getInstance().getLogger().severe(e.toString());
             return true;
         }
 
@@ -75,12 +73,12 @@ public class ArdalCmdManager implements CommandExecutor, TabCompleter {
                     if (argv.size() == 1) {
                         tabComplete.add(cmdName);
                     } else {
-                        return cmd.getTabComplete(this.plugin, sender, command, s, argv.subList(1, argv.size()));
+                        return cmd.getTabComplete(sender, command, s, argv.subList(1, argv.size()));
                     }
                 }
             }
         } catch (Exception e) {
-            this.getPlugin().getLogger().severe(e.toString());
+            Ardal.getInstance().getLogger().severe(e.toString());
             return null;
         }
 
@@ -93,7 +91,7 @@ public class ArdalCmdManager implements CommandExecutor, TabCompleter {
                 player.sendMessage(cmd.getHelp());
             }
         } catch (Exception e) {
-            this.getPlugin().getLogger().severe(e.toString());
+            Ardal.getInstance().getLogger().severe(e.toString());
         }
     }
 
@@ -109,10 +107,6 @@ public class ArdalCmdManager implements CommandExecutor, TabCompleter {
 
     public void registerCmd(ArdalCmd cmd){
         this.registeredCmd.add(cmd);
-    }
-
-    public Ardal getPlugin() {
-        return plugin;
     }
 
     public List<ArdalCmd> getRegisteredCmd() {

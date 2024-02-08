@@ -6,6 +6,7 @@ import org.ardal.utils.JsonUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 
 public class DBStruct {
@@ -38,5 +39,7 @@ public class DBStruct {
         return db;
     }
 
-
+    public List<String> getKeySet(){
+        return JsonUtils.getKeySet(this.db);
+    }
 }

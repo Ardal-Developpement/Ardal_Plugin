@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RemoveQuest implements ArdalCmd {
     @Override
-    public void execute(Ardal plugin, Player player, Command command, String s, List<String> argv) {
+    public void execute(Player player, Command command, String s, List<String> argv) {
         if(argv.isEmpty()){
             player.sendMessage("Invalid command format.");
             return;
@@ -22,7 +22,7 @@ public class RemoveQuest implements ArdalCmd {
         String questName = StringUtils.getStringFromConcatStringList(argv);
 
 
-        if(plugin.getManager(QuestManager.class).getQuestDB().removeQuestBook(questName)){
+        if(Ardal.getInstance().getManager(QuestManager.class).removeQuest(player, questName)){
             player.sendMessage("Success to remove quest book: " + questName);
         } else {
             player.sendMessage("Unknown quest name.");
@@ -30,8 +30,8 @@ public class RemoveQuest implements ArdalCmd {
     }
 
     @Override
-    public List<String> getTabComplete(Ardal plugin, CommandSender sender, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteForQuestName(plugin.getManager(QuestManager.class).getQuestDB(), argv);
+    public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
+        return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv);
     }
 
     @Override
