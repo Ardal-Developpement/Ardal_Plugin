@@ -24,10 +24,10 @@ public class AddQuest implements ArdalCmd {
 
         if(!(item.getType() == Material.WRITABLE_BOOK || item.getType() == Material.WRITTEN_BOOK)){
             player.sendMessage("Please take a written book in your main hand.");
+            return;
         }
 
         BookMeta bookMeta = (BookMeta) Objects.requireNonNull(item.getItemMeta());
-        //QuestUtils.addQuestBook(plugin.getManager(QuestManager.class).getQuestDB(), player, bookMeta);
         if(Objects.requireNonNull(Ardal.getInstance().getManager(QuestManager.class)).addQuest(player, item, new ArrayList<>(), new ArrayList<>())){
             player.sendMessage("Success to add quest.");
         }

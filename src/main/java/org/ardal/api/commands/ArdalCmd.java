@@ -6,9 +6,9 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public interface ArdalCmd {
-     void execute(CommandSender player, Command command, String s, List<String> argv);
+     void execute(CommandSender sender, Command command, String s, List<String> argv);
 
-     List<String> getTabComplete(CommandSender player, Command command, String s, List<String> argv);
+     List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv);
 
      String getHelp();
 

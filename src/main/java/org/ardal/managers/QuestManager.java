@@ -7,6 +7,8 @@ import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.quests.QuestInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.quests.*;
+import org.ardal.commands.quests.edit.EditQuestManager;
+import org.ardal.commands.quests.set.SetQuestManager;
 import org.ardal.db.QuestDB;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.JsonUtils;
@@ -32,8 +34,9 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         this.registerCmd(new ListQuest());
         this.registerCmd(new OpenQuestGUI());
         this.registerCmd(new RemoveQuest());
-        this.registerCmd(new SetStateQuest());
         this.registerCmd(new HelpQuest());
+        this.registerCmd(new SetQuestManager());
+        this.registerCmd(new EditQuestManager());
 
         this.questDB = new QuestDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
     }
@@ -104,13 +107,12 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     public boolean removeQuest(CommandSender sender, String questName) {
-        if(this.getQuestDB().getQuestAsJsonObject(questName) == null){
+        if(this.getQuestDB().getQuestAsJsonObject(questName) != null){
             this.getQuestDB().getDb().remove(questName);
-            sender.sendMessage("Success to remove quest.");
+            this.getQuestDB().saveDB();
             return true;
         }
 
-        sender.sendMessage("Unknown quest.");
         return false;
     }
 

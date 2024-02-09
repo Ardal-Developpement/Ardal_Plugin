@@ -1,4 +1,4 @@
-package org.ardal.commands.quests;
+package org.ardal.commands.quests.set;
 
 import com.google.gson.JsonObject;
 import org.ardal.Ardal;
@@ -12,9 +12,10 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class SetStateQuest implements ArdalCmd {
+public class SetIsActiveQuest implements ArdalCmd {
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+        System.out.println("Test Is Active Quest");
         Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
         JsonObject questObj = Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getQuestAsJsonObject(questName);
@@ -47,6 +48,6 @@ public class SetStateQuest implements ArdalCmd {
 
     @Override
     public String getCmdName() {
-        return "setState";
+        return "isActive";
     }
 }

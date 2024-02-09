@@ -1,6 +1,7 @@
 package org.ardal.api.commands;
 
 import org.ardal.Ardal;
+import org.ardal.utils.ListUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -28,9 +29,8 @@ public abstract class ArdalCmdNode {
         }
 
         try {
-            if(argv.size() > 1){
-                argv.remove(0);
-            }
+            ListUtils.removeFirstIfPossible(argv);
+
             cmd.execute(sender, command, s, argv);
         } catch (Exception e){
             Ardal.getInstance().getLogger().severe(e.toString());
@@ -72,13 +72,28 @@ public abstract class ArdalCmdNode {
     }
 
     public void printCmdHelp(CommandSender sender){
-        try {
-            for(ArdalCmd cmd : getRegisteredCmd()){
-                sender.sendMessage(cmd.getHelp());
-            }
-        } catch (Exception e) {
-            Ardal.getInstance().getLogger().severe(e.toString());
+        for(String cmdHelp : this.getCmdsHelp()){
+            sender.sendMessage(cmdHelp);
         }
+    }
+
+    public List<String> getCmdsHelp(){
+        List<String> commandsHelp = new ArrayList<>();
+        for(ArdalCmd cmd : getRegisteredCmd()){
+            commandsHelp.add(cmd.getHelp());
+        }
+
+        return commandsHelp;
+    }
+
+    public String getFormattedHelp(){
+        List<String> cmdsHelp = this.getCmdsHelp();
+        StringBuilder stringBuilder = new StringBuilder(cmdsHelp.get(0));
+        for(int i = 1; i < cmdsHelp.size(); i++){
+            stringBuilder.append(cmdsHelp.get(i)).append("\n");
+        }
+
+        return stringBuilder.toString();
     }
 
     public ArdalCmd findCmdByName(String cmdName){
