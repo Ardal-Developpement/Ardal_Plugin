@@ -101,8 +101,6 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
         questDB.getDb().add(questName, new QuestObj(book, itemsRequest, itemsReward, false).toJson(sender));
         questDB.saveDB();
-
-        sender.sendMessage("Success to add quest book");
         return true;
     }
 

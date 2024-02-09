@@ -14,8 +14,8 @@ import java.util.List;
 
 public class QuestObj implements Comparable<QuestObj> {
     private final ItemStack book;
-    private final List<ItemStack> itemsRequest;
-    private final List<ItemStack>itemsReward;
+    private List<ItemStack> itemsRequest;
+    private List<ItemStack>itemsReward;
     private final boolean isActive;
 
     public QuestObj(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward, boolean isActive) {
@@ -85,6 +85,14 @@ public class QuestObj implements Comparable<QuestObj> {
 
     public List<ItemStack> getItemsReward() {
         return itemsReward;
+    }
+
+    public void setItemsRequest(List<ItemStack> itemsRequest){
+        this.itemsRequest = itemsRequest;
+    }
+
+    public void setItemsReward(List<ItemStack> itemsReward) {
+        this.itemsReward = itemsReward;
     }
 
     @Override
