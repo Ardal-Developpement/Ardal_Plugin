@@ -15,7 +15,8 @@ import java.util.List;
 
 public class GetQuestBook implements ArdalCmd {
     @Override
-    public void execute(Player player, Command command, String s, List<String> argv) {
+    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+        Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv);
 
         ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(player, questName);

@@ -9,7 +9,11 @@ import org.ardal.commands.playerinfo.GetAdventureLevel;
 import org.ardal.db.PlayerInfoDB;
 import org.ardal.objects.PlayerInfoObj;
 import org.ardal.listener.PlayerJoinListener;
+import org.ardal.utils.StringUtils;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,16 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     public PlayerInfoObj getPlayerInfo(OfflinePlayer player){
         if(player.getName() == null) { return null; }
         return this.playerInfoDB.getPlayerInfo(player.getUniqueId());
+    }
+
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if(!(commandSender instanceof Player)){
+            commandSender.sendMessage("Command can be only used by player.");
+            return true;
+        }
+
+        return this.onSubCmd(commandSender, command, s, StringUtils.getStrListFromStrArray(strings));
     }
 
     @Override

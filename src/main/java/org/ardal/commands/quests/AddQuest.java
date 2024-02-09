@@ -18,7 +18,8 @@ import java.util.Objects;
 public class AddQuest implements ArdalCmd {
 
     @Override
-    public void execute(Player player, Command command, String s, List<String> argv) {
+    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+        Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if(!(item.getType() == Material.WRITABLE_BOOK || item.getType() == Material.WRITTEN_BOOK)){

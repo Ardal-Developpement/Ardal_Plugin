@@ -1,22 +1,18 @@
-package org.ardal.commands.playerinfo;
-
+package org.ardal.commands.quests;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
-import org.ardal.managers.PlayerInfoManager;
+import org.ardal.managers.QuestManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetAdventureLevel implements ArdalCmd {
+public class HelpQuest implements ArdalCmd {
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
-        Player player = (Player) sender;
-        long level =  Ardal.getInstance().getManager(PlayerInfoManager.class).getAdventureLevel(player);
-        player.sendMessage("Your current adventure level is: " + level);
+        Ardal.getInstance().getManager(QuestManager.class).printCmdHelp(sender);
     }
 
     @Override
@@ -26,11 +22,11 @@ public class GetAdventureLevel implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return getCmdName() + " -> get your adventure level.";
+        return getCmdName() + " : for help.";
     }
 
     @Override
     public String getCmdName() {
-        return "adventureLevel";
+        return "help";
     }
 }

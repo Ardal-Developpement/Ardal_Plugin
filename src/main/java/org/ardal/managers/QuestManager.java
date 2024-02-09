@@ -10,8 +10,11 @@ import org.ardal.commands.quests.*;
 import org.ardal.db.QuestDB;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.JsonUtils;
+import org.ardal.utils.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
@@ -30,6 +33,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         this.registerCmd(new OpenQuestGUI());
         this.registerCmd(new RemoveQuest());
         this.registerCmd(new SetStateQuest());
+        this.registerCmd(new HelpQuest());
 
         this.questDB = new QuestDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
     }
@@ -42,6 +46,16 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     @Override
     public void onDisable() {
         this.questDB.saveDB();
+    }
+
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if(!(commandSender instanceof Player)){
+            commandSender.sendMessage("Command can be only used by player.");
+            return true;
+        }
+
+        return this.onSubCmd(commandSender, command, s, StringUtils.getStrListFromStrArray(strings));
     }
 
     public QuestDB getQuestDB() {

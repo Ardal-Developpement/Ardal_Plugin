@@ -14,7 +14,8 @@ import java.util.List;
 
 public class SetStateQuest implements ArdalCmd {
     @Override
-    public void execute(Player player, Command command, String s, List<String> argv) {
+    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+        Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
         JsonObject questObj = Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getQuestAsJsonObject(questName);
 

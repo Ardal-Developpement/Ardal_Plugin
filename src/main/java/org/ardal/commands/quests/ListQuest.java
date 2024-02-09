@@ -13,7 +13,8 @@ import java.util.List;
 
 public class ListQuest implements ArdalCmd {
     @Override
-    public void execute(Player player, Command command, String s, List<String> argv) {
+    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+        Player player = (Player) sender;
         List<QuestObj> questObjs = Ardal.getInstance().getManager(QuestManager.class).getAllQuestObj(player);
 
         if(questObjs.isEmpty()){
