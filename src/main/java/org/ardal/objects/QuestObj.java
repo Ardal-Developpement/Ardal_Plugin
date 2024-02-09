@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class QuestObj {
+public class QuestObj implements Comparable<QuestObj> {
     private final ItemStack book;
     private final List<ItemStack> itemsRequest;
     private final List<ItemStack>itemsReward;
@@ -85,5 +85,10 @@ public class QuestObj {
 
     public List<ItemStack> getItemsReward() {
         return itemsReward;
+    }
+
+    @Override
+    public int compareTo(QuestObj otherQuestObj) {
+        return this.getQuestName().compareTo(otherQuestObj.getQuestName());
     }
 }

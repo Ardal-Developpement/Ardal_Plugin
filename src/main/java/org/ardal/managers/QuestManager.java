@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalManager {
@@ -138,6 +139,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
             questObjs.add(this.getQuestObj(sender, questName));
         }
 
+        Collections.sort(questObjs);
         return questObjs;
     }
 }
