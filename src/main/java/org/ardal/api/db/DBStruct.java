@@ -1,16 +1,12 @@
 package org.ardal.api.db;
 
-import com.google.gson.JsonObject;
-import org.ardal.Ardal;
-import org.ardal.utils.JsonUtils;
+import org.bukkit.configuration.file.FileConfiguration;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-
-public class DBStruct {
-    private JsonObject db;
+public abstract class DBStruct {
+    private FileConfiguration db;
     private final String dbFileName;
     private final Path dbFilePath;
 
@@ -20,26 +16,17 @@ public class DBStruct {
         this.loadDB();
     }
 
-    public void loadDB(){
-        JsonUtils.createDirIfNotExist(this.dbFilePath.getParent());
+    public abstract void loadDB();
 
-        if(!Files.exists(this.dbFilePath)){
-            Ardal.writeToLogger("save db at: " + this.dbFilePath);
-            JsonUtils.saveJsonAt(new JsonObject(), this.dbFilePath);
-        }
+    public abstract void saveDB();
 
-        this.db = JsonUtils.loadJsonFromPath(this.dbFilePath);
+    public abstract List<String> getKeySet();
+
+    public String getDbFileName() {
+        return dbFileName;
     }
 
-    public void saveDB(){
-        JsonUtils.saveJsonAt(this.db, this.dbFilePath);
-    }
-
-    public JsonObject getDb() {
-        return db;
-    }
-
-    public List<String> getKeySet(){
-        return JsonUtils.getKeySet(this.db);
+    public Path getDbFilePath() {
+        return dbFilePath;
     }
 }

@@ -1,14 +1,15 @@
-package org.ardal.db.playerinfo;
+package org.ardal.db;
 
 import com.google.gson.JsonObject;
 import org.ardal.Ardal;
-import org.ardal.api.db.DBStruct;
+import org.ardal.api.db.JsonDBStruct;
+import org.ardal.objects.PlayerInfoObj;
 
 
 import java.nio.file.Path;
 import java.util.UUID;
 
-public class PlayerInfoDB extends DBStruct {
+public class PlayerInfoDB extends JsonDBStruct {
     private static final String DB_FILE_NAME = "PlayerInfoDB.json";
 
     public PlayerInfoDB(Path pluginDirPath) {

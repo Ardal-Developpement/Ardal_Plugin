@@ -3,7 +3,7 @@ package org.ardal.commands.quests;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
-import org.ardal.utils.ItemStackUtils;
+import org.ardal.utils.PlayerUtils;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.command.Command;
@@ -21,7 +21,7 @@ public class GetQuestBook implements ArdalCmd {
         ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(player, questName);
         if(book == null) { return; }
 
-        ItemStackUtils.giveItemStackToPlayer(book, player);
+        PlayerUtils.giveItemStackToPlayer(book, player);
         player.sendMessage("Success to give quest book.");
     }
 

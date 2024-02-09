@@ -1,8 +1,8 @@
 package org.ardal.listener;
 
 
-import org.ardal.db.playerinfo.PlayerInfoDB;
-import org.ardal.db.playerinfo.PlayerInfoObj;
+import org.ardal.db.PlayerInfoDB;
+import org.ardal.objects.PlayerInfoObj;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

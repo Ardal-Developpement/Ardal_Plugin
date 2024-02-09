@@ -2,6 +2,7 @@ package org.ardal;
 
 
 import org.ardal.api.managers.ArdalManager;
+import org.ardal.managers.CustomItemManager;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,9 +20,9 @@ public final class Ardal extends JavaPlugin {
         instance = this;
         this.registerManager(new PlayerInfoManager());
         this.registerManager(new QuestManager());
+        this.registerManager(new CustomItemManager());
 
         enableManagers();
-
     }
 
     @Override

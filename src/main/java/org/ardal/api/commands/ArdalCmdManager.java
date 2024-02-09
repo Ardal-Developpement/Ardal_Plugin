@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ArdalCmdManager implements CommandExecutor, TabCompleter {
     private final List<ArdalCmd> registeredCmd;
@@ -21,7 +20,7 @@ public class ArdalCmdManager implements CommandExecutor, TabCompleter {
         this.registeredCmd = new ArrayList<>();
         this.baseCmdAlias = baseCmdAlias;
 
-        Objects.requireNonNull(Ardal.getInstance().getCommand(this.baseCmdAlias)).setExecutor(this);
+        Ardal.getInstance().getCommand(this.baseCmdAlias).setExecutor(this);
     }
 
     @Override

@@ -6,8 +6,8 @@ import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.players.PlayerInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.playerinfo.GetAdventureLevel;
-import org.ardal.db.playerinfo.PlayerInfoDB;
-import org.ardal.db.playerinfo.PlayerInfoObj;
+import org.ardal.db.PlayerInfoDB;
+import org.ardal.objects.PlayerInfoObj;
 import org.ardal.listener.PlayerJoinListener;
 import org.bukkit.OfflinePlayer;
 

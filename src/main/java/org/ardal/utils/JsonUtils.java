@@ -1,9 +1,6 @@
 package org.ardal.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.FileWriter;
@@ -59,5 +56,18 @@ public class JsonUtils {
         }
 
         return keySet;
+    }
+
+    public static List<String> jsonArrayToStrList(JsonArray array){
+        List<String> list = new ArrayList<>();
+        for(JsonElement elem : array){
+            list.add(elem.getAsString());
+        }
+
+        return list;
+    }
+
+    public static List<String> jsonArrayToStrList(JsonElement elem){
+        return jsonArrayToStrList(elem.getAsJsonArray());
     }
 }

@@ -1,4 +1,4 @@
-package org.ardal.db.playerinfo;
+package org.ardal.objects;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

@@ -1,6 +1,6 @@
 package org.ardal.api.quests;
 
-import org.ardal.db.quest.QuestObj;
+import org.ardal.objects.QuestObj;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
@@ -54,5 +54,5 @@ public interface QuestInfo {
      */
     List<ItemStack> getItemQuestReward(CommandSender sender, String questName);
 
-    List<QuestObj> getAllQuestObj();
+    List<QuestObj> getAllQuestObj(CommandSender sender);
 }

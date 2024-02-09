@@ -1,6 +1,6 @@
-package org.ardal.db.npc;
+package org.ardal.db;
 
-import org.ardal.api.db.DBStruct;
+import org.ardal.api.db.JsonDBStruct;
 import org.ardal.npc.CustomNPC;
 import org.ardal.utils.JsonUtils;
 import org.ardal.utils.PromptUtils;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NpcDB extends DBStruct {
+public class NpcDB extends JsonDBStruct {
     private static final String DB_FILE_NAME = "NpcDB.json";
     public NpcDB(Path pluginDirPath) {
         super(pluginDirPath, DB_FILE_NAME);
