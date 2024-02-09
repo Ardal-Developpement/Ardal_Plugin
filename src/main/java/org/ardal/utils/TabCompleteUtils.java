@@ -18,11 +18,11 @@ public class TabCompleteUtils {
         return tabComplete;
     }
 
-    public static List<String> getTabCompleteFromStrList(List<String> keySet, String questName){
+    public static List<String> getTabCompleteFromStrList(List<String> keySet, String targetName){
         List<String> tabComplete = new ArrayList<>();
 
         for(String name : keySet){
-            if(name.startsWith(questName)){
+            if(name.startsWith(targetName)){
                 tabComplete.add(name);
             }
         }
@@ -30,8 +30,8 @@ public class TabCompleteUtils {
         return tabComplete;
     }
 
-    public static List<String> getTabCompleteFromStrList(List<String> keySet, List<String> questNameList){
-        String questName = StringUtils.getStringFromConcatStringList(questNameList);
+    public static List<String> getTabCompleteFromStrList(List<String> keySet, List<String> targetNameList){
+        String questName = StringUtils.getStringFromConcatStringList(targetNameList);
         return getTabCompleteFromStrList(keySet, questName);
     }
 }

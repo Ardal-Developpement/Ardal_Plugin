@@ -21,7 +21,7 @@ public class GetAdventureLevel implements ArdalCmd {
             player.sendMessage("Invalid command format.");
             return;
         }
-        
+
         PlayerInfoManager pIM = Ardal.getInstance().getManager(PlayerInfoManager.class);
         OfflinePlayer offlinePlayer = BukkitUtils.playerNameToOfflinePlayer(argv.get(0));
         if(offlinePlayer == null){

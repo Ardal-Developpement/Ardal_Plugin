@@ -142,4 +142,16 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         Collections.sort(questObjs);
         return questObjs;
     }
+
+    @Override
+    public List<String> getAllQuestNames(CommandSender sender) {
+        List<QuestObj> questObjs = this.getAllQuestObj(sender);
+        List<String> questNames = new ArrayList<>();
+
+        for(QuestObj questObj : questObjs){
+            questNames.add(questObj.getQuestName());
+        }
+
+        return questNames;
+    }
 }

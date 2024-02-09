@@ -55,4 +55,6 @@ public interface QuestInfo {
     List<ItemStack> getItemQuestReward(CommandSender sender, String questName);
 
     List<QuestObj> getAllQuestObj(CommandSender sender);
+
+    List<String> getAllQuestNames(CommandSender sender);
 }
