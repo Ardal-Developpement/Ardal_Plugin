@@ -17,6 +17,11 @@ public class GetQuestBook implements ArdalCmd {
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
+        if(argv.isEmpty()){
+            player.sendMessage("Invalid command format.");
+            return;
+        }
+
         String questName = StringUtils.getStringFromConcatStringList(argv);
 
         ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(player, questName);

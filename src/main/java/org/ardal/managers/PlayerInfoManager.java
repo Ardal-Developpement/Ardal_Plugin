@@ -5,10 +5,10 @@ import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.players.PlayerInfo;
 import org.ardal.commands.BaseCmdAlias;
-import org.ardal.commands.playerinfo.GetAdventureLevel;
+import org.ardal.commands.playerinfo.get.GetPlayerInfoManager;
 import org.ardal.db.PlayerInfoDB;
-import org.ardal.objects.PlayerInfoObj;
 import org.ardal.listener.PlayerJoinListener;
+import org.ardal.objects.PlayerInfoObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -25,7 +25,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     public PlayerInfoManager(){
         super(BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
 
-        this.registerCmd(new GetAdventureLevel());
+        this.registerCmd(new GetPlayerInfoManager());
 
         this.playerInfoDB = new PlayerInfoDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
         Ardal.getInstance().getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.playerInfoDB), Ardal.getInstance());
