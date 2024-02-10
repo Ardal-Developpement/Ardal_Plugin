@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ListUtils {
     public static <T> void removeFirstIfPossible(List<T> list){
-        if(list.size() > 1){
+        if(!list.isEmpty()){
             list.remove(0);
         }
     }

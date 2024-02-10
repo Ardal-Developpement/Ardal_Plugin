@@ -42,7 +42,7 @@ public abstract class ArdalCmdNode {
 
     public List<String> onSubTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         List<String> tabComplete = new ArrayList<>();
-
+        System.out.println("Argv: " + argv);
         try {
             for (ArdalCmd cmd : getRegisteredCmd()) {
                 String cmdName = cmd.getCmdName();
@@ -50,7 +50,7 @@ public abstract class ArdalCmdNode {
                 if (cmdName.toLowerCase().startsWith(argv.get(0).toLowerCase())) {
                     if (argv.size() == 1) {
                         tabComplete.add(cmdName);
-                    } else {
+                    } else if(cmdName.equalsIgnoreCase(argv.get(0))) {
                         return cmd.getTabComplete(sender, command, s, argv.subList(1, argv.size()));
                     }
                 }
