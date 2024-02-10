@@ -36,7 +36,7 @@ public class EditItemsQuestRequest implements ArdalCmd {
         }
 
         String title = questObj.getQuestName() + " items request:";
-        CIDropBox ciDropBox = new CIDropBox(title, CISize.CIS_9x6, player, new EditQuestItemsRequestCallBack(questObj));
+        CIDropBox ciDropBox = new CIDropBox(title, CISize.CIS_9x6, player, new EditQuestItemsRequestCallBack(questObj), null);
 
         for(ItemStack item : questObj.getItemsRequest()){
             ciDropBox.addItem(item);
