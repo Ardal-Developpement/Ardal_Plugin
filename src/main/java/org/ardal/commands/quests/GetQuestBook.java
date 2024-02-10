@@ -24,7 +24,7 @@ public class GetQuestBook implements ArdalCmd {
 
         String questName = StringUtils.getStringFromConcatStringList(argv);
 
-        ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(player, questName);
+        ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(questName);
         if(book == null) { return; }
 
         PlayerUtils.giveItemStackToPlayer(book, player);

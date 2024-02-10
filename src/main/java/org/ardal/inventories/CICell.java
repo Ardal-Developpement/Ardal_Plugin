@@ -1,22 +1,23 @@
 package org.ardal.inventories;
 
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class CICell {
-    private ItemStack item;
+    private final Inventory inventory;
     private int slot;
 
-    public CICell(ItemStack item, int slot){
-        this.item = item;
+    public CICell(Inventory inventory, int slot){
+        this.inventory = inventory;
         this.slot = slot;
     }
 
     public ItemStack getItem() {
-        return item;
+        return this.inventory.getItem(this.slot);
     }
 
     public void setItem(ItemStack item) {
-        this.item = item;
+        this.inventory.setItem(this.getSlot(), item);
     }
 
     public void setSlot(int slot) {
@@ -24,10 +25,10 @@ public class CICell {
     }
 
     public int getSlot() {
-        return slot;
+        return this.slot;
     }
 
     public boolean isEmpty(){
-        return this.item == null;
+        return this.inventory.getItem(this.slot) == null;
     }
 }

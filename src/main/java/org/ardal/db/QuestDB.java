@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.MalformedJsonException;
 import org.ardal.api.db.JsonDBStruct;
 import org.ardal.objects.QuestObj;
-import org.bukkit.command.CommandSender;
 
 import java.nio.file.Path;
 
@@ -18,7 +17,7 @@ public class QuestDB extends JsonDBStruct {
         return this.getDb().getAsJsonObject(questName);
     }
 
-    public QuestObj getQuestAsQuestObj(CommandSender sender, String questName) throws MalformedJsonException {
-        return new QuestObj(sender, this.getDb().getAsJsonObject(questName));
+    public QuestObj getQuestAsQuestObj(String questName) throws MalformedJsonException {
+        return new QuestObj(this.getDb().getAsJsonObject(questName));
     }
 }

@@ -1,8 +1,10 @@
 package org.ardal.inventories;
 
+import org.ardal.Ardal;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -19,16 +21,20 @@ public abstract class CustomInventory implements Listener, InventoryHolder {
     private final CISize size;
     private final List<CICell> cells;
     private final Player player;
+    private final Inventory inventory;
 
     public CustomInventory(String title, CISize size, Player player){
         this.title = title;
         this.size = size;
         this.player = player;
         this.cells = new ArrayList<>();
+        this.inventory = Bukkit.createInventory(this.player, this.getSize().toInt(), this.title);
 
         for(int i = 0; i < this.size.toInt(); i++){
-            this.cells.add(new CICell(null, i));
+            this.cells.add(new CICell(this.inventory, i));
         }
+
+        Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
 
     public abstract void onCIClose(InventoryCloseEvent event);
@@ -37,30 +43,20 @@ public abstract class CustomInventory implements Listener, InventoryHolder {
 
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this.player, this.getSize().toInt(), this.title);
-        for(CICell cell : this.cells){
-            inventory.setItem(cell.getSlot(), cell.getItem());
-        }
-
         return inventory;
     }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getPlayer() instanceof Player) {
-            Player player = (Player) event.getPlayer();
-            if(event.getPlayer() == this.player
-                    && event.getInventory().getHolder() instanceof CustomInventory){
-                onCIClose(event);
-            }
+        if (event.getPlayer() instanceof Player){
+            onCIClose(event);
+            HandlerList.unregisterAll(this);
         }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() != null
-                && event.getWhoClicked() == this.player
-                && event.getClickedInventory().getHolder() instanceof CustomInventory) {
+        if (event.getClickedInventory() != null) {
             onCIClick(event);
         }
     }
@@ -101,16 +97,6 @@ public abstract class CustomInventory implements Listener, InventoryHolder {
         }
 
         return false;
-    }
-
-    public boolean addCell(CICell newCell){
-        for(CICell cell : this.cells){
-            if(cell.getSlot() == newCell.getSlot()){
-                return false;
-            }
-        }
-
-        return this.cells.add(newCell);
     }
 
     public List<CICell> getCells() {

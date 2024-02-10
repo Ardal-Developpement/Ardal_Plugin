@@ -15,10 +15,10 @@ import java.util.List;
 public class SetIsActiveQuest implements ArdalCmd {
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
-        System.out.println("Test Is Active Quest");
         Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-        JsonObject questObj = Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getQuestAsJsonObject(questName);
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        JsonObject questObj = questManager.getQuestDB().getQuestAsJsonObject(questName);
 
         if(questObj == null){
             player.sendMessage("Unknown quest name.");

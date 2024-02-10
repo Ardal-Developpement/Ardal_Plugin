@@ -9,14 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ListQuest implements ArdalCmd {
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
-        List<QuestObj> questObjs = Ardal.getInstance().getManager(QuestManager.class).getAllQuestObj(player);
+        List<QuestObj> questObjs = Ardal.getInstance().getManager(QuestManager.class).getAllQuestObj();
 
         if(questObjs.isEmpty()){
             player.sendMessage("No quest found.");

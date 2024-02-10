@@ -21,12 +21,13 @@ public class EditItemsQuestReward implements ArdalCmd {
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.isEmpty()){
             sender.sendMessage("Invalid command format.");
+            return;
         }
 
         Player player = (Player) sender;
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
 
-        QuestObj questObj = questManager.getQuestObj(player, StringUtils.getStringFromConcatStringList(argv));
+        QuestObj questObj = questManager.getQuestObj(StringUtils.getStringFromConcatStringList(argv));
         if(questObj == null){
             player.sendMessage("Invalid quest name.");
             return;
@@ -45,7 +46,7 @@ public class EditItemsQuestReward implements ArdalCmd {
     @Override
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(sender), argv.get(0));
+        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(), argv.get(0));
     }
 
     @Override

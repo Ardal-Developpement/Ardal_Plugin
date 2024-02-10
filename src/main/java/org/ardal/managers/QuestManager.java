@@ -66,24 +66,21 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         return questDB;
     }
 
-    public QuestObj getQuestObj(CommandSender sender, String questName){
+    public QuestObj getQuestObj(String questName){
         try {
-            return this.getQuestDB().getQuestAsQuestObj(sender, questName);
+            return this.getQuestDB().getQuestAsQuestObj(questName);
         } catch (MalformedJsonException e) {
-            sender.sendMessage("Invalid quest name.");
             return null;
         }
     }
 
     @Override
-    public boolean addQuest(CommandSender sender, ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward) {
+    public boolean addQuest(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward) {
         if (!(book.getType() == Material.WRITABLE_BOOK || book.getType() == Material.WRITTEN_BOOK)) {
-            sender.sendMessage("Try to add item that not a writable book or a written book.");
             return false;
         }
 
         if (!(book.hasItemMeta() && book.getItemMeta() instanceof BookMeta)) {
-            sender.sendMessage("Book do not have book meta.");
             return false;
         }
 
@@ -91,7 +88,6 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         String questName = bookMeta.getDisplayName().trim();
 
         if(questName.isEmpty()) {
-            sender.sendMessage("Invalid quest name.");
             return false;
         }
 
@@ -99,13 +95,12 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
             Ardal.writeToLogger("Overwriting the quest: " + questName + " .");
         }
 
-        questDB.getDb().add(questName, new QuestObj(book, itemsRequest, itemsReward, false).toJson(sender));
-        questDB.saveDB();
+        new QuestObj(book, itemsRequest, itemsReward, false).save();
         return true;
     }
 
     @Override
-    public boolean removeQuest(CommandSender sender, String questName) {
+    public boolean removeQuest(String questName) {
         if(this.getQuestDB().getQuestAsJsonObject(questName) != null){
             this.getQuestDB().getDb().remove(questName);
             this.getQuestDB().saveDB();
@@ -116,25 +111,35 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Override
-    public ItemStack getQuestBook(CommandSender sender, String questName) {
-        return this.getQuestObj(sender, questName).getBook();
+    public ItemStack getQuestBook(String questName) {
+        return this.getQuestObj(questName).getBook();
     }
 
     @Override
-    public List<ItemStack> getItemsQuestRequest(CommandSender sender, String questName) {
-        return this.getQuestObj(sender, questName).getItemsRequest();
+    public List<ItemStack> getItemsQuestRequest(String questName) {
+        return this.getQuestObj(questName).getItemsRequest();
     }
 
     @Override
-    public List<ItemStack> getItemQuestReward(CommandSender sender, String questName) {
-        return this.getQuestObj(sender, questName).getItemsReward();
+    public List<ItemStack> getItemQuestReward(String questName) {
+        return this.getQuestObj(questName).getItemsReward();
     }
 
     @Override
-    public List<QuestObj> getAllQuestObj(CommandSender sender) {
+    public List<String> getItemsQuestRequestId(String questName) {
+        return this.getQuestObj(questName).getItemsRequestId();
+    }
+
+    @Override
+    public List<String> getItemQuestRewardId(String questName) {
+        return this.getQuestObj(questName).getItemsRewardId();
+    }
+
+    @Override
+    public List<QuestObj> getAllQuestObj() {
         List<QuestObj> questObjs = new ArrayList<>();
         for(String questName : JsonUtils.getKeySet(this.getQuestDB().getDb())){
-            questObjs.add(this.getQuestObj(sender, questName));
+            questObjs.add(this.getQuestObj(questName));
         }
 
         Collections.sort(questObjs);
@@ -142,8 +147,8 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Override
-    public List<String> getAllQuestNames(CommandSender sender) {
-        List<QuestObj> questObjs = this.getAllQuestObj(sender);
+    public List<String> getAllQuestNames() {
+        List<QuestObj> questObjs = this.getAllQuestObj();
         List<String> questNames = new ArrayList<>();
 
         for(QuestObj questObj : questObjs){
