@@ -6,6 +6,8 @@ import java.util.List;
 
 public class StringUtils {
     public static String getStringFromConcatStringList(List<String> strList){
+        if(strList.isEmpty()) { return ""; }
+
         StringBuilder stringBuilder = new StringBuilder(strList.get(0));
         for(int i = 1; i < strList.size(); i++){
             stringBuilder.append(" ").append(strList.get(i));

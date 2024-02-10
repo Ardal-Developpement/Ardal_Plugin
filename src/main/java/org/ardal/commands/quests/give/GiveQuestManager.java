@@ -1,4 +1,4 @@
-package org.ardal.commands.quests.edit;
+package org.ardal.commands.quests.give;
 
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.api.commands.ArdalCmdNode;
@@ -7,12 +7,12 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class EditQuestManager extends ArdalCmdNode implements ArdalCmd {
+public class GiveQuestManager extends ArdalCmdNode implements ArdalCmd {
 
-    public EditQuestManager(){
-        this.registerCmd(new EditItemsQuestRequest());
-        this.registerCmd(new EditItemsQuestReward());
-        this.registerCmd(new EditQuestBook());
+    public GiveQuestManager(){
+        this.registerCmd(new GiveQuestBook());
+        this.registerCmd(new GiveItemsQuestRequest());
+        this.registerCmd(new GiveItemsQuestReward());
     }
 
     @Override
@@ -32,6 +32,6 @@ public class EditQuestManager extends ArdalCmdNode implements ArdalCmd {
 
     @Override
     public String getCmdName() {
-        return "edit";
+        return "give";
     }
 }

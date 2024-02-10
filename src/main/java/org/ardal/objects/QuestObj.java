@@ -25,7 +25,7 @@ public class QuestObj implements Comparable<QuestObj> {
         this.itemsRequestId = new ArrayList<>();
         this.itemsRewardId = new ArrayList<>();
 
-        this.setBookId(book);
+        this.setBook(book);
         this.setItemsRequest(itemsRequest);
         this.setItemsReward(itemsReward);
     }
@@ -167,7 +167,7 @@ public class QuestObj implements Comparable<QuestObj> {
         return true;
     }
 
-    public void setBookId(ItemStack item){
+    public void setBook(ItemStack item){
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
         this.bookId = customItemManager.addItem(item).toString();
     }

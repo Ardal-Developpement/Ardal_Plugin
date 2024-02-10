@@ -23,7 +23,7 @@ public class GetAdventureLevel implements ArdalCmd {
         }
 
         PlayerInfoManager pIM = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        OfflinePlayer offlinePlayer = BukkitUtils.playerNameToOfflinePlayer(argv.get(0));
+        OfflinePlayer offlinePlayer = BukkitUtils.getOfflinePlayerFromName(argv.get(0));
         if(offlinePlayer == null){
             player.sendMessage("Player not found.");
             return;

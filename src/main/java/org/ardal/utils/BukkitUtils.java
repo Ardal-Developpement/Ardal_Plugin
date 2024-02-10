@@ -25,7 +25,7 @@ public class BukkitUtils {
         return offlinePlayersNames;
     }
 
-    public static OfflinePlayer playerNameToOfflinePlayer(String playerName){
+    public static OfflinePlayer getOfflinePlayerFromName(String playerName){
         List<String> offlinePlayersNames = BukkitUtils.getOfflinePlayerNamesAsList();
         int playerIndex = offlinePlayersNames.indexOf(playerName);
 

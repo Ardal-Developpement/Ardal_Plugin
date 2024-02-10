@@ -1,6 +1,8 @@
-package org.ardal.commands.quests;
+package org.ardal.commands.quests.edit;
 
+import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.managers.QuestManager;
 import org.ardal.objects.QuestObj;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -11,11 +13,15 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class AddQuest implements ArdalCmd {
-
+public class EditQuestBook implements ArdalCmd {
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+        if(argv.isEmpty()){
+            sender.sendMessage("Invalid command format.");
+            return;
+        }
+
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -24,8 +30,17 @@ public class AddQuest implements ArdalCmd {
             return;
         }
 
-        new QuestObj(item, new ArrayList<>(), new ArrayList<>(), false).save();
-        player.sendMessage("Success to add quest.");
+        String questName = item.getItemMeta().getDisplayName();
+        QuestObj questObj = questManager.getQuestObj(questName);
+
+        if(questObj == null){
+            sender.sendMessage("Invalid quest name.");
+            return;
+        }
+
+        questObj.setBook(item);
+        questObj.save();
+        player.sendMessage("Success to set new quest book.");
     }
 
     @Override
@@ -35,12 +50,11 @@ public class AddQuest implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return getCmdName() + " (with writable book in main hand) : add a new quest book.";
+        return getCmdName() + " (with writable book of the quest in main hand) : edit quest book for a quest." ;
     }
 
     @Override
     public String getCmdName() {
-        return "add";
+        return "questBook";
     }
 }
-

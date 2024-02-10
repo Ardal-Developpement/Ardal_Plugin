@@ -21,7 +21,7 @@ public class EditItemsQuestRequest implements ArdalCmd {
 
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
-        if(argv.isEmpty()){
+        if(argv.size() < 2){
             sender.sendMessage("Invalid command format.");
             return;
         }
@@ -53,7 +53,7 @@ public class EditItemsQuestRequest implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return getCmdName() + " : edit the items request by the quest.";
+        return getCmdName() + "[quest name] : edit the items request by the quest.";
     }
 
     @Override
