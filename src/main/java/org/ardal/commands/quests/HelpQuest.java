@@ -12,8 +12,9 @@ import java.util.List;
 
 public class HelpQuest implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         sender.sendMessage(Ardal.getInstance().getManager(QuestManager.class).getNodeHelp());
+        return true;
     }
 
     @Override

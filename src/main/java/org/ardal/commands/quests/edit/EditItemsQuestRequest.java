@@ -21,10 +21,9 @@ public class EditItemsQuestRequest implements ArdalCmd {
 
 
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.size() < 2){
-            sender.sendMessage("Invalid command format.");
-            return;
+            return false;
         }
 
         Player player = (Player) sender;
@@ -33,7 +32,7 @@ public class EditItemsQuestRequest implements ArdalCmd {
         QuestObj questObj = questManager.getQuestObj(StringUtils.getStringFromConcatStringList(argv));
         if(questObj == null){
             player.sendMessage("Invalid quest name.");
-            return;
+            return true;
         }
 
         String title = questObj.getQuestName() + " items request:";
@@ -44,6 +43,7 @@ public class EditItemsQuestRequest implements ArdalCmd {
         }
 
         ciDropBox.showInventory();
+        return true;
     }
 
     @Override

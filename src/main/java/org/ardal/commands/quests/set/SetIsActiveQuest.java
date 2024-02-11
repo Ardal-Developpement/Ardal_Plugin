@@ -15,7 +15,11 @@ import java.util.List;
 
 public class SetIsActiveQuest implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
+        if(argv.isEmpty()){
+            return false;
+        }
+
         Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
@@ -23,7 +27,7 @@ public class SetIsActiveQuest implements ArdalCmd {
 
         if(questObj == null){
             player.sendMessage("Unknown quest name.");
-            return;
+            return true;
         }
 
         boolean state = argv.get(0).toLowerCase().trim().equals("true");
@@ -31,6 +35,7 @@ public class SetIsActiveQuest implements ArdalCmd {
         Ardal.getInstance().getManager(QuestManager.class).getQuestDB().saveDB();
 
         player.sendMessage("Set quest " + questName + " visibility to " + state);
+        return true;
     }
 
     @Override

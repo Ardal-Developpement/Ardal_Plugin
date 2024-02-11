@@ -16,7 +16,11 @@ import java.util.List;
 
 public class GetAdventureLevel implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
+        if(argv.isEmpty()){
+            return false;
+        }
+
         Player player;
         if(argv.isEmpty()){
             player = (Player) sender;
@@ -24,7 +28,7 @@ public class GetAdventureLevel implements ArdalCmd {
             OfflinePlayer offlinePlayer = BukkitUtils.getOfflinePlayerFromName(argv.get(0));
             if(offlinePlayer == null){
                 sender.sendMessage("Player not found.");
-                return;
+                return true;
             }
 
             player = offlinePlayer.getPlayer();
@@ -32,6 +36,7 @@ public class GetAdventureLevel implements ArdalCmd {
 
         PlayerInfoManager pIM = Ardal.getInstance().getManager(PlayerInfoManager.class);
         player.sendMessage("Your current adventure level is: " + pIM.getAdventureLevel(player));
+        return true;
     }
 
     @Override

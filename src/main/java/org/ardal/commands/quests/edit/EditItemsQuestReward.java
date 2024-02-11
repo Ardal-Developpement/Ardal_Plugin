@@ -19,10 +19,9 @@ import java.util.List;
 
 public class EditItemsQuestReward implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.isEmpty()){
-            sender.sendMessage("Invalid command format.");
-            return;
+            return false;
         }
 
         Player player = (Player) sender;
@@ -31,7 +30,7 @@ public class EditItemsQuestReward implements ArdalCmd {
         QuestObj questObj = questManager.getQuestObj(StringUtils.getStringFromConcatStringList(argv));
         if(questObj == null){
             player.sendMessage("Invalid quest name.");
-            return;
+            return true;
         }
 
         String title = questObj.getQuestName() + " items reward:";
@@ -42,6 +41,7 @@ public class EditItemsQuestReward implements ArdalCmd {
         }
 
         ciDropBox.showInventory();
+        return true;
     }
 
     @Override

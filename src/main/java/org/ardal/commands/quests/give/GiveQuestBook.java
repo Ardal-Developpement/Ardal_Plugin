@@ -19,17 +19,19 @@ import java.util.List;
 
 public class GiveQuestBook implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.size() < 2){
-            sender.sendMessage(getHelp());
-            return;
+            return false;
         }
         Player player = (Player) sender;
 
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
 
         ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(questName);
-        if(book == null) { return; }
+        if(book == null) {
+            player.sendMessage("Invalid quest name.");
+            return true;
+        }
 
         OfflinePlayer offlinePlayer = BukkitUtils.getOfflinePlayerFromName(argv.get(0));
         if(offlinePlayer == null
@@ -37,11 +39,12 @@ public class GiveQuestBook implements ArdalCmd {
                 || offlinePlayer.getPlayer() == null)
         {
             sender.sendMessage("Invalid player name.");
-            return;
+            return true;
         }
 
         PlayerUtils.giveItemStackToPlayer(book, offlinePlayer.getPlayer());
         player.sendMessage("Success to give quest book for: " + questName + " to: " + offlinePlayer.getName());
+        return true;
     }
 
     @Override

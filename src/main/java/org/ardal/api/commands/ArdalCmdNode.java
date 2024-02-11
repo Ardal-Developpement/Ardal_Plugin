@@ -2,6 +2,8 @@ package org.ardal.api.commands;
 
 import org.ardal.Ardal;
 import org.ardal.utils.ListUtils;
+import org.ardal.utils.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -10,9 +12,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public abstract class ArdalCmdNode {
+    private final String baseCmdAlias;
     private final List<ArdalCmd> registeredCmd;
 
-    public ArdalCmdNode(){
+    public ArdalCmdNode(String baseCmdAlias){
+        this.baseCmdAlias = baseCmdAlias;
         this.registeredCmd = new ArrayList<>();
     }
 
@@ -32,13 +36,19 @@ public abstract class ArdalCmdNode {
         try {
             ListUtils.removeFirstIfPossible(argv);
 
-            cmd.execute(sender, command, s, argv);
+            if(!cmd.execute(sender, command, s, argv)){
+                if(!(cmd instanceof ArdalCmdNode)){
+                    sender.sendMessage(getHelpSection(cmd.getCmdName(), false));
+                    sender.sendMessage(cmd.getHelp());
+                }
+
+                return true;
+            }
         } catch (Exception e){
             Ardal.getInstance().getLogger().severe(e.toString());
-            return true;
         }
 
-        return false;
+        return true;
     }
 
     public List<String> onSubTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
@@ -71,6 +81,7 @@ public abstract class ArdalCmdNode {
         return registeredCmd;
     }
 
+
     /**
      * Get the help of the sub commands of the nodes
      *
@@ -83,6 +94,8 @@ public abstract class ArdalCmdNode {
         if(cmds.isEmpty()) { return ""; }
 
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getHelpSection(this.baseCmdAlias, true));
+
         for(int i = 0; i < cmds.size() - 1; i++){
             stringBuilder.append(cmds.get(i).getHelp()).append("\n");
         }
@@ -99,5 +112,13 @@ public abstract class ArdalCmdNode {
         }
 
         return null;
+    }
+
+    public String getHelpSection(String cmdName, boolean returnToLine){
+        return StringUtils.getSection(
+                "Help: /" + cmdName,
+                ChatColor.YELLOW,
+                ChatColor.WHITE,
+                returnToLine);
     }
 }

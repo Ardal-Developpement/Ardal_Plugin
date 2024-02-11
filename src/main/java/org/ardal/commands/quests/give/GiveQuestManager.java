@@ -9,16 +9,19 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public class GiveQuestManager extends ArdalCmdNode implements ArdalCmd {
+    private static final String CMD_NAME = "give";
+
 
     public GiveQuestManager(){
+        super(CMD_NAME);
         this.registerCmd(new GiveQuestBook());
         this.registerCmd(new GiveItemsQuestRequest());
         this.registerCmd(new GiveItemsQuestReward());
     }
 
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
-        this.onSubCmd(sender, command, s, argv);
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
+        return this.onSubCmd(sender, command, s, argv);
     }
 
     @Override
@@ -36,6 +39,6 @@ public class GiveQuestManager extends ArdalCmdNode implements ArdalCmd {
 
     @Override
     public String getCmdName() {
-        return "give";
+        return CMD_NAME;
     }
 }

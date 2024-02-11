@@ -9,16 +9,18 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public class EditQuestManager extends ArdalCmdNode implements ArdalCmd {
+    private static final String CMD_NAME = "edit";
 
     public EditQuestManager(){
+        super(CMD_NAME);
         this.registerCmd(new EditItemsQuestRequest());
         this.registerCmd(new EditItemsQuestReward());
         this.registerCmd(new EditQuestBook());
     }
 
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
-        this.onSubCmd(sender, command, s, argv);
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
+        return this.onSubCmd(sender, command, s, argv);
     }
 
     @Override
@@ -36,6 +38,6 @@ public class EditQuestManager extends ArdalCmdNode implements ArdalCmd {
 
     @Override
     public String getCmdName() {
-        return "edit";
+        return CMD_NAME;
     }
 }

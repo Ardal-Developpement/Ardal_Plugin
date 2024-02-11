@@ -16,7 +16,7 @@ import java.util.List;
 
 public class OpenQuestGUI implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
         List<QuestObj> questObjs = Ardal.getInstance().getManager(QuestManager.class).getAllQuestObj();
 
@@ -33,6 +33,7 @@ public class OpenQuestGUI implements ArdalCmd {
         }
 
         player.openInventory(inventory);
+        return true;
     }
 
     @Override

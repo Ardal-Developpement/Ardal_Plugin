@@ -14,13 +14,12 @@ import java.util.List;
 
 public class RemoveQuest implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
-        Player player = (Player) sender;
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.isEmpty()){
-            player.sendMessage("Invalid command format.");
-            return;
+            return false;
         }
 
+        Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv);
 
         if(Ardal.getInstance().getManager(QuestManager.class).removeQuest(questName)){
@@ -28,6 +27,8 @@ public class RemoveQuest implements ArdalCmd {
         } else {
             player.sendMessage("Unknown quest name.");
         }
+
+        return true;
     }
 
     @Override

@@ -13,6 +13,7 @@ public abstract class ArdalCmdManager extends ArdalCmdNode implements CommandExe
     private final String baseCmdAlias;
 
     public ArdalCmdManager(String baseCmdAlias){
+        super(baseCmdAlias);
         this.baseCmdAlias = baseCmdAlias;
         Ardal.getInstance().getCommand(this.baseCmdAlias).setExecutor(this);
     }

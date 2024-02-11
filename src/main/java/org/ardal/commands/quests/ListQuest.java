@@ -14,13 +14,13 @@ import java.util.List;
 
 public class ListQuest implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
         List<QuestObj> questObjs = Ardal.getInstance().getManager(QuestManager.class).getAllQuestObj();
 
         if(questObjs.isEmpty()){
             player.sendMessage("No quest found.");
-            return;
+            return true;
         }
 
         player.sendMessage("Found " + questObjs.size() + " quests:\n");
@@ -28,6 +28,8 @@ public class ListQuest implements ArdalCmd {
         for(int i = 0; i < questObjs.size(); i++){
             player.sendMessage("Quest " + (i + 1) + ": " + questObjs.get(i).getQuestName());
         }
+
+        return true;
     }
 
     @Override

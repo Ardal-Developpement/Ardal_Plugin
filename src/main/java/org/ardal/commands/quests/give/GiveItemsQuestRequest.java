@@ -19,10 +19,9 @@ import java.util.List;
 
 public class GiveItemsQuestRequest implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.size() < 2){
-            sender.sendMessage(getHelp());
-            return;
+            return false;
         }
 
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
@@ -34,13 +33,13 @@ public class GiveItemsQuestRequest implements ArdalCmd {
                 || offlinePlayer.getPlayer() == null)
         {
             sender.sendMessage("Invalid player name.");
-            return;
+            return true;
         }
 
         QuestObj questObj = questManager.getQuestObj(questName);
         if(questObj == null){
             sender.sendMessage("Invalid quest name.");
-            return;
+            return true;
         }
 
         for(ItemStack item : questObj.getItemsRequest()) {
@@ -48,6 +47,7 @@ public class GiveItemsQuestRequest implements ArdalCmd {
         }
 
         sender.sendMessage("Success to give items request for: " + questName + " to: " + offlinePlayer.getName());
+        return true;
     }
 
     @Override

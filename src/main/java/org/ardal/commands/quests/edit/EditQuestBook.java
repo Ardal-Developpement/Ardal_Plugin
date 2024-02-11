@@ -16,10 +16,9 @@ import java.util.List;
 
 public class EditQuestBook implements ArdalCmd {
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.isEmpty()){
-            sender.sendMessage("Invalid command format.");
-            return;
+            return false;
         }
 
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
@@ -28,7 +27,7 @@ public class EditQuestBook implements ArdalCmd {
 
         if(!(item.getType() == Material.WRITABLE_BOOK || item.getType() == Material.WRITTEN_BOOK)){
             player.sendMessage("Please take a written book in your main hand.");
-            return;
+            return true;
         }
 
         String questName = item.getItemMeta().getDisplayName();
@@ -36,12 +35,13 @@ public class EditQuestBook implements ArdalCmd {
 
         if(questObj == null){
             sender.sendMessage("Invalid quest name.");
-            return;
+            return true;
         }
 
         questObj.setBook(item);
         questObj.save();
         player.sendMessage("Success to set new quest book.");
+        return true;
     }
 
     @Override

@@ -16,17 +16,18 @@ import java.util.List;
 public class AddQuest implements ArdalCmd {
 
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if(!(item.getType() == Material.WRITABLE_BOOK || item.getType() == Material.WRITTEN_BOOK)){
             player.sendMessage("Please take a written book in your main hand.");
-            return;
+            return true;
         }
 
         new QuestObj(item, new ArrayList<>(), new ArrayList<>(), false).save();
         player.sendMessage("Success to add quest.");
+        return true;
     }
 
     @Override

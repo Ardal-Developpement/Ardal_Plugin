@@ -8,13 +8,16 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public class GetPlayerInfoManager extends ArdalCmdNode implements ArdalCmd {
+    private static final String CMD_NAME = "get";
+
     public GetPlayerInfoManager(){
+        super(CMD_NAME);
         this.registerCmd(new GetAdventureLevel());
     }
 
     @Override
-    public void execute(CommandSender sender, Command command, String s, List<String> argv) {
-        this.onSubCmd(sender, command, s, argv);
+    public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
+        return this.onSubCmd(sender, command, s, argv);
     }
 
     @Override
@@ -29,6 +32,6 @@ public class GetPlayerInfoManager extends ArdalCmdNode implements ArdalCmd {
 
     @Override
     public String getCmdName() {
-        return "get";
+        return CMD_NAME;
     }
 }
