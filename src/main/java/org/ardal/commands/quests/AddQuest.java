@@ -2,6 +2,7 @@ package org.ardal.commands.quests;
 
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.objects.QuestObj;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -33,9 +34,11 @@ public class AddQuest implements ArdalCmd {
         return new ArrayList<>();
     }
 
-    @Override
     public String getHelp() {
-        return getCmdName() + " (with writable book in main hand) : add a new quest book.";
+        return String.format("%s%s:%s add a new quest book.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

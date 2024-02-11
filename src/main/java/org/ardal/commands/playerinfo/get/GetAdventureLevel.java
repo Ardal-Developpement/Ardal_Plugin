@@ -6,6 +6,7 @@ import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.TabCompleteUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,7 +18,6 @@ public class GetAdventureLevel implements ArdalCmd {
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player;
-        System.out.println("argv: " + argv);
         if(argv.isEmpty()){
             player = (Player) sender;
         } else{
@@ -41,7 +41,10 @@ public class GetAdventureLevel implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return getCmdName() + " [player] : get adventure level of the player (or of itself).";
+        return String.format("%s%s [player]:%s get adventure level of the player (or of itself).",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

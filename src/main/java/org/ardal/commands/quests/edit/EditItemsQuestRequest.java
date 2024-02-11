@@ -9,6 +9,7 @@ import org.ardal.managers.QuestManager;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -53,7 +54,10 @@ public class EditItemsQuestRequest implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return getCmdName() + "[quest name] : edit the items request by the quest.";
+        return String.format("%s%s:%s edit the items request by the quest.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

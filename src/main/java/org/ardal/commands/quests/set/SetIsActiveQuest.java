@@ -6,6 +6,7 @@ import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -41,9 +42,11 @@ public class SetIsActiveQuest implements ArdalCmd {
         return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv.subList(1, argv.size()));
     }
 
-    @Override
     public String getHelp() {
-        return getCmdName() + " [true|false] [quest name]";
+        return String.format("%s%s:%s set statue of a quest activity.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

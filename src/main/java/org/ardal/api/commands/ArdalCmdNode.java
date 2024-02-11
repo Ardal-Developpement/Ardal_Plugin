@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class ArdalCmdNode {
@@ -17,14 +18,14 @@ public abstract class ArdalCmdNode {
 
     public boolean onSubCmd(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.isEmpty()){
-            printCmdHelp(sender);
+            sender.sendMessage(this.getNodeHelp());
             return false;
         }
 
         ArdalCmd cmd = findCmdByName(argv.get(0));
 
         if(cmd == null) {
-            printCmdHelp(sender);
+            sender.sendMessage(this.getNodeHelp());
             return false;
         }
 
@@ -42,7 +43,6 @@ public abstract class ArdalCmdNode {
 
     public List<String> onSubTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         List<String> tabComplete = new ArrayList<>();
-        System.out.println("Argv: " + argv);
         try {
             for (ArdalCmd cmd : getRegisteredCmd()) {
                 String cmdName = cmd.getCmdName();
@@ -71,28 +71,23 @@ public abstract class ArdalCmdNode {
         return registeredCmd;
     }
 
-    public void printCmdHelp(CommandSender sender){
-        for(String cmdHelp : this.getCmdsHelp()){
-            sender.sendMessage(cmdHelp);
-        }
-    }
+    /**
+     * Get the help of the sub commands of the nodes
+     *
+     * @return help of the node
+     */
+    public String getNodeHelp(){
+        List<ArdalCmd> cmds = this.registeredCmd;
+        cmds.sort(Comparator.comparing(ArdalCmd::getCmdName));
 
-    public List<String> getCmdsHelp(){
-        List<String> commandsHelp = new ArrayList<>();
-        for(ArdalCmd cmd : getRegisteredCmd()){
-            commandsHelp.add(cmd.getHelp());
-        }
+        if(cmds.isEmpty()) { return ""; }
 
-        return commandsHelp;
-    }
-
-    public String getFormattedHelp(){
-        List<String> cmdsHelp = this.getCmdsHelp();
-        StringBuilder stringBuilder = new StringBuilder(cmdsHelp.get(0));
-        for(int i = 1; i < cmdsHelp.size(); i++){
-            stringBuilder.append(cmdsHelp.get(i)).append("\n");
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < cmds.size() - 1; i++){
+            stringBuilder.append(cmds.get(i).getHelp()).append("\n");
         }
 
+        stringBuilder.append(cmds.get(cmds.size() - 1).getHelp());
         return stringBuilder.toString();
     }
 

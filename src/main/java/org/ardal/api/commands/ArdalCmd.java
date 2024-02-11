@@ -10,6 +10,11 @@ public interface ArdalCmd {
 
      List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv);
 
+     /**
+      * Get the help of the command.
+      *
+      * @return command help
+      */
      String getHelp();
 
      String getCmdName();

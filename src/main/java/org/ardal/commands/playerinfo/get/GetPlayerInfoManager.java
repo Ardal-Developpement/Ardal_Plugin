@@ -24,7 +24,7 @@ public class GetPlayerInfoManager extends ArdalCmdNode implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return this.getFormattedHelp();
+        return this.getNodeHelp();
     }
 
     @Override

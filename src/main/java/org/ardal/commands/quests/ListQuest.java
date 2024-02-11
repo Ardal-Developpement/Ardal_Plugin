@@ -4,6 +4,7 @@ import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
 import org.ardal.objects.QuestObj;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,9 +35,11 @@ public class ListQuest implements ArdalCmd {
         return new ArrayList<>();
     }
 
-    @Override
     public String getHelp() {
-        return getCmdName() + " -> list all the quest";
+        return String.format("%s%s:%s list all the quest.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

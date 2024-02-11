@@ -3,6 +3,7 @@ package org.ardal.commands.quests;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class HelpQuest implements ArdalCmd {
     @Override
     public void execute(CommandSender sender, Command command, String s, List<String> argv) {
-        Ardal.getInstance().getManager(QuestManager.class).printCmdHelp(sender);
+        sender.sendMessage(Ardal.getInstance().getManager(QuestManager.class).getNodeHelp());
     }
 
     @Override
@@ -20,9 +21,11 @@ public class HelpQuest implements ArdalCmd {
         return new ArrayList<>();
     }
 
-    @Override
     public String getHelp() {
-        return getCmdName() + " : for help.";
+        return String.format("%s%s:%s for help.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

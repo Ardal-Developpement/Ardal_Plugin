@@ -2,6 +2,7 @@ package org.ardal.commands.quests.edit;
 
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.api.commands.ArdalCmdNode;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -27,7 +28,10 @@ public class EditQuestManager extends ArdalCmdNode implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return this.getFormattedHelp();
+        return String.format("%s%s:%s edit quest properties.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

@@ -40,9 +40,11 @@ public class OpenQuestGUI implements ArdalCmd {
         return new ArrayList<>();
     }
 
-    @Override
     public String getHelp() {
-        return getCmdName() + " -> open the quest gui.";
+        return String.format("%s%s:%s open the quest gui.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

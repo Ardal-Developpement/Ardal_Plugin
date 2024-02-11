@@ -4,6 +4,7 @@ import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
 import org.ardal.objects.QuestObj;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -48,9 +49,11 @@ public class EditQuestBook implements ArdalCmd {
         return new ArrayList<>();
     }
 
-    @Override
     public String getHelp() {
-        return getCmdName() + " (with writable book of the quest in main hand) : edit quest book for a quest." ;
+        return String.format("%s%s:%s edit quest book for a quest.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

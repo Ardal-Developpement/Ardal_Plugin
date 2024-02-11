@@ -7,6 +7,7 @@ import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.PlayerUtils;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -56,9 +57,11 @@ public class GiveQuestBook implements ArdalCmd {
         return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv.subList(1, argv.size()));
     }
 
-    @Override
     public String getHelp() {
-        return getCmdName() + " [quest name] -> give the associate quest book.";
+        return String.format("%s%s:%s give the associate quest book.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override

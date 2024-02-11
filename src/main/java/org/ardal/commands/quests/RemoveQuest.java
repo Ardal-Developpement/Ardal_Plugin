@@ -5,6 +5,7 @@ import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,9 +35,11 @@ public class RemoveQuest implements ArdalCmd {
         return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv);
     }
 
-    @Override
     public String getHelp() {
-        return getCmdName() + " [quest name] -> remove quest by his name";
+        return String.format("%s%s:%s remove quest by his name.",
+                ChatColor.GOLD,
+                getCmdName(),
+                ChatColor.WHITE);
     }
 
     @Override
