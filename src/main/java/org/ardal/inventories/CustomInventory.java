@@ -1,11 +1,9 @@
 package org.ardal.inventories;
 
 import org.ardal.Ardal;
+import org.ardal.managers.CustomInventoryManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -15,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CustomInventory implements Listener, InventoryHolder {
+public abstract class CustomInventory implements InventoryHolder {
     private static final int NB_CELL_BY_LINE = 9;
     private final String title;
     private final CISize size;
@@ -34,7 +32,7 @@ public abstract class CustomInventory implements Listener, InventoryHolder {
             this.cells.add(new CICell(this.inventory, i));
         }
 
-        Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
+        this.registerInventory();
     }
 
     public abstract void onCIClose(InventoryCloseEvent event);
@@ -44,21 +42,6 @@ public abstract class CustomInventory implements Listener, InventoryHolder {
     @Override
     public Inventory getInventory() {
         return inventory;
-    }
-
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getPlayer() instanceof Player){
-            onCIClose(event);
-            HandlerList.unregisterAll(this);
-        }
-    }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() != null) {
-            onCIClick(event);
-        }
     }
 
     public void showInventory(){
@@ -135,5 +118,11 @@ public abstract class CustomInventory implements Listener, InventoryHolder {
         return player;
     }
 
+    public void registerInventory(){
+        Ardal.getInstance().getManager(CustomInventoryManager.class).registerInvsee(this);
+    }
 
+    public void unregisterInventory(){
+        Ardal.getInstance().getManager(CustomInventoryManager.class).unregisterInvsee(this);
+    }
 }

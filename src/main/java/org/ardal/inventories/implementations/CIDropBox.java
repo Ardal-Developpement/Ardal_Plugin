@@ -20,6 +20,7 @@ public class CIDropBox extends CustomInventory {
     public void onCIClose(InventoryCloseEvent event) {
         if(this.onCloseCallBack == null) { return; }
         this.onCloseCallBack.executeCICallBack(this);
+        this.unregisterInventory();
     }
 
     @Override
