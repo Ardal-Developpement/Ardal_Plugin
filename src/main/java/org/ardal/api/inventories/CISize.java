@@ -1,4 +1,4 @@
-package org.ardal.inventories;
+package org.ardal.api.inventories;
 
 public enum CISize {
     CIS_9x1(9),

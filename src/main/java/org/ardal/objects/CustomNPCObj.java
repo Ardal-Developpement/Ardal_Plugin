@@ -1,53 +1,46 @@
-package org.ardal.npc;
+package org.ardal.objects;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.ardal.api.npc.CustomNpcType;
 import org.ardal.utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-import java.util.Objects;
-import java.util.UUID;
-
-public class CustomNPC implements Listener {
-    private final UUID npcUUID;
+public abstract class CustomNPCObj {
     private final String npcName;
     private final Location location;
     private Villager npc;
     private Boolean isVisible;
 
-    public CustomNPC(String npcName, Location location){
-        this.npcUUID = UUID.randomUUID();
+    public CustomNPCObj(String npcName, Location location){
         this.location = location;
         this.npcName = npcName;
         this.isVisible = true;
     }
 
-    public CustomNPC(JsonObject npcObj){
+    public CustomNPCObj(JsonObject npcObj){
         this.npcName = npcObj.getAsJsonObject("npcName").getAsString();
-        this.npcUUID = UUID.fromString(npcObj.getAsJsonObject("npcUUID").getAsString());
-        this.isVisible = npcObj.getAsJsonObject("npcName").getAsBoolean();
+        this.isVisible = npcObj.getAsJsonObject("isVisible").getAsBoolean();
         this.location = LocationUtils.getLocationFromJson(npcObj.getAsJsonObject("location"));
     }
 
-    @EventHandler
-    public void onNPCInteract(PlayerInteractEntityEvent event) {
-        if(!isVisible) { return; }
+    public JsonObject toJson(){
+        JsonObject npcObj = new JsonObject();
+        npcObj.addProperty("npcName", this.npcName);
+        npcObj.addProperty("isVisible", this.isVisible);
+        npcObj.add("location", LocationUtils.locationToJson(this.location));
+        npcObj.add("additionalProperties", this.additionalProperties());
 
-        if (event.getRightClicked().getType() == EntityType.VILLAGER) {
-            Villager npc = (Villager) event.getRightClicked();
-            if (Objects.equals(npc.getCustomName(), this.npcName)) {
-                Player player = event.getPlayer();
-
-                //Open inventory
-            }
-        }
+        return npcObj;
     }
+
+    public abstract JsonElement additionalProperties();
+    public abstract CustomNpcType getNpcType();
+    public abstract void onNPCInteract(PlayerInteractEntityEvent event);
 
     public void invoke(){
         this.npc = (Villager) Bukkit.getWorld("world").spawnEntity(location, EntityType.VILLAGER);
@@ -72,16 +65,6 @@ public class CustomNPC implements Listener {
         this.isVisible = state;
     }
 
-    public JsonObject toJson(){
-        JsonObject ncpObj = new JsonObject();
-        ncpObj.addProperty("npcUUID", this.npcUUID.toString());
-        ncpObj.addProperty("npcName", this.npcName);
-        ncpObj.addProperty("isVisible", this.isVisible);
-        ncpObj.add("location", LocationUtils.locationToJson(this.location));
-
-        return ncpObj;
-    }
-
     public String getNpcName() {
         return npcName;
     }
@@ -90,7 +73,7 @@ public class CustomNPC implements Listener {
         return location;
     }
 
-    public UUID getNpcUUID() {
-        return npcUUID;
+    public Villager getNpcEntity() {
+        return npc;
     }
 }

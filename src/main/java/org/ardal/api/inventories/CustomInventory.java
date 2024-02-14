@@ -1,4 +1,4 @@
-package org.ardal.inventories;
+package org.ardal.api.inventories;
 
 import org.ardal.Ardal;
 import org.ardal.managers.CustomInventoryManager;

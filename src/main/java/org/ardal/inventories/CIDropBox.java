@@ -1,8 +1,8 @@
-package org.ardal.inventories.implementations;
+package org.ardal.inventories;
 
-import org.ardal.inventories.CICallBack;
-import org.ardal.inventories.CISize;
-import org.ardal.inventories.CustomInventory;
+import org.ardal.api.inventories.CICallBack;
+import org.ardal.api.inventories.CISize;
+import org.ardal.api.inventories.CustomInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;

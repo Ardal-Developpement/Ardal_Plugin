@@ -1,6 +1,8 @@
 package org.ardal.utils;
 
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,10 @@ public class TabCompleteUtils {
         return tabComplete;
     }
 
-    public static List<String> getTabCompleteFromStrList(List<String> keySet, String targetName){
+    public static List<String> getTabCompleteFromStrList(@Nullable List<String> keySet, String targetName){
         List<String> tabComplete = new ArrayList<>();
+
+        if(keySet == null) { return tabComplete; }
 
         for(String name : keySet){
             if(name.startsWith(targetName)){

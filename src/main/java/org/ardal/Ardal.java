@@ -2,10 +2,7 @@ package org.ardal;
 
 
 import org.ardal.api.managers.ArdalManager;
-import org.ardal.managers.CustomInventoryManager;
-import org.ardal.managers.CustomItemManager;
-import org.ardal.managers.PlayerInfoManager;
-import org.ardal.managers.QuestManager;
+import org.ardal.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -23,6 +20,7 @@ public final class Ardal extends JavaPlugin {
         this.registerManager(new QuestManager());
         this.registerManager(new CustomItemManager());
         this.registerManager(new CustomInventoryManager());
+        this.registerManager(new CustomNPCManager());
 
         enableManagers();
     }

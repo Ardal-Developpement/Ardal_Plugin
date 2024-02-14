@@ -1,4 +1,4 @@
-package org.ardal.inventories;
+package org.ardal.api.inventories;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

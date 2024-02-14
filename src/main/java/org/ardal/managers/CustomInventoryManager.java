@@ -2,7 +2,7 @@ package org.ardal.managers;
 
 import org.ardal.Ardal;
 import org.ardal.api.managers.ArdalManager;
-import org.ardal.inventories.CustomInventory;
+import org.ardal.api.inventories.CustomInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,9 +30,7 @@ public class CustomInventoryManager implements ArdalManager, Listener {
     }
 
     public void unregisterInvsee(CustomInventory invsee){
-        if(this.registeredInvsee.contains(invsee)){
-            this.registeredInvsee.remove(invsee);
-        }
+        this.registeredInvsee.remove(invsee);
     }
 
     @EventHandler

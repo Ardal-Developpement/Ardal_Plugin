@@ -1,10 +1,11 @@
 package org.ardal.db;
 
+import com.google.gson.JsonObject;
 import org.ardal.api.db.JsonDBStruct;
-import org.ardal.npc.CustomNPC;
+import org.ardal.api.npc.CustomNpcType;
+import org.ardal.npc.quest.QuestNpc;
+import org.ardal.objects.CustomNPCObj;
 import org.ardal.utils.JsonUtils;
-import org.ardal.utils.PromptUtils;
-import org.bukkit.command.CommandSender;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -16,18 +17,36 @@ public class NpcDB extends JsonDBStruct {
         super(pluginDirPath, DB_FILE_NAME);
     }
 
-    public void saveNPC(CustomNPC npc, CommandSender sender){
-        this.getDb().add(npc.getNpcUUID().toString(), npc.toJson());
-        PromptUtils.sendMsgAndLog(sender, "Success to add: " + npc.getNpcName());
+    public void saveNPC(CustomNPCObj npc){
+        JsonObject npcWrapper = new JsonObject();
+        npcWrapper.addProperty("type", npc.getNpcType().toString());
+        npcWrapper.add("data", npc.toJson());
+        this.getDb().add(npc.getNpcName(), npcWrapper);
+
+        this.saveDB();
     }
 
-    public List<CustomNPC> loadNPCs(){
-        List<CustomNPC> customNPCs = new ArrayList<>();
+    public void removeNpc(String name){
+        this.getDb().remove(name);
+        this.saveDB();
+    }
 
-        for(String npcUUID : JsonUtils.getKeySet(this.getDb())){
-            customNPCs.add(new CustomNPC(this.getDb().getAsJsonObject(npcUUID)));
+    public List<CustomNPCObj> loadNPCs(){
+        List<CustomNPCObj> customNPCObjs = new ArrayList<>();
+
+        for(String npcName : JsonUtils.getKeySet(this.getDb())){
+            JsonObject npcWrapper = this.getDb().get(npcName).getAsJsonObject();
+
+            CustomNPCObj customNPCObj;
+            if (npcWrapper.getAsJsonObject("type").getAsString().equals(CustomNpcType.QUEST_NPC.toString())) {
+                customNPCObj = new QuestNpc(npcWrapper.getAsJsonObject("data"));
+            } else {
+                throw new IllegalArgumentException("Unknown npc type");
+            }
+
+            customNPCObjs.add(customNPCObj);
         }
 
-        return customNPCs;
+        return customNPCObjs;
     }
 }

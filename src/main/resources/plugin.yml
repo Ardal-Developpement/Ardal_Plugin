@@ -7,3 +7,5 @@ commands:
     description: Manage quests
   ardal:
     description: Manage player infos
+  npc:
+    description: Manager npc
