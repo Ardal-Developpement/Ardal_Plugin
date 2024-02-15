@@ -13,7 +13,7 @@ public class InvokeQuestManager extends ArdalCmdNode implements ArdalCmd {
 
     public InvokeQuestManager() {
         super(CMD_NAME);
-        this.registerCmd(new InvokeQuestNpc());
+        this.registerCmd(new CreateAndInvokeQuestNpc());
     }
 
     @Override

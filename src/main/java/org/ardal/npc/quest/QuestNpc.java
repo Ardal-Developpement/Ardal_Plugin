@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class QuestNpc extends CustomNPCObj {
     public List<QuestNpcInfo> questInfoList;
@@ -19,8 +20,8 @@ public class QuestNpc extends CustomNPCObj {
         this.questInfoList = new ArrayList<>();
     }
 
-    public QuestNpc(JsonObject npcObj){
-        super(npcObj);
+    public QuestNpc(JsonObject npcObj, UUID id){
+        super(npcObj, id);
         this.questInfoList = new ArrayList<>();
         JsonElement jsonElement = npcObj.get("additionalProperties");
 

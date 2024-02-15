@@ -16,11 +16,12 @@ public final class Ardal extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        this.registerManager(new CustomNPCManager());
         this.registerManager(new PlayerInfoManager());
         this.registerManager(new QuestManager());
         this.registerManager(new CustomItemManager());
         this.registerManager(new CustomInventoryManager());
-        this.registerManager(new CustomNPCManager());
 
         enableManagers();
     }

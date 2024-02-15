@@ -20,12 +20,12 @@ public class LocationUtils {
     }
 
     public static Location getLocationFromJson(JsonObject locationObj){
-        World world = Bukkit.getWorld(locationObj.getAsJsonObject("world").getAsString());
-        double x = locationObj.getAsJsonObject("x").getAsDouble();
-        double y = locationObj.getAsJsonObject("y").getAsDouble();
-        double z = locationObj.getAsJsonObject("z").getAsDouble();
-        float yaw = locationObj.getAsJsonObject("yaw").getAsFloat();
-        float pitch = locationObj.getAsJsonObject("pitch").getAsFloat();
+        World world = Bukkit.getWorld(locationObj.get("world").getAsString());
+        double x = locationObj.get("x").getAsDouble();
+        double y = locationObj.get("y").getAsDouble();
+        double z = locationObj.get("z").getAsDouble();
+        float yaw = locationObj.get("yaw").getAsFloat();
+        float pitch = locationObj.get("pitch").getAsFloat();
 
         return new Location(world, x, y, z, yaw, pitch);
     }

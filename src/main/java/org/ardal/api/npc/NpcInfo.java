@@ -3,39 +3,43 @@ package org.ardal.api.npc;
 import org.bukkit.Location;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface NpcInfo {
     /**
      * Invoke a npc
      *
-     * @param name of the npc
+     * @param id of the npc
      * @return true on success
      */
-    boolean invokeNpc(String name);
+    boolean invokeNpc(UUID id);
 
     /**
      * Remove a npc (if exist)
      *
-     * @param name of the npc
+     * @param id of the npc
      * @return true on success
      */
-    boolean destroyNpc(String name);
+    boolean destroyNpc(UUID id);
 
-    /**
-     * Get the location of the npc (if exist)
-     *
-     * @param name of the npc
-     * @return the location of the npc, null if the npc is not invoked
-     */
-    Location getNpcLocation(String name);
 
     /**
      * If false, npc can be access only with perm.
      *
+     * @param id of the npc
      * @param state of npc visibility
      * @return true on success
      */
-    boolean setVisibleNpc(String name, boolean state);
+    boolean setVisibleNpc(UUID id, boolean state);
+
+    /**
+     * Rename a npc
+     *
+     * @param id of the npc
+     * @param newName of the npc
+     * @return true on success
+     */
+    boolean setNpcName(UUID id, String newName);
 
     /**
      * Create a new npc template, which can then be invoked
@@ -44,28 +48,36 @@ public interface NpcInfo {
      * @param type of the npc
      * @return true on success
      */
-    boolean createNewNpc(String name, CustomNpcType type);
+    boolean createNewNpc(String name, CustomNpcType type, Location location);
 
     /**
      * Delete a npc template
      *
-     * @param name of the npc
+     * @param id of the npc
      * @return true on success
      */
-    boolean deleteNpc(String name);
+    boolean deleteNpc(UUID id);
 
     /**
-     * Get all registered names of the npc type
+     * Get all saved id of the npc type
      *
      * @param type of the npc
-     * @return list of npc names
+     * @return list of npc id
      */
-    List<String> getAllNpcNamesByType(CustomNpcType type);
+    List<UUID> getAllNpcIdByTypeSaved(CustomNpcType type);
 
     /**
-     * Get all registered npc names
+     * Get all saved npc id
      *
-     * @return list of npc names
+     * @return list of npc id
      */
-    List<String> getAllNpcNames();
+    List<UUID> getAllNpcIdSaved();
+
+    /**
+     * Check if a npc id exist in db.
+     *
+     * @param id of the npc
+     * @return true if exist
+     */
+    boolean isNpcExist(UUID id);
 }
