@@ -36,7 +36,7 @@ public class NpcDB extends JsonDBStruct {
 
         for(String npcId : JsonUtils.getKeySet(this.getDb())){
             CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
-            customNPCManager.invokeNpc(UUID.fromString(npcId));
+            customNPCManager.invokeNpcFromJsonObj(this.getDb().getAsJsonObject(npcId), UUID.fromString(npcId));
         }
 
         return customNPCObjs;

@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.UUID;
+
 public class LocationUtils {
     public static JsonObject locationToJson(Location location){
         JsonObject locationObj = new JsonObject();
@@ -20,7 +22,7 @@ public class LocationUtils {
     }
 
     public static Location getLocationFromJson(JsonObject locationObj){
-        World world = Bukkit.getWorld(locationObj.get("world").getAsString());
+        World world = Bukkit.getWorld(UUID.fromString(locationObj.get("world").getAsString()));
         double x = locationObj.get("x").getAsDouble();
         double y = locationObj.get("y").getAsDouble();
         double z = locationObj.get("z").getAsDouble();

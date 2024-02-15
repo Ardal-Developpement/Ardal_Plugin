@@ -47,21 +47,36 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
         }
     }
 
-    public void unregisterNpc(CustomNPCObj npc){
-        npc.destroy();
-        this.invokedNpc.remove(npc);
+    public NpcDB getNpcDB() {
+        return npcDB;
     }
 
     @Nullable
     public CustomNPCObj getNpcObjById(UUID id){
-        JsonObject npcJsonObj = this.npcDB.getDb().getAsJsonObject(id.toString());
-        if(npcJsonObj == null) { return null; }
+        for(CustomNPCObj customNPCObj : this.invokedNpc){
+            if(customNPCObj.getId().equals(id)){
+                return customNPCObj;
+            }
+        }
 
-        return getNpcObjFromJsonObj(npcJsonObj, id);
+        return null;
+    }
+
+    @Override
+    public boolean destroyNpc(UUID id) {
+        for(CustomNPCObj npc : this.invokedNpc){
+            if(npc.getId().equals(id)){
+                npc.destroy();
+                this.invokedNpc.remove(npc);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Nullable
-    public CustomNPCObj getNpcObjFromJsonObj(@NotNull JsonObject npcObj, @NotNull UUID id){
+    public CustomNPCObj invokeNpcFromJsonObj(@NotNull JsonObject npcObj, @NotNull UUID id){
         String npcTypeName = npcObj.get("type").getAsString();
         CustomNpcType npcType = CustomNpcType.getNpcTypeByName(npcTypeName);
         if(npcType == null) { return null; }
@@ -75,6 +90,7 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
                 return null;
         }
 
+        this.registerNpc(customNPCObj);
         return customNPCObj;
     }
 
@@ -85,7 +101,6 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
 
     @Override
     public void onDisable() {
-        this.invokedNpc.forEach(CustomNPCObj::destroy);
         this.npcDB.saveDB();
     }
 
@@ -111,31 +126,6 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
                 }
             }
         }
-    }
-
-    @Override
-    public boolean invokeNpc(UUID id) {
-        CustomNPCObj customNPCObj = this.getNpcObjById(id);
-        if(customNPCObj == null){
-            return false;
-        }
-
-        customNPCObj.invoke();
-        return true;
-    }
-
-
-    @Override
-    public boolean destroyNpc(UUID id) {
-        for(CustomNPCObj npc : this.invokedNpc){
-            if(npc.getId().equals(id)){
-                npc.destroy();
-                this.invokedNpc.remove(npc);
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override
@@ -173,14 +163,13 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
         }
 
         this.npcDB.saveNPC(customNPCObj);
-        customNPCObj.invoke();
-
         return true;
     }
 
     @Override
     public boolean deleteNpc(UUID id) {
         if(!this.isNpcExist(id)) { return false; }
+        this.destroyNpc(id);
         this.npcDB.removeNpc(id);
 
         return true;

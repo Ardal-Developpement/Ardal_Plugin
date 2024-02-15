@@ -6,13 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface NpcInfo {
-    /**
-     * Invoke a npc
-     *
-     * @param id of the npc
-     * @return true on success
-     */
-    boolean invokeNpc(UUID id);
 
     /**
      * Remove a npc (if exist)
@@ -21,7 +14,6 @@ public interface NpcInfo {
      * @return true on success
      */
     boolean destroyNpc(UUID id);
-
 
     /**
      * If false, npc can be access only with perm.

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import org.ardal.Ardal;
 import org.ardal.api.npc.CustomNpcType;
 import org.ardal.managers.CustomNPCManager;
+import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,24 +16,42 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import java.util.UUID;
 
 public abstract class CustomNPCObj {
-    private final UUID id;
     private final Location location;
+    private UUID id;
     private String npcName;
     private Villager npc;
     private Boolean isVisible;
 
     public CustomNPCObj(String npcName, Location location){
-        this.id = UUID.randomUUID();
         this.location = location;
         this.npcName = npcName;
         this.isVisible = true;
+
+        this.npc = (Villager) Bukkit.getWorld("world").spawnEntity(location, EntityType.VILLAGER);
+        this.id = this.npc.getUniqueId();
+        this.setNpcProperties();
+        this.registerNpc();
     }
 
-    public CustomNPCObj(JsonObject npcObj, UUID id) {
-        this.id = id;
+    public CustomNPCObj(JsonObject npcObj, UUID npcId) {
+        this.id = npcId;
         this.npcName = npcObj.get("npcName").getAsString();
         this.isVisible = npcObj.get("isVisible").getAsBoolean();
         this.location = LocationUtils.getLocationFromJson(npcObj.get("location").getAsJsonObject());
+
+        this.npc = (Villager) BukkitUtils.getEntityFromId(this.id, this.location.getWorld().getUID());
+        if(this.npc == null){
+            this.npc = (Villager) Bukkit.getWorld("world").spawnEntity(location, EntityType.VILLAGER);
+            this.id = this.npc.getUniqueId();
+            this.setNpcProperties();
+
+            CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
+            JsonElement value = customNPCManager.getNpcDB().getDb().remove(npcId.toString());
+            customNPCManager.getNpcDB().getDb().add(this.id.toString(), value);
+            customNPCManager.getNpcDB().saveDB();
+        }
+
+        this.registerNpc();
     }
 
     public JsonObject toJson(){
@@ -49,8 +68,7 @@ public abstract class CustomNPCObj {
     public abstract CustomNpcType getNpcType();
     public abstract void onNPCInteract(PlayerInteractEntityEvent event);
 
-    public void invoke(){
-        this.npc = (Villager) Bukkit.getWorld("world").spawnEntity(location, EntityType.VILLAGER);
+    private void setNpcProperties(){
         npc.setCustomName(this.npcName);
         npc.setCustomNameVisible(true);
         npc.setInvulnerable(true);
@@ -59,20 +77,24 @@ public abstract class CustomNPCObj {
         npc.setCanPickupItems(false);
         npc.setSilent(true);
 
-        CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
-        customNPCManager.registerNpc(this);
+
     }
 
-    public void destroy(){
-        if(this.npc != null && !this.npc.isDead()){
-            this.npc.remove();
-        }
+    private void registerNpc(){
+        CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
+        customNPCManager.registerNpc(this);
     }
 
     public void setVisible(Boolean state){
         this.npc.setInvisible(!state);
         this.npc.setCustomNameVisible(state);
         this.isVisible = state;
+    }
+
+    public void destroy() {
+        if (this.npc != null && !this.npc.isDead()) {
+            this.npc.remove();
+        }
     }
 
     public String getNpcName() {

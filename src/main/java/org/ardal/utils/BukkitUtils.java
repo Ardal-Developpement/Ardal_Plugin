@@ -2,9 +2,12 @@ package org.ardal.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class BukkitUtils {
     public static List<OfflinePlayer> getOfflinePlayersAsList(){
@@ -34,5 +37,16 @@ public class BukkitUtils {
         }
 
         return BukkitUtils.getOfflinePlayersAsList().get(playerIndex);
+    }
+
+    @Nullable
+    public static Entity getEntityFromId(UUID id, UUID world){
+        for(Entity entity : Bukkit.getWorld(world).getEntities()){
+            if(entity.getUniqueId().equals(id)){
+                return entity;
+            }
+        }
+
+        return null;
     }
 }
