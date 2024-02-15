@@ -9,7 +9,6 @@ import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.quests.*;
 import org.ardal.commands.quests.edit.EditQuestManager;
 import org.ardal.commands.quests.give.GiveQuestManager;
-import org.ardal.commands.quests.invoke.InvokeQuestManager;
 import org.ardal.commands.quests.set.SetQuestManager;
 import org.ardal.db.QuestDB;
 import org.ardal.objects.QuestObj;
@@ -40,7 +39,6 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         this.registerCmd(new SetQuestManager());
         this.registerCmd(new EditQuestManager());
         this.registerCmd(new GiveQuestManager());
-        this.registerCmd(new InvokeQuestManager());
 
         this.questDB = new QuestDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
     }

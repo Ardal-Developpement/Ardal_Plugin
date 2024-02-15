@@ -7,19 +7,21 @@ import org.ardal.api.players.PlayerInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.playerinfo.get.GetPlayerInfoManager;
 import org.ardal.db.PlayerInfoDB;
-import org.ardal.listener.PlayerJoinListener;
 import org.ardal.objects.PlayerInfoObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager {
+public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager, Listener {
     private final PlayerInfoDB playerInfoDB;
 
     public PlayerInfoManager(){
@@ -28,7 +30,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
         this.registerCmd(new GetPlayerInfoManager());
 
         this.playerInfoDB = new PlayerInfoDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
-        Ardal.getInstance().getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.playerInfoDB), Ardal.getInstance());
+        Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
 
     @Override
@@ -132,5 +134,13 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     @Override
     public boolean isPlayerRegistered(OfflinePlayer offlinePlayer) {
         return offlinePlayer.getName() != null && this.getPlayerInfo(offlinePlayer) != null;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event){
+        Player player = event.getPlayer();
+        if(this.playerInfoDB.getDb().getAsJsonObject(player.getUniqueId().toString()) == null){
+            this.playerInfoDB.addPlayer(new PlayerInfoObj(player));
+        }
     }
 }
