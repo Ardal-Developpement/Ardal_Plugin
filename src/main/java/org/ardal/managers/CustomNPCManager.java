@@ -8,7 +8,9 @@ import org.ardal.api.npc.CustomNpcType;
 import org.ardal.api.npc.NpcInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.npc.CreateAndInvokeNpc;
+import org.ardal.commands.npc.give.GiveNpcManager;
 import org.ardal.db.NpcDB;
+import org.ardal.npc.NpcManagementTool;
 import org.ardal.npc.quest.QuestNpc;
 import org.ardal.objects.CustomNPCObj;
 import org.ardal.utils.StringUtils;
@@ -17,7 +19,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalManager, Listener {
+    private final NpcManagementTool npcManagementTool;
     private final NpcDB npcDB;
     private List<CustomNPCObj> invokedNpc;
 
@@ -36,9 +38,13 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
         super(BaseCmdAlias.BASE_NPC_CMD_ALIAS);
 
         this.registerCmd(new CreateAndInvokeNpc());
+        this.registerCmd(new GiveNpcManager());
 
         this.invokedNpc = new ArrayList<>();
         this.npcDB = new NpcDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
+
+        this.npcManagementTool = new NpcManagementTool();
+        Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
 
     public void registerNpc(CustomNPCObj npc){
@@ -49,6 +55,10 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
 
     public NpcDB getNpcDB() {
         return npcDB;
+    }
+
+    public List<CustomNPCObj> getInvokedNpc() {
+        return invokedNpc;
     }
 
     @Nullable
@@ -96,7 +106,7 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
 
     @Override
     public void onEnable() {
-        this.invokedNpc = this.npcDB.loadNPCs();
+        this.npcDB.loadNPCs();
     }
 
     @Override
@@ -112,20 +122,6 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
         }
 
         return this.onSubCmd(commandSender, command, s, StringUtils.getStrListFromStrArray(strings));
-    }
-
-    @EventHandler
-    public void onNPCInteract(PlayerInteractEntityEvent event) {
-        if (event.getRightClicked().getType() == EntityType.VILLAGER) {
-            Villager npc = (Villager) event.getRightClicked();
-
-            for(CustomNPCObj customNpc : this.invokedNpc){
-                if(npc == customNpc.getNpcEntity()){
-                    customNpc.onNPCInteract(event);
-                    return;
-                }
-            }
-        }
     }
 
     @Override
@@ -191,6 +187,11 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
     }
 
     @Override
+    public boolean giveManagementToolToPlayer(Player player) {
+        return this.npcManagementTool.getToolToPlayer(player);
+    }
+
+    @Override
     public List<UUID> getAllNpcIdByTypeSaved(CustomNpcType type) {
         List<UUID> allIdList = getAllNpcIdSaved();
         List<UUID> idList = new ArrayList<>();
@@ -202,5 +203,23 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
         }
 
         return idList;
+    }
+
+    @EventHandler
+    public void onNPCInteract(PlayerInteractEntityEvent event) {
+        if (event.getRightClicked().getType() == EntityType.VILLAGER) {
+            CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
+            CustomNPCObj npc = customNPCManager.getNpcObjById(event.getRightClicked().getUniqueId());
+            if(npc == null) { return; }
+
+            event.setCancelled(true);
+
+            if (event.getPlayer().getInventory().getItemInMainHand().equals(this.npcManagementTool)) {
+                npc.onNpcManageToolInteract(event);
+                return;
+            }
+
+            npc.onNPCInteract(event);
+        }
     }
 }

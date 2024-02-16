@@ -40,6 +40,7 @@ public abstract class CustomNPCObj {
         this.location = LocationUtils.getLocationFromJson(npcObj.get("location").getAsJsonObject());
 
         this.npc = (Villager) BukkitUtils.getEntityFromId(this.id, this.location.getWorld().getUID());
+
         if(this.npc == null){
             this.npc = (Villager) Bukkit.getWorld("world").spawnEntity(location, EntityType.VILLAGER);
             this.id = this.npc.getUniqueId();
@@ -67,6 +68,7 @@ public abstract class CustomNPCObj {
     public abstract JsonElement additionalProperties();
     public abstract CustomNpcType getNpcType();
     public abstract void onNPCInteract(PlayerInteractEntityEvent event);
+    public abstract void onNpcManageToolInteract(PlayerInteractEntityEvent event);
 
     private void setNpcProperties(){
         npc.setCustomName(this.npcName);

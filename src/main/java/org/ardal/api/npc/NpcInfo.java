@@ -1,6 +1,7 @@
 package org.ardal.api.npc;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
@@ -72,4 +73,12 @@ public interface NpcInfo {
      * @return true if exist
      */
     boolean isNpcExist(UUID id);
+
+    /**
+     * Give to the player, the npc management tool.
+     *
+     * @param player to give item
+     * @return true on success
+     */
+    boolean giveManagementToolToPlayer(Player player);
 }

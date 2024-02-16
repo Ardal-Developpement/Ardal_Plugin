@@ -1,6 +1,6 @@
 package org.ardal.inventories;
 
-import org.ardal.api.inventories.CICallBack;
+import org.ardal.api.inventories.callback.CICallBack;
 import org.ardal.api.inventories.CISize;
 import org.ardal.api.inventories.CustomInventory;
 import org.bukkit.entity.Player;

@@ -31,14 +31,10 @@ public class NpcDB extends JsonDBStruct {
         this.saveDB();
     }
 
-    public List<CustomNPCObj> loadNPCs() {
-        List<CustomNPCObj> customNPCObjs = new ArrayList<>();
-
+    public void loadNPCs() {
         for(String npcId : JsonUtils.getKeySet(this.getDb())){
             CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
             customNPCManager.invokeNpcFromJsonObj(this.getDb().getAsJsonObject(npcId), UUID.fromString(npcId));
         }
-
-        return customNPCObjs;
     }
 }

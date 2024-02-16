@@ -3,9 +3,12 @@ package org.ardal.npc.quest;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.ardal.Ardal;
 import org.ardal.api.npc.CustomNpcType;
+import org.ardal.managers.CustomNPCManager;
 import org.ardal.objects.CustomNPCObj;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import java.util.ArrayList;
@@ -54,5 +57,14 @@ public class QuestNpc extends CustomNPCObj {
     @Override
     public void onNPCInteract(PlayerInteractEntityEvent event) {
         event.getPlayer().sendMessage("Opening quest npc.");
+    }
+
+    @Override
+    public void onNpcManageToolInteract(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        player.sendMessage("Interact with: " + this.getNpcName());
+
+        CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
+        customNPCManager.giveManagementToolToPlayer(event.getPlayer());
     }
 }

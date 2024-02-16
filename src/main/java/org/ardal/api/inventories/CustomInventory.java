@@ -9,8 +9,10 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class CustomInventory implements InventoryHolder {
@@ -25,19 +27,20 @@ public abstract class CustomInventory implements InventoryHolder {
         this.title = title;
         this.size = size;
         this.player = player;
-        this.cells = new ArrayList<>();
+        this.cells = new ArrayList<>(Collections.nCopies(this.size.toInt(), null));
         this.inventory = Bukkit.createInventory(this.player, this.getSize().toInt(), this.title);
-
-        for(int i = 0; i < this.size.toInt(); i++){
-            this.cells.add(new CICell(this.inventory, i));
-        }
 
         this.registerInventory();
     }
 
     public abstract void onCIClose(InventoryCloseEvent event);
 
-    public abstract void onCIClick(InventoryClickEvent event);
+    public void onCIClick(InventoryClickEvent event){
+        CICell cell = this.getCell(event.getSlot());
+        if(cell != null){
+            cell.onCellClick(event);
+        }
+    }
 
     @Override
     public Inventory getInventory() {
@@ -52,30 +55,19 @@ public abstract class CustomInventory implements InventoryHolder {
         this.player.closeInventory();
     }
 
-    public boolean setItem(ItemStack item, int slot){
-        if(this.cells.size() == this.size.toInt()){
-            return false;
+    public boolean setCell(CICell cell){
+        if(cell.getSlot() < this.cells.size() && this.cells.get(cell.getSlot()) == null){
+            this.cells.set(cell.getSlot(), cell);
+            return true;
         }
 
-        this.cells.get(slot).setItem(item);
-        return true;
-    }
-
-    public boolean setItem(ItemStack item, int x, int y){
-        int slot = y * NB_CELL_BY_LINE + x;
-        if(slot > this.size.toInt()){
-            return false;
-        }
-
-        this.cells.get(slot).setItem(item);
-        return true;
+        return false;
     }
 
     public boolean addItem(ItemStack item){
-        for(CICell cell : this.cells){
-            if(cell.isEmpty()){
-                cell.setItem(item);
-                return true;
+        for(int i = 0; i < this.size.toInt(); i++){
+            if(this.cells.get(i) == null){
+                return this.setCell(new CICell(item, i));
             }
         }
 
@@ -86,23 +78,19 @@ public abstract class CustomInventory implements InventoryHolder {
         return cells;
     }
 
-    public CICell getCell(int index){
-        return this.cells.get(index);
+    @Nullable
+    public CICell getCell(int slot){
+        return this.cells.size() < slot ? null : this.cells.get(slot);
     }
 
     public CICell getCell(int x, int y){
-        int slot = y * NB_CELL_BY_LINE + x;
-        if(slot > this.size.toInt()){
-            return null;
-        }
-
-        return getCell(slot);
+        return this.getCell(y * NB_CELL_BY_LINE + x);
     }
 
     public List<ItemStack> getAllItemStack(){
         List<ItemStack> items = new ArrayList<>();
         for(CICell cell : this.cells){
-            if(!cell.isEmpty()){
+            if(cell != null){
                 items.add(cell.getItem());
             }
         }

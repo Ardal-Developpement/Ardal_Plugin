@@ -1,9 +1,8 @@
-package org.ardal.commands.playerinfo.get;
-
+package org.ardal.commands.npc.give;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
-import org.ardal.managers.PlayerInfoManager;
+import org.ardal.managers.CustomNPCManager;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
@@ -14,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class GetAdventureLevel implements ArdalCmd {
+public class GiveNpcManagementTool implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player;
@@ -30,19 +29,22 @@ public class GetAdventureLevel implements ArdalCmd {
             player = offlinePlayer.getPlayer();
         }
 
-        PlayerInfoManager pIM = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        player.sendMessage("Your current adventure level is: " + pIM.getAdventureLevel(player));
+        CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
+        if(!customNPCManager.giveManagementToolToPlayer(player)){
+            player.sendMessage("Failed to give npc management tool.");
+        }
+
         return true;
     }
 
     @Override
-    public List<String> getTabComplete(CommandSender player, Command command, String s, List<String> argv) {
+    public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv);
     }
 
     @Override
     public String getHelp() {
-        return String.format("%s%s:%s get adventure level of the player (or of itself).",
+        return String.format("%s%s:%s give npc management tool.",
                 ChatColor.GOLD,
                 getCmdName(),
                 ChatColor.WHITE);
@@ -50,6 +52,6 @@ public class GetAdventureLevel implements ArdalCmd {
 
     @Override
     public String getCmdName() {
-        return "adventureLevel";
+        return "managementTool";
     }
 }

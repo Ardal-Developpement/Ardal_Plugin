@@ -1,6 +1,6 @@
 package org.ardal.callbacks.quest;
 
-import org.ardal.api.inventories.CICallBack;
+import org.ardal.api.inventories.callback.CICallBack;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.objects.QuestObj;
 

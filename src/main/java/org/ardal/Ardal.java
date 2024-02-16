@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Ardal extends JavaPlugin {
-
     private static Ardal instance;
     private List<ArdalManager> ardalManagers;
 
@@ -36,7 +35,7 @@ public final class Ardal extends JavaPlugin {
     }
 
     private void disableManagers(){
-        this.ardalManagers.forEach(ArdalManager::onDisable);
+        //this.ardalManagers.forEach(ArdalManager::onDisable);
     }
 
     private void registerManager(ArdalManager manager){
