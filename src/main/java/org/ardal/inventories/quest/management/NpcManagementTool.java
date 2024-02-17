@@ -1,4 +1,4 @@
-package org.ardal.npc;
+package org.ardal.inventories.quest.management;
 
 import org.ardal.Ardal;
 import org.ardal.objects.CustomNPCObj;

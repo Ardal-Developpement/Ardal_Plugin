@@ -62,7 +62,6 @@ public class QuestNpc extends CustomNPCObj {
     @Override
     public void onNpcManageToolInteract(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        player.sendMessage("Interact with: " + this.getNpcName());
 
         CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
         customNPCManager.getNpcManagementTool().openNpcManagementInventory(this, player);

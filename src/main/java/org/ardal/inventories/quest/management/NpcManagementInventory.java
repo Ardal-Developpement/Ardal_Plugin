@@ -1,4 +1,4 @@
-package org.ardal.npc;
+package org.ardal.inventories.quest.management;
 
 import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CISize;
@@ -9,6 +9,7 @@ import org.ardal.objects.CustomNPCObj;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -61,6 +62,14 @@ public class NpcManagementInventory extends CustomInventory {
         return aPItem;
     }
 
+    @Override
+    public void onCIClick(InventoryClickEvent event){
+        event.setCancelled(true);
+        CICell cell = this.getCell(event.getSlot());
+        if(cell != null){
+            cell.onCellClick(event);
+        }
+    }
     @Override
     public void onCIClose(InventoryCloseEvent event) {
         this.unregisterInventory();

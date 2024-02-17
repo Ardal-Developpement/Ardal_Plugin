@@ -46,6 +46,9 @@ public class CustomInventoryManager implements ArdalManager, Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        if(event.getClickedInventory() == null){
+            return;
+        }
         for(CustomInventory invsee : this.registeredInvsee){
             if(invsee.getPlayer() == event.getWhoClicked()){
                 invsee.onCIClick(event);

@@ -10,7 +10,7 @@ import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.npc.CreateAndInvokeNpc;
 import org.ardal.commands.npc.give.GiveNpcManager;
 import org.ardal.db.NpcDB;
-import org.ardal.npc.NpcManagementTool;
+import org.ardal.inventories.quest.management.NpcManagementTool;
 import org.ardal.npc.quest.QuestNpc;
 import org.ardal.objects.CustomNPCObj;
 import org.ardal.utils.StringUtils;
