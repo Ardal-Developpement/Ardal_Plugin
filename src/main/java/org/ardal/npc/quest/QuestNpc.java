@@ -65,6 +65,6 @@ public class QuestNpc extends CustomNPCObj {
         player.sendMessage("Interact with: " + this.getNpcName());
 
         CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
-        customNPCManager.giveManagementToolToPlayer(event.getPlayer());
+        customNPCManager.getNpcManagementTool().openNpcManagementInventory(this, player);
     }
 }

@@ -38,7 +38,11 @@ public class NpcManagementTool implements Listener {
         return false;
     }
 
-    public void getInventory(CustomNPCObj npc, Player player){
+    public void openNpcManagementInventory(CustomNPCObj npc, Player player){
         player.openInventory(new NpcManagementInventory(npc, player).getInventory());
+    }
+
+    public ItemStack getTool() {
+        return tool;
     }
 }

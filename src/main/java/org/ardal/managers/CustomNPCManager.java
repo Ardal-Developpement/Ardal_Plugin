@@ -61,6 +61,10 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
         return invokedNpc;
     }
 
+    public NpcManagementTool getNpcManagementTool() {
+        return npcManagementTool;
+    }
+
     @Nullable
     public CustomNPCObj getNpcObjById(UUID id){
         for(CustomNPCObj customNPCObj : this.invokedNpc){
@@ -214,7 +218,7 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
 
             event.setCancelled(true);
 
-            if (event.getPlayer().getInventory().getItemInMainHand().equals(this.npcManagementTool)) {
+            if (event.getPlayer().getInventory().getItemInMainHand().isSimilar(this.npcManagementTool.getTool())) {
                 npc.onNpcManageToolInteract(event);
                 return;
             }

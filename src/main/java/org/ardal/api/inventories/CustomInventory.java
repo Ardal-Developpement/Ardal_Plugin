@@ -44,6 +44,15 @@ public abstract class CustomInventory implements InventoryHolder {
 
     @Override
     public Inventory getInventory() {
+        for(int i = 0; i < this.size.toInt(); i++){
+            CICell cell = this.cells.get(i);
+            if(cell == null){
+                this.inventory.setItem(i, null);
+            } else {
+                this.inventory.setItem(i, cell.getItem());
+            }
+        }
+
         return inventory;
     }
 
