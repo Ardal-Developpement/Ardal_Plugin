@@ -43,7 +43,7 @@ public class CICell {
         this.item = item;
         this.slot = y * NB_CELL_BY_LINE + x;
 
-        this.onRightClickCB = onRightClickCB;
+            this.onRightClickCB = onRightClickCB;
         this.onRightShieftClickCB = onRightShieftClickCB;
         this.onLeftClickCB = onLeftClickCB;
         this.onLeftShieftClickCB = onLeftShieftClickCB;
@@ -60,6 +60,8 @@ public class CICell {
     }
 
     public void onCellClick(InventoryClickEvent event) {
+        event.setCancelled(true);
+
         if(event.isRightClick()){
             if(event.isShiftClick()){
                 doCallBack(this.onRightShieftClickCB, event);

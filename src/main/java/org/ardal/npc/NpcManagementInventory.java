@@ -9,7 +9,6 @@ import org.ardal.objects.CustomNPCObj;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -32,9 +31,9 @@ public class NpcManagementInventory extends CustomInventory {
         this.setCell(new CICell(
                 this.getDeleteItem(),
                 6, 1,
+                null,
+                null,
                 deleteNpcCB,
-                null,
-                null,
                 null)
         );
 
@@ -67,8 +66,4 @@ public class NpcManagementInventory extends CustomInventory {
         this.unregisterInventory();
     }
 
-    @Override
-    public void onCIClick(InventoryClickEvent event) {
-
-    }
 }

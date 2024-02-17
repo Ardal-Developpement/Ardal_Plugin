@@ -24,5 +24,7 @@ public class DeleteNpcCallBack implements CellCallBack {
         } else {
             player.sendMessage("Failed to delete npc.");
         }
+
+        player.closeInventory();
     }
 }
