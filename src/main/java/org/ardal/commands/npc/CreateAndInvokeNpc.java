@@ -56,7 +56,7 @@ public class CreateAndInvokeNpc implements ArdalCmd {
     }
 
     public String getHelp() {
-        return String.format("%s%s:%s create a new npc template.",
+        return String.format("%s%s:%s create a new npc.",
                 ChatColor.GOLD,
                 getCmdName(),
                 ChatColor.WHITE);
