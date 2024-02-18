@@ -48,7 +48,6 @@ public class ShortCutCmdManager extends ArdalCmdNode implements CommandExecutor,
             return false;
         }
 
-
         try {
             if(!cmd.execute(sender, command, s, StringUtils.getStrListFromStrArray(strings))){
                 if(!(cmd instanceof ArdalCmdNode)){

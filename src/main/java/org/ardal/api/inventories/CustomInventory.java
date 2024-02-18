@@ -98,10 +98,9 @@ public abstract class CustomInventory implements InventoryHolder {
 
     public List<ItemStack> getAllItemStack(){
         List<ItemStack> items = new ArrayList<>();
-        for(CICell cell : this.cells){
-            if(cell != null){
-                items.add(cell.getItem());
-            }
+
+        for(ItemStack item : this.inventory.getContents()){
+            if(item != null) { items.add(item); }
         }
 
         return items;
