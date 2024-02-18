@@ -4,8 +4,12 @@ main: org.ardal.Ardal
 api-version: '1.16'
 commands:
   quest:
-    description: Manage quests
+    description: Manage quests.
   ardal:
-    description: Manage player infos
+    description: Manage player infos.
   npc:
-    description: Manager npc
+    description: Manager npc.
+  ec:
+    description: Open enderchest.
+  adventureLevel:
+    description: Get adventure player.

@@ -21,6 +21,7 @@ public final class Ardal extends JavaPlugin {
         this.registerManager(new QuestManager());
         this.registerManager(new CustomItemManager());
         this.registerManager(new CustomInventoryManager());
+        this.registerManager(new ShortCutCmdManager());
 
         enableManagers();
     }
@@ -35,7 +36,7 @@ public final class Ardal extends JavaPlugin {
     }
 
     private void disableManagers(){
-        //this.ardalManagers.forEach(ArdalManager::onDisable);
+        this.ardalManagers.forEach(ArdalManager::onDisable);
     }
 
     private void registerManager(ArdalManager manager){
