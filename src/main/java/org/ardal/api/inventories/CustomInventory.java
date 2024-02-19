@@ -18,17 +18,17 @@ import java.util.List;
 public abstract class CustomInventory implements InventoryHolder {
     private static final int NB_CELL_BY_LINE = 9;
     private final String title;
-    private final CISize size;
+    private final int size;
     private final List<CICell> cells;
     private final Player player;
     private final Inventory inventory;
 
-    public CustomInventory(String title, CISize size, Player player){
+    public CustomInventory(String title, int size, Player player){
         this.title = title;
         this.size = size;
         this.player = player;
-        this.cells = new ArrayList<>(Collections.nCopies(this.size.toInt(), null));
-        this.inventory = Bukkit.createInventory(this.player, this.getSize().toInt(), this.title);
+        this.cells = new ArrayList<>(Collections.nCopies(this.size, null));
+        this.inventory = Bukkit.createInventory(this.player, this.size, this.title);
 
         this.registerInventory();
     }
@@ -44,7 +44,7 @@ public abstract class CustomInventory implements InventoryHolder {
 
     @Override
     public Inventory getInventory() {
-        for(int i = 0; i < this.size.toInt(); i++){
+        for(int i = 0; i < this.size; i++){
             CICell cell = this.cells.get(i);
             if(cell == null){
                 this.inventory.setItem(i, null);
@@ -74,7 +74,7 @@ public abstract class CustomInventory implements InventoryHolder {
     }
 
     public boolean addItem(ItemStack item){
-        for(int i = 0; i < this.size.toInt(); i++){
+        for(int i = 0; i < this.size; i++){
             if(this.cells.get(i) == null){
                 return this.setCell(new CICell(item, i));
             }
@@ -106,7 +106,7 @@ public abstract class CustomInventory implements InventoryHolder {
         return items;
     }
 
-    public CISize getSize() {
+    public int getSize() {
         return size;
     }
 

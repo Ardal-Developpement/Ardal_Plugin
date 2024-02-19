@@ -3,7 +3,6 @@ package org.ardal.commands.quests.edit;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.callbacks.quest.EditQuestItemsRewardCallBack;
-import org.ardal.api.inventories.CISize;
 import org.ardal.inventories.CIDropBox;
 import org.ardal.managers.QuestManager;
 import org.ardal.objects.QuestObj;
@@ -34,7 +33,7 @@ public class EditItemsQuestReward implements ArdalCmd {
         }
 
         String title = questObj.getQuestName() + " items reward:";
-        CIDropBox ciDropBox = new CIDropBox(title, CISize.CIS_9x6, player, new EditQuestItemsRewardCallBack(questObj), null);
+        CIDropBox ciDropBox = new CIDropBox(title, 54, player, new EditQuestItemsRewardCallBack(questObj), null);
 
         for(ItemStack item : questObj.getItemsReward()){
             ciDropBox.addItem(item);

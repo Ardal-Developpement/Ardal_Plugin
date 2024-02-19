@@ -1,8 +1,7 @@
 package org.ardal.inventories;
 
-import org.ardal.api.inventories.callback.CICallBack;
-import org.ardal.api.inventories.CISize;
 import org.ardal.api.inventories.CustomInventory;
+import org.ardal.api.inventories.callback.CICallBack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -11,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 public class CIDropBox extends CustomInventory {
     private final CICallBack onCloseCallBack;
     private final CICallBack onClickCallBack;
-    public CIDropBox(String title, CISize size, Player player, @Nullable CICallBack onCloseCallBack, @Nullable CICallBack onClickCallBack){
+    public CIDropBox(String title, int size, Player player, @Nullable CICallBack onCloseCallBack, @Nullable CICallBack onClickCallBack){
         super(title, size, player);
         this.onCloseCallBack = onCloseCallBack;
         this.onClickCallBack = onClickCallBack;

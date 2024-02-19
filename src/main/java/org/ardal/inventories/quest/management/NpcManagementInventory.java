@@ -1,7 +1,6 @@
 package org.ardal.inventories.quest.management;
 
 import org.ardal.api.inventories.CICell;
-import org.ardal.api.inventories.CISize;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.callbacks.npc.DeleteNpcCallBack;
@@ -16,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class NpcManagementInventory extends CustomInventory {
     public NpcManagementInventory(CustomNPCObj npc, Player player){
-        super(npc.getNpcName() + " management:", CISize.CIS_9x3, player);
+        super(npc.getNpcName() + " management:", 27, player);
 
         CellCallBack deleteNpcCB = new DeleteNpcCallBack(npc.getId());
 
