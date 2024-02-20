@@ -2,6 +2,7 @@ package org.ardal.api.quests;
 
 import org.ardal.objects.QuestObj;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -55,4 +56,10 @@ public interface QuestInfo {
     List<QuestObj> getAllQuestObj();
 
     List<String> getAllQuestNames();
+
+    @Nullable
+    Boolean setQuestActivity(String questName, boolean state);
+
+    @Nullable
+    Boolean getQuestActivity(String questName);
 }

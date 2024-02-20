@@ -111,6 +111,10 @@ public class QuestObj implements Comparable<QuestObj> {
         return customItemManager.getItemsByStrId(this.itemsRewardId);
     }
 
+    public boolean getIsActive() {
+        return this.isActive;
+    }
+
     public List<String> getItemsRequestId() {
         return itemsRequestId;
     }

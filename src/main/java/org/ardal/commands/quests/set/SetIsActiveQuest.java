@@ -1,6 +1,5 @@
 package org.ardal.commands.quests.set;
 
-import com.google.gson.JsonObject;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
@@ -23,18 +22,16 @@ public class SetIsActiveQuest implements ArdalCmd {
         Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        JsonObject questObj = questManager.getQuestDB().getQuestAsJsonObject(questName);
-
-        if(questObj == null){
-            player.sendMessage("Unknown quest name.");
-            return true;
-        }
 
         boolean state = argv.get(0).toLowerCase().trim().equals("true");
-        questObj.addProperty("isActive", state);
-        Ardal.getInstance().getManager(QuestManager.class).getQuestDB().saveDB();
+        Boolean requestState = questManager.setQuestActivity(questName, state);
 
-        player.sendMessage("Set quest " + questName + " visibility to " + state);
+        if(requestState == null) {
+            player.sendMessage("Unknown quest name.");
+        } else {
+            player.sendMessage("Set quest " + questName + " visibility to " + state);
+        }
+
         return true;
     }
 
