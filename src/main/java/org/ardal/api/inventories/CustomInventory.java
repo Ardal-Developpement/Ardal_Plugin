@@ -33,7 +33,9 @@ public abstract class CustomInventory implements InventoryHolder {
         this.registerInventory();
     }
 
-    public abstract void onCIClose(InventoryCloseEvent event);
+    public void onCIClose(InventoryCloseEvent event){
+        this.unregisterInventory();
+    }
 
     public void onCIClick(InventoryClickEvent event){
         CICell cell = this.getCell(event.getSlot());
