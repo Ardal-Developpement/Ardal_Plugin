@@ -63,6 +63,8 @@ public interface PlayerInfo {
     boolean removePlayerFinishedQuest(OfflinePlayer player, UUID questUUID);
 
     /**
+     * Get if a player info is saved
+     *
      * @param player to check
      * @return true in player register in the db, else false
      */
