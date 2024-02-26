@@ -42,6 +42,12 @@ public class QuestNpc extends CustomNPCObj {
         }
     }
 
+    public void saveNpcAdditionnalInfo(){
+        CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
+         customNPCManager.getNpcDB().getDb().get(this.getId().toString()).getAsJsonObject().add("additionalProperties", this.additionalProperties());
+         customNPCManager.getNpcDB().saveDB();
+    }
+
     @NotNull
     public QuestNpcInfo getQuestNpcByObj(QuestObj questObj){
         for(QuestNpcInfo questNpcInfo : this.questInfoList){
@@ -68,7 +74,7 @@ public class QuestNpc extends CustomNPCObj {
 
 
     @Override
-    public JsonElement additionalProperties() {
+    public JsonArray additionalProperties() {
         JsonArray jsonArray = new JsonArray();
 
         for(QuestNpcInfo obj : this.questInfoList){

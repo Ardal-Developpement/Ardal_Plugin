@@ -14,14 +14,16 @@ public class QuestNpcInfo {
     }
 
     public QuestNpcInfo(JsonObject obj){
-        this.questName = obj.getAsJsonObject("questName").getAsString();
-        this.questCoef = obj.getAsJsonObject("questCoef").getAsInt();
+        this.questName = obj.get("questName").getAsString();
+        this.questCoef = obj.get("questCoef").getAsInt();
+        this.isShow = obj.get("isShow").getAsBoolean();
     }
 
     public JsonObject toJson(){
         JsonObject obj = new JsonObject();
         obj.addProperty("questName", this.questName);
         obj.addProperty("questCoef", this.questCoef);
+        obj.addProperty("isShow", this.isShow);
 
         return obj;
     }
