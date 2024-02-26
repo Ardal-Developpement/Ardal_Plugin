@@ -43,46 +43,41 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
 
         this.setPreviousPageItem();
         this.setNextPageItem();
-        this.showNextQuest();
+        this.showQuest(true);
     }
 
-    private void showNextQuest(){
-        System.out.println("Test 3");
+    private void showQuest(boolean nextPage){
+        int newIndex;
+        if(nextPage){
+            if(this.currentStartIndex + 1 == this.quests.size()) {
+                this.currentStartIndex = 0;
+            }
+            newIndex = this.currentStartIndex + SHOWED_QUEST_RANGE;
 
-        if(this.currentStartIndex >= this.quests.size()) { this.currentStartIndex = 0; }
-        System.out.println("cI:" + currentStartIndex);
-        System.out.println("qS:" + quests.size());
-        int lenght = MathUtils.clamp(this.currentStartIndex + SHOWED_QUEST_RANGE, 0, this.quests.size());
-        System.out.println("lenght:" + lenght);
-        System.out.println("Test 4");
+        } else {
+            if(this.currentStartIndex == 0) {
+                this.currentStartIndex = this.quests.size();
+            }
+            newIndex = this.currentStartIndex - SHOWED_QUEST_RANGE;
+        }
 
-        for (int i = this.currentStartIndex; i < lenght; i++){
-            System.out.println("Test 5");
-            this.setCell(new CICell(this.getQuestBook(this.quests.get(i)),
-                    i - this.currentStartIndex,
+        this.currentStartIndex = MathUtils.clamp(newIndex, 0, this.quests.size());
+
+        for(int i = 0, slot = 0; i < this.quests.size() && slot < SHOWED_QUEST_RANGE; i++){
+            ItemStack book = this.getQuestBook(this.quests.get(i));
+            if(book == null) { continue; }
+
+            this.setCell(new CICell(book,
+                    slot,
                     null,
                     null,
                     this,
                     null
             ));
+            slot++;
         }
     }
 
-    private void showPreviousPage(){
-        if(this.currentStartIndex == this.quests.size()) { this.currentStartIndex = this.quests.size() - 1; }
-
-        int lenght = MathUtils.clamp(this.currentStartIndex - SHOWED_QUEST_RANGE, 0, this.quests.size());
-
-        for (int i = this.currentStartIndex; i >= lenght; i--){
-            this.setCell(new CICell(this.getQuestBook(this.quests.get(i)),
-                    this.currentStartIndex - i,
-                    null,
-                    null,
-                    this,
-                    null
-            ));
-        }
-    }
 
     private ItemStack getQuestBook(String questName){
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
@@ -176,10 +171,10 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
 
         switch (item.getType()) {
             case CAMPFIRE:
-                this.setNextPageItem();
+                this.showQuest(true);
                 break;
             case SOUL_CAMPFIRE:
-                this.setPreviousPageItem();
+                this.showQuest(false);
                 break;
             case WRITABLE_BOOK:
                 this.changeActivityOfQuest(item);

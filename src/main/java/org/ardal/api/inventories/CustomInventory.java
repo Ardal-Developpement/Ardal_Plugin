@@ -34,7 +34,6 @@ public abstract class CustomInventory implements InventoryHolder {
     }
 
     public void onCIClose(InventoryCloseEvent event){
-        System.out.println("Unregister invsee");
         this.unregisterInventory();
     }
 
