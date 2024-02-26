@@ -8,7 +8,6 @@ import org.ardal.managers.QuestManager;
 import org.ardal.npc.quest.QuestNpc;
 import org.ardal.npc.quest.QuestNpcInfo;
 import org.ardal.objects.QuestObj;
-import org.ardal.utils.MathUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -46,26 +45,26 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
         this.showQuest(true);
     }
 
-    private void showQuest(boolean nextPage){
+    private void showQuest(boolean nextPage) {
         int newIndex;
-        if(nextPage){
-            if(this.currentStartIndex + 1 == this.quests.size()) {
-                this.currentStartIndex = 0;
-            }
+        if (nextPage) {
             newIndex = this.currentStartIndex + SHOWED_QUEST_RANGE;
-
-        } else {
-            if(this.currentStartIndex == 0) {
-                this.currentStartIndex = this.quests.size();
+            if (newIndex >= this.quests.size()) {
+                newIndex = 0;
             }
+        } else {
             newIndex = this.currentStartIndex - SHOWED_QUEST_RANGE;
+            if (newIndex < 0) {
+                newIndex = this.quests.size() - 1;
+            }
         }
 
-        this.currentStartIndex = MathUtils.clamp(newIndex, 0, this.quests.size());
-
-        for(int i = 0, slot = 0; i < this.quests.size() && slot < SHOWED_QUEST_RANGE; i++){
+        int slot = 0;
+        for (int i = this.currentStartIndex; i < this.quests.size() && slot < SHOWED_QUEST_RANGE; i++) {
             ItemStack book = this.getQuestBook(this.quests.get(i));
-            if(book == null) { continue; }
+            if (book == null) {
+                continue;
+            }
 
             this.setCell(new CICell(book,
                     slot,
@@ -75,6 +74,12 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
                     null
             ));
             slot++;
+        }
+        this.currentStartIndex = newIndex;
+
+        //clean inventory
+        for(; slot < SHOWED_QUEST_RANGE; slot++){
+            this.clearCell(slot);
         }
     }
 

@@ -67,18 +67,32 @@ public abstract class CustomInventory implements InventoryHolder {
     }
 
     public boolean setCell(CICell cell){
+
         if(cell.getSlot() < this.cells.size()){
             this.cells.set(cell.getSlot(), cell);
+            this.inventory.setItem(cell.getSlot(), cell.getItem());
             return true;
         }
 
         return false;
     }
 
+    public void clearCell(int slot){
+        if(slot < this.cells.size()){
+            this.cells.set(slot, null);
+            this.inventory.setItem(slot, null);
+        }
+    }
+
     public boolean addItem(ItemStack item){
         for(int i = 0; i < this.size; i++){
             if(this.cells.get(i) == null){
-                return this.setCell(new CICell(item, i));
+                if(this.setCell(new CICell(item, i))){
+                    this.inventory.setItem(i, item);
+                    return true;
+                }
+
+                return false;
             }
         }
 
