@@ -5,6 +5,8 @@ import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.managers.QuestManager;
+import org.ardal.npc.quest.QuestNpc;
+import org.ardal.npc.quest.QuestNpcInfo;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.MathUtils;
 import org.bukkit.Material;
@@ -18,10 +20,11 @@ import java.util.List;
 
 public class QuestIsActiveSelectorInventory extends CustomInventory implements CellCallBack {
     private static final int SHOWED_QUEST_RANGE = 45;
+    private final QuestNpc questNpc;
     private final List<String> quests;
     private int currentStartIndex;
 
-    public QuestIsActiveSelectorInventory(String npcName, Player player, List<String> quests) {
+    public QuestIsActiveSelectorInventory(QuestNpc npc, Player player) {
         /*
             Big inventory
             last line is just for buttons (page +, page -)
@@ -29,22 +32,33 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
 
          */
 
-        super(npcName + " properties:", 54, player);
-        this.quests = quests;
+        super(npc.getNpcName() + " properties:", 54, player);
+
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        this.questNpc = npc;
+        this.quests = questManager.getAllQuestNames();
+
         this.currentStartIndex = 0;
 
         this.setPreviousPageItem();
         this.setNextPageItem();
+        this.showNextQuest();
     }
 
     private void showNextQuest(){
-        if(this.currentStartIndex >= this.quests.size()) { this.currentStartIndex = 0; }
+        System.out.println("Test 3");
 
-        int lenght = MathUtils.clamp(this.currentStartIndex, 0, this.quests.size());
-        
+        if(this.currentStartIndex >= this.quests.size()) { this.currentStartIndex = 0; }
+        System.out.println("cI:" + currentStartIndex);
+        System.out.println("qS:" + quests.size());
+        int lenght = MathUtils.clamp(this.currentStartIndex + SHOWED_QUEST_RANGE, 0, this.quests.size());
+        System.out.println("lenght:" + lenght);
+        System.out.println("Test 4");
+
         for (int i = this.currentStartIndex; i < lenght; i++){
+            System.out.println("Test 5");
             this.setCell(new CICell(this.getQuestBook(this.quests.get(i)),
-                    this.currentStartIndex - i,
+                    i - this.currentStartIndex,
                     null,
                     null,
                     this,
@@ -56,9 +70,9 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
     private void showPreviousPage(){
         if(this.currentStartIndex == this.quests.size()) { this.currentStartIndex = this.quests.size() - 1; }
 
-        int lenght = MathUtils.clamp(this.currentStartIndex, 0, this.quests.size());
+        int lenght = MathUtils.clamp(this.currentStartIndex - SHOWED_QUEST_RANGE, 0, this.quests.size());
 
-        for (int i = this.currentStartIndex; i >= 0; i--){
+        for (int i = this.currentStartIndex; i >= lenght; i--){
             this.setCell(new CICell(this.getQuestBook(this.quests.get(i)),
                     this.currentStartIndex - i,
                     null,
@@ -69,22 +83,15 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
         }
     }
 
-
-
     private ItemStack getQuestBook(String questName){
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         QuestObj questObj = questManager.getQuestObj(questName);
-        if(questObj == null) { return null; }
+        if(questObj == null || !questObj.getIsActive()) { return null; }
 
-        ItemStack item = questObj.getBook();
-        ItemMeta meta = item.getItemMeta();
+        ItemStack book = questObj.getBook();
+        this.refreshBookMeta(questObj.getBook());
 
-        if(questObj.getIsActive()){
-            meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-        }
-
-        item.setItemMeta(meta);
-        return item;
+        return book;
     }
 
     private void setNextPageItem(){
@@ -124,21 +131,24 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
 
     private void changeActivityOfQuest(ItemStack book) {
         ItemMeta meta = book.getItemMeta();
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        Boolean currentQuestActivity = questManager.getQuestActivity(meta.getDisplayName());
+        QuestNpcInfo questNpcInfo = this.questNpc.getQuestNpcByName(meta.getDisplayName());
+        questNpcInfo.setIsShow(!questNpcInfo.getIsShow());
 
-        if(currentQuestActivity == null) {
-            Ardal.getInstance().getLogger().severe("Error of quest book name.");
-            return;
-        }
+        this.refreshBookMeta(book);
+    }
 
-        questManager.setQuestActivity(meta.getDisplayName(), !currentQuestActivity);
+    private void refreshBookMeta(ItemStack book){
+        ItemMeta meta = book.getItemMeta();
+        QuestNpcInfo questNpcInfo = this.questNpc.getQuestNpcByName(meta.getDisplayName());
 
-        if(currentQuestActivity){
+        if(questNpcInfo.getIsShow()){
             meta.removeEnchant(Enchantment.ARROW_INFINITE);
         } else {
             meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
         }
+
+        //if(meta.getLore() == null) { meta.setLore(new ArrayList<>()); }
+        //meta.getLore().add(0, Color.RED + "Coef: " + questNpcInfo.getQuestCoef());
 
         book.setItemMeta(meta);
     }

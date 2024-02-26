@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -152,6 +153,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Override
+    @NotNull
     public List<String> getAllQuestNames() {
         List<QuestObj> questObjs = this.getAllQuestObj();
         List<String> questNames = new ArrayList<>();

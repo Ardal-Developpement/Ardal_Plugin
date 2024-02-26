@@ -5,11 +5,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.ardal.Ardal;
 import org.ardal.api.npc.CustomNpcType;
+import org.ardal.inventories.quest.management.QuestIsActiveSelectorInventory;
 import org.ardal.managers.CustomNPCManager;
+import org.ardal.managers.QuestManager;
 import org.ardal.objects.CustomNPCObj;
+import org.ardal.objects.QuestObj;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +40,30 @@ public class QuestNpc extends CustomNPCObj {
         for(JsonElement elem : jsonElement.getAsJsonArray()){
             this.questInfoList.add(new QuestNpcInfo(elem.getAsJsonObject()));
         }
+    }
+
+    @NotNull
+    public QuestNpcInfo getQuestNpcByObj(QuestObj questObj){
+        for(QuestNpcInfo questNpcInfo : this.questInfoList){
+            if(questNpcInfo.getQuestName().equals(questObj.getQuestName())){
+                return questNpcInfo;
+            }
+        }
+
+        QuestNpcInfo questNpcInfo = new QuestNpcInfo(questObj.getQuestName(), 1, true);
+        this.questInfoList.add(questNpcInfo);
+        return questNpcInfo;
+    }
+
+    @NotNull
+    public QuestNpcInfo getQuestNpcByName(String questName){
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        return this.getQuestNpcByObj(questManager.getQuestObj(questName));
+    }
+
+    @Override
+    public void onNpcManagmentClickEvent(InventoryClickEvent event) {
+        new QuestIsActiveSelectorInventory(this, (Player) event.getWhoClicked()).showInventory();
     }
 
 

@@ -34,6 +34,7 @@ public abstract class CustomInventory implements InventoryHolder {
     }
 
     public void onCIClose(InventoryCloseEvent event){
+        System.out.println("Unregister invsee");
         this.unregisterInventory();
     }
 
@@ -67,7 +68,7 @@ public abstract class CustomInventory implements InventoryHolder {
     }
 
     public boolean setCell(CICell cell){
-        if(cell.getSlot() < this.cells.size() && this.cells.get(cell.getSlot()) == null){
+        if(cell.getSlot() < this.cells.size()){
             this.cells.set(cell.getSlot(), cell);
             return true;
         }

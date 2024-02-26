@@ -12,9 +12,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class NpcManagementInventory extends CustomInventory implements CellCallBack {
     private final CustomNPCObj npc;
     public NpcManagementInventory(CustomNPCObj npc, Player player){
@@ -90,8 +87,6 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
             return;
         }
 
-        List<String> quests = new ArrayList<>();
-        this.getPlayer().closeInventory();
-        new QuestIsActiveSelectorInventory(this.npc.getNpcName(), this.getPlayer(), quests).showInventory();
+        this.npc.onNpcManagmentClickEvent(event);
     }
 }

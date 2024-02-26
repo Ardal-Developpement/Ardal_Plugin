@@ -4,6 +4,7 @@ package org.ardal;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public final class Ardal extends JavaPlugin {
         }
     }
 
-
+    @NotNull
     public <T extends ArdalManager> T getManager(Class<T> managerClass) {
         for (ArdalManager manager : this.ardalManagers) {
             if (managerClass.isInstance(manager)) {
@@ -57,8 +58,7 @@ public final class Ardal extends JavaPlugin {
             }
         }
 
-        this.getLogger().severe("Manager: " + managerClass.getName() + " is not registered.");
-        return null;
+        throw new RuntimeException("Manager: " + managerClass.getName() + " is not registered.");
     }
 
     public static Ardal getInstance(){

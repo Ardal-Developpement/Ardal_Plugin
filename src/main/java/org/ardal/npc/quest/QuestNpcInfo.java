@@ -5,10 +5,12 @@ import com.google.gson.JsonObject;
 public class QuestNpcInfo {
     private String questName;
     private int questCoef;
+    private boolean isShow;
 
-    public QuestNpcInfo(String questName, int questCoef){
+    public QuestNpcInfo(String questName, int questCoef, boolean isShow){
         this.questName = questName;
         this.questCoef = questCoef;
+        this.isShow = isShow;
     }
 
     public QuestNpcInfo(JsonObject obj){
@@ -38,5 +40,13 @@ public class QuestNpcInfo {
 
     public void setQuestCoef(int questCoef) {
         this.questCoef = questCoef;
+    }
+
+    public void setIsShow(boolean state) {
+        isShow = state;
+    }
+
+    public boolean getIsShow() {
+        return this.isShow;
     }
 }
