@@ -47,6 +47,16 @@ public interface PlayerInfo {
     boolean addPlayerActiveQuest(OfflinePlayer player, String questName);
 
     /**
+     * Add an finished quest for a player
+     *
+     * @param player to add the finished quest
+     * @param questName of the quest
+     * @return true in success to add finished quest
+     */
+    boolean addPlayerFinishedQuest(OfflinePlayer player, String questName);
+
+
+    /**
      * Remove an active quest for a player
      *
      * @param player to remove the active quest

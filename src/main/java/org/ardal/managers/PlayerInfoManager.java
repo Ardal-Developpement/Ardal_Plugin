@@ -110,14 +110,22 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
 
     @Override
     public boolean addPlayerActiveQuest(OfflinePlayer offlinePlayer, String questName) {
-        System.out.println("test7");
         if(offlinePlayer.getName() == null){
             return false;
         }
 
         PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        System.out.println("test8");
         return player != null && player.addActiveQuest(questName);
+    }
+
+    @Override
+    public boolean addPlayerFinishedQuest(OfflinePlayer offlinePlayer, String questName) {
+        if(offlinePlayer.getName() == null){
+            return false;
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        return player != null && player.addFinishedQuest(questName);
     }
 
     @Override

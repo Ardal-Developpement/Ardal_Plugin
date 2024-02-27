@@ -13,6 +13,7 @@ public class RemovePlayerInfoManager extends ArdalCmdNode implements ArdalCmd {
     public RemovePlayerInfoManager(){
         super(CMD_NAME);
         this.registerCmd(new RemoveActiveQuestCmd());
+        this.registerCmd(new RemoveFinishedQuestCmd());
     }
 
     @Override

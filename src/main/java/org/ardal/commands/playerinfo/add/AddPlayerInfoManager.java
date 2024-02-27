@@ -13,6 +13,7 @@ public class AddPlayerInfoManager extends ArdalCmdNode implements ArdalCmd {
     public AddPlayerInfoManager(){
         super(CMD_NAME);
         this.registerCmd(new AddActiveQuestCmd());
+        this.registerCmd(new AddFinishedQuestCmd());
     }
 
     @Override
