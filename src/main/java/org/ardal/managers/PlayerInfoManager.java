@@ -5,6 +5,7 @@ import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.players.PlayerInfo;
 import org.ardal.commands.BaseCmdAlias;
+import org.ardal.commands.playerinfo.add.AddPlayerInfoManager;
 import org.ardal.commands.playerinfo.get.GetPlayerInfoManager;
 import org.ardal.db.PlayerInfoDB;
 import org.ardal.objects.PlayerInfoObj;
@@ -27,6 +28,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
         super(BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
 
         this.registerCmd(new GetPlayerInfoManager());
+        this.registerCmd(new AddPlayerInfoManager());
 
         this.playerInfoDB = new PlayerInfoDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());

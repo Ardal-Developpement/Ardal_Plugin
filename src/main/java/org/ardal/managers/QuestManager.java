@@ -97,7 +97,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
             return false;
         }
 
-        if(this.questDB.getQuestAsJsonObject(questName) != null){
+        if(this.questExist(questName)){
             Ardal.writeToLogger("Overwriting the quest: " + questName + " .");
         }
 
@@ -107,7 +107,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     public boolean removeQuest(String questName) {
-        if(this.getQuestDB().getQuestAsJsonObject(questName) != null){
+        if(this.questExist(questName)){
             this.getQuestDB().getDb().remove(questName);
             this.getQuestDB().saveDB();
             return true;
@@ -187,4 +187,11 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
         return stateObj.getAsBoolean();
     }
+
+    @Override
+    public boolean questExist(String questName) {
+        return this.questDB.getQuestAsJsonObject(questName) != null;
+    }
+
+
 }

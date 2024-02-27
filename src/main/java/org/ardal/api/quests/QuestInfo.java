@@ -97,4 +97,12 @@ public interface QuestInfo {
      */
     @Nullable
     Boolean getQuestActivity(String questName);
+
+    /**
+     * Return if the quest exist
+     *
+     * @param questName of the quest
+     * @return true if the quest exist
+     */
+    boolean questExist(String questName);
 }
