@@ -60,7 +60,7 @@ public class AddFinishedQuestCmd implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return String.format("%s%s:%s add an finished quest to a player.",
+        return String.format("%s%s:%s add a finished quest to a player.",
                 ChatColor.GOLD,
                 getCmdName(),
                 ChatColor.WHITE);

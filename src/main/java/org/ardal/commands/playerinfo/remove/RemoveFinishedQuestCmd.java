@@ -69,7 +69,7 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return String.format("%s%s:%s remove an finished quest to a player.",
+        return String.format("%s%s:%s remove a finished quest to a player.",
                 ChatColor.GOLD,
                 getCmdName(),
                 ChatColor.WHITE);

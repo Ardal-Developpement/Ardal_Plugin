@@ -29,8 +29,17 @@ Base command: `/quest`.
 ### Player info command usage:
 Base command: `/ardal`.
 
+- `add`
+  - `activeQuest [player]`: add an active quest to the player.
+  - `finishedQuest [player]`: add a finished quest to the player.
 - `get`:
   - `adventureLevel [@Nullable player]`: get the adventure level of the player (or of itself).
+- `list`:
+  - `activeQuest [@Nullable player]`: get the list of active quest of the player.
+  - `finishedQuest [@Nullable player]`: get the list of finished quest of the player.
+- `remove`
+  - `activeQuest [player]`: remove an active quest to the player.
+  - `finishedQuest [player]`: remove a finished quest to the player.
 
 
 ### Npc command usage:
