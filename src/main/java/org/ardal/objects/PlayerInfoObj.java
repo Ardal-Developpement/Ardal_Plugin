@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.ardal.Ardal;
 import org.ardal.managers.PlayerInfoManager;
+import org.ardal.managers.QuestManager;
 import org.ardal.utils.JsonUtils;
 import org.bukkit.entity.Player;
 
@@ -109,18 +110,30 @@ public class PlayerInfoObj {
     }
 
     public boolean addFinishedQuest(String questName){
-        // TODO Check if the quest exist
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        if(!questManager.questExist(questName)){
+            return false;
+        }
 
         if(!this.finishedQuest.contains(questName)) {
             this.finishedQuest.add(questName);
         }
 
-        this.removeActiveQuest(questName);
+        if(!this.removeActiveQuest(questName)){
+            this.savePlayerInfo();
+            return false;
+        }
+
         return true;
     }
 
     public boolean removeActiveQuest(String questString){
-        return this.activeQuest.remove(questString);
+        if(this.activeQuest.remove(questString)){
+            this.savePlayerInfo();
+            return true;
+        }
+
+        return false;
     }
 
     public boolean removeFinishedQuest(String questString){
@@ -131,5 +144,4 @@ public class PlayerInfoObj {
 
         return false;
     }
-
 }
