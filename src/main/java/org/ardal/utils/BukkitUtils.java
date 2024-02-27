@@ -2,7 +2,9 @@ package org.ardal.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -48,5 +50,12 @@ public class BukkitUtils {
         }
 
         return null;
+    }
+
+    public static void removeEnchant(ItemStack item){
+        for(Enchantment e : item.getEnchantments().keySet())
+        {
+            item.removeEnchantment(e);
+        }
     }
 }
