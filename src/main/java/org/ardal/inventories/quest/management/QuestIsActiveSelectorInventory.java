@@ -65,7 +65,6 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
             if (book == null) {
                 continue;
             }
-                System.out.println();
             this.setCell(new CICell(book,
                 slot,
                 null,

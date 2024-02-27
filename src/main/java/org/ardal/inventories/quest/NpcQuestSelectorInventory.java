@@ -92,7 +92,6 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
 
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        System.out.println("test5");
         playerInfoManager.addPlayerActiveQuest(player, questName);
 
         player.sendMessage("You select a new quest: " + questName + "\nGood luck!");

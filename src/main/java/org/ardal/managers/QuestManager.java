@@ -71,6 +71,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         return questDB;
     }
 
+    @Nullable
     public QuestObj getQuestObj(String questName){
         try {
             return this.getQuestDB().getQuestAsQuestObj(questName);
