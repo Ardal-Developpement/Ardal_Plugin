@@ -70,9 +70,9 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
             this.setCell(new CICell(book,
                 slot,
                 null,
-                null,
                 this,
-                null
+                this,
+                this
             ));
             slot++;
         }
@@ -150,15 +150,18 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
             meta.removeEnchant(Enchantment.ARROW_INFINITE);
         }
 
-
-
         List<String> lore = meta.getLore();
         if (lore == null) {
             lore = new ArrayList<>();
         }
 
+        if(!lore.isEmpty() && lore.get(0).contains(ChatColor.RED + "Coef: ")){
+            lore.remove(0);
+        }
+
         lore.add(0, ChatColor.RED + "Coef: " + questNpcInfo.getQuestCoef());
         meta.setLore(lore);
+
 
         book.setItemMeta(meta);
     }
@@ -180,6 +183,35 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
 
     @Override
     public void onClick(InventoryClickEvent event) {
+        if(event.isShiftClick()){
+
+            if(event.isLeftClick()){
+
+                coefHandler(event, true);
+            } else {
+                coefHandler(event, false);
+            }
+        } else if (event.isLeftClick()){
+            isActiveHandler(event);
+        }
+    }
+
+    private void coefHandler(InventoryClickEvent event, boolean up) {
+        ItemStack book = event.getCurrentItem();
+        if(book == null) { return; }
+        String questName = book.getItemMeta().getDisplayName();
+        QuestNpcInfo questNpcInfo = this.questNpc.getQuestNpcByName(questName);
+
+        if(up){
+            questNpcInfo.setQuestCoef(questNpcInfo.getQuestCoef() + 1);
+        } else if(questNpcInfo.getQuestCoef() > 1) {
+            questNpcInfo.setQuestCoef(questNpcInfo.getQuestCoef() - 1);
+        }
+
+        this.refreshBookMeta(book);
+    }
+
+    private void isActiveHandler(InventoryClickEvent event) {
         ItemStack item = event.getCurrentItem();
         if(item == null) { return; }
 
