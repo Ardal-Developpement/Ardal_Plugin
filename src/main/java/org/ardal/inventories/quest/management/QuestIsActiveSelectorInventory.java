@@ -8,6 +8,7 @@ import org.ardal.managers.QuestManager;
 import org.ardal.npc.quest.QuestNpc;
 import org.ardal.npc.quest.QuestNpcInfo;
 import org.ardal.objects.QuestObj;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestIsActiveSelectorInventory extends CustomInventory implements CellCallBack {
@@ -148,8 +150,15 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
             meta.removeEnchant(Enchantment.ARROW_INFINITE);
         }
 
-        //if(meta.getLore() == null) { meta.setLore(new ArrayList<>()); }
-        //meta.getLore().add(0, Color.RED + "Coef: " + questNpcInfo.getQuestCoef());
+
+
+        List<String> lore = meta.getLore();
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+
+        lore.add(0, ChatColor.RED + "Coef: " + questNpcInfo.getQuestCoef());
+        meta.setLore(lore);
 
         book.setItemMeta(meta);
     }
