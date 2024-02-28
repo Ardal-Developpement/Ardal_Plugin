@@ -33,7 +33,7 @@ public class CustomItemManager implements CustomItem, ArdalManager {
 
     @Override
     public ItemStack getItemByStrId(String id) {
-        return this.customItemDB.getItem(id);
+        return this.customItemDB.getItem(id).clone();
     }
 
     @Override

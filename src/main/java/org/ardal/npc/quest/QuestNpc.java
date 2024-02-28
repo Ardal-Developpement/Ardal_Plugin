@@ -92,6 +92,16 @@ public class QuestNpc extends CustomNPCObj {
 
     @Override
     public void onNPCInteract(PlayerInteractEntityEvent event) {
+        if(!hasOneQuestShowed()){
+            event.getPlayer().sendMessage("<"
+                    + this.getNpcName()
+                    + "> Hi "
+                    + event.getPlayer().getDisplayName()
+                    + ", I'm not working today, come back later."
+            );
+            return;
+        }
+
         NpcQuestSelectorInventory npcInvsee = new NpcQuestSelectorInventory(this, event.getPlayer(), 9);
         if(!npcInvsee.canGetNpcQuest()){
             event.getPlayer().sendMessage("<" + this.getNpcName() + "> I can't give you another quest until you finish the previous one.");
@@ -130,4 +140,14 @@ public class QuestNpc extends CustomNPCObj {
 
         return allQuest;
     }
+
+    private boolean hasOneQuestShowed() {
+        for(QuestNpcInfo npcInfo : this.questInfoList){
+            if(npcInfo.getIsShow()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

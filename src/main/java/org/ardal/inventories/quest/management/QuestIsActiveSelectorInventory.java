@@ -142,9 +142,10 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
         QuestNpcInfo questNpcInfo = this.questNpc.getQuestNpcByName(meta.getDisplayName());
 
         if(questNpcInfo.getIsShow()){
-            meta.removeEnchant(Enchantment.ARROW_INFINITE);
-        } else {
             meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+
+        } else {
+            meta.removeEnchant(Enchantment.ARROW_INFINITE);
         }
 
         //if(meta.getLore() == null) { meta.setLore(new ArrayList<>()); }
