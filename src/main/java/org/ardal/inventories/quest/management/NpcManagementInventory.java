@@ -82,7 +82,6 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
     @Override
     public void onClick(InventoryClickEvent event) {
         ItemStack item = event.getCurrentItem();
-
         if(item == null || !item.isSimilar(this.getAdvancedPropertiesItem())){
             return;
         }

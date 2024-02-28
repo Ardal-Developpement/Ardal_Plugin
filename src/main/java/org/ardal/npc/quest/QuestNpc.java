@@ -105,6 +105,7 @@ public class QuestNpc extends CustomNPCObj {
         NpcQuestSelectorInventory npcInvsee = new NpcQuestSelectorInventory(this, event.getPlayer(), 9);
         if(!npcInvsee.canGetNpcQuest()){
             event.getPlayer().sendMessage("<" + this.getNpcName() + "> I can't give you another quest until you finish the previous one.");
+            npcInvsee.unregisterInventory();
             return;
         }
 

@@ -89,7 +89,7 @@ public class QuestIsActiveSelectorInventory extends CustomInventory implements C
         if(questObj == null || !questObj.getIsActive()) { return null; }
 
         ItemStack book = questObj.getBook();
-        this.refreshBookMeta(questObj.getBook());
+        this.refreshBookMeta(book);
 
         return book;
     }
