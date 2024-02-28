@@ -97,11 +97,19 @@ public abstract class ArdalCmdNode {
         stringBuilder.append(this.getHelpSection(this.baseCmdAlias, true));
 
         for(int i = 0; i < cmds.size() - 1; i++){
-            stringBuilder.append(cmds.get(i).getHelp()).append("\n");
+            stringBuilder.append(this.getAppropriateHelp(cmds.get(i))).append("\n");
         }
 
-        stringBuilder.append(cmds.get(cmds.size() - 1).getHelp());
+        stringBuilder.append(this.getAppropriateHelp(cmds.get(cmds.size() - 1)));
         return stringBuilder.toString();
+    }
+
+    private String getAppropriateHelp(ArdalCmd cmd){
+        if(cmd instanceof ArdalCmdNode){
+            return ChatColor.GOLD + cmd.getCmdName();
+        }
+
+        return cmd.getHelp();
     }
 
     public ArdalCmd findCmdByName(String cmdName){
