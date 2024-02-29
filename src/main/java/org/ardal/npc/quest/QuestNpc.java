@@ -134,10 +134,22 @@ public class QuestNpc extends CustomNPCObj {
 
             PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
             playerInfoManager.addPlayerFinishedQuest(event.getPlayer(), questName);
+
+            this.giveRewardItemToPlayer(questName, event.getPlayer());
+
             return true;
         }
 
         return false;
+    }
+
+    private void giveRewardItemToPlayer(String questName, Player player) {
+        player.sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), "%s Here's your reward for this quest."));
+
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        for (ItemStack item : questManager.getItemQuestReward(questName)){
+            PlayerUtils.giveItemStackToPlayer(item, player);
+        }
     }
 
     @Override
@@ -176,6 +188,7 @@ public class QuestNpc extends CustomNPCObj {
                 return true;
             }
         }
+
         return false;
     }
 }
