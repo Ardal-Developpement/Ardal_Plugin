@@ -97,4 +97,5 @@ public class CICell {
     public int getSlot() {
         return this.slot;
     }
+
 }

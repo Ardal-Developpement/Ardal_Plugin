@@ -18,14 +18,14 @@ public class AddQuest implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item = player.getInventory().getItemInMainHand().clone();
 
         if(!(item.getType() == Material.WRITABLE_BOOK || item.getType() == Material.WRITTEN_BOOK)){
             player.sendMessage("Please take a written book in your main hand.");
             return true;
         }
 
-        new QuestObj(item, new ArrayList<>(), new ArrayList<>(), false).save();
+        new QuestObj(item, new ArrayList<>(), new ArrayList<>(), true).save();
         player.sendMessage("Success to add quest.");
         return true;
     }

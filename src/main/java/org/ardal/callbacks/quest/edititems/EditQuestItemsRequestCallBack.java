@@ -1,4 +1,4 @@
-package org.ardal.callbacks.quest;
+package org.ardal.callbacks.quest.edititems;
 
 import org.ardal.api.inventories.callback.CICallBack;
 import org.ardal.api.inventories.CustomInventory;

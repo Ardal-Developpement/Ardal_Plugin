@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import java.util.UUID;
@@ -54,6 +55,8 @@ public abstract class CustomNPCObj {
 
         this.registerNpc();
     }
+
+    public abstract void onNpcManagmentClickEvent(InventoryClickEvent event);
 
     public JsonObject toJson(){
         JsonObject npcObj = new JsonObject();

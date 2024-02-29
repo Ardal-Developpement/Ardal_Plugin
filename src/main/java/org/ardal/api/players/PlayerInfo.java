@@ -3,7 +3,6 @@ package org.ardal.api.players;
 import org.bukkit.OfflinePlayer;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface PlayerInfo {
     /**
@@ -26,43 +25,58 @@ public interface PlayerInfo {
      * Get the player's active quests
      *
      * @param player to get active quests
-     * @return list of UUID quests
+     * @return list of quest names
      */
-    List<UUID> getPlayerActiveQuests(OfflinePlayer player);
+    List<String> getPlayerActiveQuests(OfflinePlayer player);
 
     /**
      * Get the player's finished quests
      *
      * @param player to get finished quests
-     * @return list of UUID quests
+     * @return list of quest names
      */
-    List<UUID> getPlayerFinishedQuests(OfflinePlayer player);
+    List<String> getPlayerFinishedQuests(OfflinePlayer player);
 
     /**
      * Add an active quest for a player
      *
      * @param player to add the active quest
+     * @param questName of the quest
      * @return true in success to add active quest
      */
-    boolean addPlayerActiveQuest(OfflinePlayer player, UUID questUUID);
+    boolean addPlayerActiveQuest(OfflinePlayer player, String questName);
+
+    /**
+     * Add an finished quest for a player
+     *
+     * @param player to add the finished quest
+     * @param questName of the quest
+     * @return true in success to add finished quest
+     */
+    boolean addPlayerFinishedQuest(OfflinePlayer player, String questName);
+
 
     /**
      * Remove an active quest for a player
      *
      * @param player to remove the active quest
+     * @param questName of the quest
      * @return true in success to remove active quest
      */
-    boolean removePlayerActiveQuest(OfflinePlayer player, UUID questUUID);
+    boolean removePlayerActiveQuest(OfflinePlayer player, String questName);
 
     /**
      * Remove a finished quest for a player
      *
      * @param player to remove the finished quest
+     * @param questName of the quest
      * @return true in success to remove finished quest
      */
-    boolean removePlayerFinishedQuest(OfflinePlayer player, UUID questUUID);
+    boolean removePlayerFinishedQuest(OfflinePlayer player, String questName);
 
     /**
+     * Get if a player info is saved
+     *
      * @param player to check
      * @return true in player register in the db, else false
      */

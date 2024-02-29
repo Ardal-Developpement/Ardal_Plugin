@@ -17,6 +17,15 @@ public interface ArdalCmd {
       */
      boolean execute(CommandSender sender, Command command, String s, List<String> argv);
 
+     /**
+      * Get the auto completions of a command
+      *
+      * @param sender that send the command
+      * @param command object
+      * @param s command alias
+      * @param argv command arguments
+      * @return list of completions
+      */
      List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv);
 
      /**
@@ -26,5 +35,10 @@ public interface ArdalCmd {
       */
      String getHelp();
 
+     /**
+      * Get the command name
+      *
+      * @return the command name
+      */
      String getCmdName();
 }

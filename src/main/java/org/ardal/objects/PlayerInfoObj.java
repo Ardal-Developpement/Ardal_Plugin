@@ -2,40 +2,52 @@ package org.ardal.objects;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.ardal.Ardal;
+import org.ardal.managers.PlayerInfoManager;
+import org.ardal.managers.QuestManager;
+import org.ardal.utils.JsonUtils;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 public class PlayerInfoObj {
     private final String playerName;
     private final String playerUUID;
     private long adventureLevel;
-    private List<UUID> activeQuest;
-    private List<UUID> finishedQuest;
+    private List<String> activeQuest;
+    private List<String> finishedQuest;
 
     public PlayerInfoObj(Player player){
         this.playerName = player.getName();
         this.playerUUID = player.getUniqueId().toString();
+        this.activeQuest = new ArrayList<>();
+        this.finishedQuest = new ArrayList<>();
         this.adventureLevel = 0;
     }
 
     public PlayerInfoObj(JsonObject playerInfoObj){
-        JsonElement playerNameObj = playerInfoObj.get("playerName");
-        JsonElement playerUUIDObj = playerInfoObj.get("playerUUID");
-        JsonElement adventureLevelObj = playerInfoObj.get("adventureLevel");
+        JsonElement playerNameElem = playerInfoObj.get("playerName");
+        JsonElement playerUUIDElem = playerInfoObj.get("playerUUID");
+        JsonElement adventureLevelElem = playerInfoObj.get("adventureLevel");
+        JsonElement activeQuestElem = playerInfoObj.get("activeQuests");
+        JsonElement finishedQuestElem = playerInfoObj.get("finishedQuests");
 
-        if(playerNameObj == null
-            || playerUUIDObj == null
-            || adventureLevelObj == null)
+        if(playerNameElem == null
+            || playerUUIDElem == null
+            || adventureLevelElem == null
+            || activeQuestElem == null
+            || finishedQuestElem == null)
         {
            throw new IllegalArgumentException("Invalid player info object.");
         }
 
-        this.playerName = playerNameObj.getAsString();
-        this.playerUUID = playerUUIDObj.getAsString();
-        this.adventureLevel = adventureLevelObj.getAsLong();
+        this.playerName = playerNameElem.getAsString();
+        this.playerUUID = playerUUIDElem.getAsString();
+        this.adventureLevel = adventureLevelElem.getAsLong();
+        this.activeQuest = JsonUtils.jsonArrayToStrList(activeQuestElem);
+        this.finishedQuest = JsonUtils.jsonArrayToStrList(finishedQuestElem);
     }
 
     public JsonObject toJson(){
@@ -43,8 +55,16 @@ public class PlayerInfoObj {
         playerInfoObj.addProperty("playerName", this.playerName);
         playerInfoObj.addProperty("playerUUID", this.playerUUID);
         playerInfoObj.addProperty("adventureLevel", this.adventureLevel);
+        playerInfoObj.add("activeQuests", JsonUtils.jsonArrayFromStrList(this.activeQuest));
+        playerInfoObj.add("finishedQuests", JsonUtils.jsonArrayFromStrList(this.finishedQuest));
 
         return playerInfoObj;
+    }
+
+    public void savePlayerInfo(){
+        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
+        playerInfoManager.getPlayerInfoDB().getDb().add(this.playerUUID, this.toJson());
+        playerInfoManager.getPlayerInfoDB().saveDB();
     }
 
     public String getPlayerUUID() {
@@ -59,11 +79,11 @@ public class PlayerInfoObj {
         return playerName;
     }
 
-    public List<UUID> getActiveQuest() {
+    public List<String> getActiveQuest() {
         return activeQuest;
     }
 
-    public List<UUID> getFinishedQuest() {
+    public List<String> getFinishedQuest() {
         return finishedQuest;
     }
 
@@ -75,34 +95,53 @@ public class PlayerInfoObj {
         }
     }
 
-    public boolean addActiveQuest(UUID questUUID){
+    public boolean addActiveQuest(String questName){
         // TODO Check if the quest exist
-
-        if(!this.activeQuest.contains(questUUID)) {
-            this.activeQuest.add(questUUID);
+        if(!this.activeQuest.contains(questName)) {
+            this.activeQuest.add(questName);
         }
 
-        this.removeFinishedQuest(questUUID);
+        if(!this.removeFinishedQuest(questName)){
+            this.savePlayerInfo();
+            return false;
+        }
+
         return true;
     }
 
-    public boolean addFinishedQuest(UUID questUUID){
-        // TODO Check if the quest exist
-
-        if(!this.finishedQuest.contains(questUUID)) {
-            this.finishedQuest.add(questUUID);
+    public boolean addFinishedQuest(String questName){
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        if(!questManager.questExist(questName)){
+            return false;
         }
 
-        this.removeActiveQuest(questUUID);
+        if(!this.finishedQuest.contains(questName)) {
+            this.finishedQuest.add(questName);
+        }
+
+        if(!this.removeActiveQuest(questName)){
+            this.savePlayerInfo();
+            return false;
+        }
+
         return true;
     }
 
-    public boolean removeActiveQuest(UUID questUUID){
-        return this.activeQuest.remove(questUUID);
+    public boolean removeActiveQuest(String questString){
+        if(this.activeQuest.remove(questString)){
+            this.savePlayerInfo();
+            return true;
+        }
+
+        return false;
     }
 
-    public boolean removeFinishedQuest(UUID questUUID){
-        return this.finishedQuest.remove(questUUID);
-    }
+    public boolean removeFinishedQuest(String questString){
+        if(this.finishedQuest.remove(questString)){
+            this.savePlayerInfo();
+            return true;
+        }
 
+        return false;
+    }
 }

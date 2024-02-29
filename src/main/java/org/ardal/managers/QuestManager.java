@@ -1,5 +1,7 @@
 package org.ardal.managers;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.MalformedJsonException;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmdManager;
@@ -20,6 +22,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,10 +71,12 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         return questDB;
     }
 
+    @Nullable
     public QuestObj getQuestObj(String questName){
         try {
             return this.getQuestDB().getQuestAsQuestObj(questName);
         } catch (MalformedJsonException e) {
+            Ardal.getInstance().getLogger().severe("Malformed json quest db.");
             return null;
         }
     }
@@ -92,7 +98,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
             return false;
         }
 
-        if(this.questDB.getQuestAsJsonObject(questName) != null){
+        if(this.questExist(questName)){
             Ardal.writeToLogger("Overwriting the quest: " + questName + " .");
         }
 
@@ -102,7 +108,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     public boolean removeQuest(String questName) {
-        if(this.getQuestDB().getQuestAsJsonObject(questName) != null){
+        if(this.questExist(questName)){
             this.getQuestDB().getDb().remove(questName);
             this.getQuestDB().saveDB();
             return true;
@@ -148,6 +154,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Override
+    @NotNull
     public List<String> getAllQuestNames() {
         List<QuestObj> questObjs = this.getAllQuestObj();
         List<String> questNames = new ArrayList<>();
@@ -158,4 +165,34 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
         return questNames;
     }
+
+    @Override
+    @Nullable
+    public Boolean setQuestActivity(String questName, boolean state) {
+        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
+        if(questName == null) { return null; }
+
+        questObj.addProperty("isActive", state);
+        this.questDB.saveDB();
+        return true;
+    }
+
+    @Override
+    @Nullable
+    public Boolean getQuestActivity(String questName) {
+        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
+        if(questName == null) { return null; }
+
+        JsonElement stateObj = questObj.get("isActive");
+        if(stateObj == null) { return false; }
+
+        return stateObj.getAsBoolean();
+    }
+
+    @Override
+    public boolean questExist(String questName) {
+        return this.questDB.getQuestAsJsonObject(questName) != null;
+    }
+
+
 }

@@ -1,13 +1,14 @@
 package org.ardal.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class BukkitUtils {
     public static List<OfflinePlayer> getOfflinePlayersAsList(){
@@ -28,6 +29,7 @@ public class BukkitUtils {
         return offlinePlayersNames;
     }
 
+    @Nullable
     public static OfflinePlayer getOfflinePlayerFromName(String playerName){
         List<String> offlinePlayersNames = BukkitUtils.getOfflinePlayerNamesAsList();
         int playerIndex = offlinePlayersNames.indexOf(playerName);
@@ -48,5 +50,49 @@ public class BukkitUtils {
         }
 
         return null;
+    }
+
+    public static void removeEnchant(ItemStack item){
+        for(Enchantment e : item.getEnchantments().keySet())
+        {
+            item.removeEnchantment(e);
+        }
+    }
+
+    private static Map<ItemStack, Integer> getItemOccurrences(List<ItemStack> items){
+        Map<ItemStack, Integer> map = new HashMap<>();
+
+        for(ItemStack item : items){
+            if(item == null || item.getType().equals(Material.AIR)) { continue; }
+
+            ItemStack tmpItem = item.clone();
+            tmpItem.setAmount(1);
+
+            map.put(tmpItem, map.getOrDefault(tmpItem, 0) + item.getAmount());
+        }
+
+        return map;
+    }
+
+    /**
+     * @return if l1 contain l2
+     */
+    public static boolean itemListContainItems(List<ItemStack> l1, List<ItemStack> l2){
+        Map<ItemStack, Integer> m1 = getItemOccurrences(l1);
+        Map<ItemStack, Integer> m2 = getItemOccurrences(l2);
+
+        if (m1.size() < m2.size()) {
+            return false;
+        }
+
+        for (Map.Entry<ItemStack, Integer> entry : m2.entrySet()) {
+            ItemStack key = entry.getKey();
+            Integer value = entry.getValue();
+            if (!m1.containsKey(key) || m1.get(key) < value) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

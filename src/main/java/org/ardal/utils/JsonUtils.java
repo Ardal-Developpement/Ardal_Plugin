@@ -70,4 +70,13 @@ public class JsonUtils {
     public static List<String> jsonArrayToStrList(JsonElement elem){
         return jsonArrayToStrList(elem.getAsJsonArray());
     }
+
+    public static JsonArray jsonArrayFromStrList(List<String> list){
+        JsonArray jsonArray = new JsonArray();
+        for(String listObj : list){
+            jsonArray.add(listObj);
+        }
+
+        return jsonArray;
+    }
 }

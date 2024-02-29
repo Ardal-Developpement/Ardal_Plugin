@@ -24,13 +24,17 @@ public class CustomInventoryManager implements ArdalManager, Listener {
 
 
     public void registerInvsee(CustomInventory invsee){
+
         if(!this.registeredInvsee.contains(invsee)){
             this.registeredInvsee.add(invsee);
+            //System.out.println("register inventory: " + this.registeredInvsee);
+
         }
     }
 
     public void unregisterInvsee(CustomInventory invsee){
         this.registeredInvsee.remove(invsee);
+        //System.out.println("Unregister inventory: " + this.registeredInvsee);
     }
 
     @EventHandler

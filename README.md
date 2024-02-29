@@ -9,8 +9,8 @@ Base command: `/quest`.
 
 - `add`: add a new quest (with quest book in main hand).
 - `edit`:
-  - `itemsRequest [quest name]`: edit the items request by the quest.
-  - `itemsReward [quest name]`: edit the items reward by the quest.
+  - `itemsRequest [quest name]`: edit items request by the quest.
+  - `itemsReward [quest name]`: edit items reward by the quest.
   - `questBook`: edit the quest book of the quest. (NB: the book must have the same names of the quest!)
 - `give`:
   - `itemsRequest [player] [quest name]`: give to the player the items request by the quest.
@@ -29,8 +29,17 @@ Base command: `/quest`.
 ### Player info command usage:
 Base command: `/ardal`.
 
+- `add`
+  - `activeQuest [player]`: add an active quest to the player.
+  - `finishedQuest [player]`: add a finished quest to the player.
 - `get`:
   - `adventureLevel [@Nullable player]`: get the adventure level of the player (or of itself).
+- `list`:
+  - `activeQuest [@Nullable player]`: get the list of active quest of the player.
+  - `finishedQuest [@Nullable player]`: get the list of finished quest of the player.
+- `remove`
+  - `activeQuest [player]`: remove an active quest to the player.
+  - `finishedQuest [player]`: remove a finished quest to the player.
 
 
 ### Npc command usage:

@@ -2,6 +2,7 @@ package org.ardal.api.quests;
 
 import org.ardal.objects.QuestObj;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface QuestInfo {
     boolean removeQuest(String questName);
 
     /**
-     * Get the quest book from the quest db
+     * Get quest book from the quest db
      *
      * @param questName of the quest to get
      * @return quest book
@@ -33,7 +34,7 @@ public interface QuestInfo {
     ItemStack getQuestBook(String questName);
 
     /**
-     * Get the items request by the quest
+     * Get items reward by the quest
      *
      * @param questName of the quest
      * @return items quest request
@@ -41,18 +42,67 @@ public interface QuestInfo {
     List<ItemStack> getItemsQuestRequest(String questName);
 
     /**
-     * Get the items reward by the quest
+     * Get items reward by the quest
      *
      * @param questName of the quest
      * @return items quest reward
      */
     List<ItemStack> getItemQuestReward(String questName);
 
+    /**
+     * Get item ids request by the quest
+     *
+     * @param questName of the quest
+     * @return list of item ids
+     */
     List<String> getItemsQuestRequestId(String questName);
 
+    /**
+     * Get item ids reward by the quest
+     *
+     * @param questName of the quest
+     * @return list of item ids
+     */
     List<String> getItemQuestRewardId(String questName);
 
+    /**
+     * Get all quest saved (sorted by names)
+     *
+     * @return list of quest objs
+     */
     List<QuestObj> getAllQuestObj();
 
+    /**
+     * Get all quest names (sorted by names)
+     *
+     * @return list of quest names
+     */
     List<String> getAllQuestNames();
+
+    /**
+     * Set the quest activity
+     *
+     * @param questName of the quest
+     * @param state to set
+     * @return true on success
+     */
+    @Nullable
+    Boolean setQuestActivity(String questName, boolean state);
+
+    /**
+     * Get the quest activity
+     *
+     * @param questName of the quest
+     * @return true on success
+     */
+    @Nullable
+    Boolean getQuestActivity(String questName);
+
+    /**
+     * Return if the quest exist
+     *
+     * @param questName of the quest
+     * @return true if the quest exist
+     */
+    boolean questExist(String questName);
 }

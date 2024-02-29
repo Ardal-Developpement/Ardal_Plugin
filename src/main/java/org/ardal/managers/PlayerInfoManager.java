@@ -5,7 +5,10 @@ import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.players.PlayerInfo;
 import org.ardal.commands.BaseCmdAlias;
+import org.ardal.commands.playerinfo.add.AddPlayerInfoManager;
 import org.ardal.commands.playerinfo.get.GetPlayerInfoManager;
+import org.ardal.commands.playerinfo.list.ListPlayerInfoManager;
+import org.ardal.commands.playerinfo.remove.RemovePlayerInfoManager;
 import org.ardal.db.PlayerInfoDB;
 import org.ardal.objects.PlayerInfoObj;
 import org.ardal.utils.StringUtils;
@@ -19,7 +22,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager, Listener {
     private final PlayerInfoDB playerInfoDB;
@@ -28,9 +30,16 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
         super(BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
 
         this.registerCmd(new GetPlayerInfoManager());
+        this.registerCmd(new AddPlayerInfoManager());
+        this.registerCmd(new RemovePlayerInfoManager());
+        this.registerCmd(new ListPlayerInfoManager());
 
         this.playerInfoDB = new PlayerInfoDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
+    }
+
+    public PlayerInfoDB getPlayerInfoDB() {
+        return playerInfoDB;
     }
 
     @Override
@@ -82,7 +91,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     }
 
     @Override
-    public List<UUID> getPlayerActiveQuests(OfflinePlayer offlinePlayer) {
+    public List<String> getPlayerActiveQuests(OfflinePlayer offlinePlayer) {
         if(offlinePlayer.getName() == null){
             return new ArrayList<>();
         }
@@ -92,7 +101,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     }
 
     @Override
-    public List<UUID> getPlayerFinishedQuests(OfflinePlayer offlinePlayer) {
+    public List<String> getPlayerFinishedQuests(OfflinePlayer offlinePlayer) {
         if(offlinePlayer.getName() == null){
             return new ArrayList<>();
         }
@@ -102,33 +111,43 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     }
 
     @Override
-    public boolean addPlayerActiveQuest(OfflinePlayer offlinePlayer, UUID uuid) {
+    public boolean addPlayerActiveQuest(OfflinePlayer offlinePlayer, String questName) {
         if(offlinePlayer.getName() == null){
             return false;
         }
 
         PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null && player.addActiveQuest(uuid);
+        return player != null && player.addActiveQuest(questName);
     }
 
     @Override
-    public boolean removePlayerActiveQuest(OfflinePlayer offlinePlayer, UUID uuid) {
+    public boolean addPlayerFinishedQuest(OfflinePlayer offlinePlayer, String questName) {
         if(offlinePlayer.getName() == null){
             return false;
         }
 
         PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null && player.removeActiveQuest(uuid);
+        return player != null && player.addFinishedQuest(questName);
     }
 
     @Override
-    public boolean removePlayerFinishedQuest(OfflinePlayer offlinePlayer, UUID uuid) {
+    public boolean removePlayerActiveQuest(OfflinePlayer offlinePlayer, String questName) {
         if(offlinePlayer.getName() == null){
             return false;
         }
 
         PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null && player.removeFinishedQuest(uuid);
+        return player != null && player.removeActiveQuest(questName);
+    }
+
+    @Override
+    public boolean removePlayerFinishedQuest(OfflinePlayer offlinePlayer, String questName) {
+        if(offlinePlayer.getName() == null){
+            return false;
+        }
+
+        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
+        return player != null && player.removeFinishedQuest(questName);
     }
 
     @Override

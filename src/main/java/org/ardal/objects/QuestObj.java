@@ -7,6 +7,7 @@ import com.google.gson.stream.MalformedJsonException;
 import org.ardal.Ardal;
 import org.ardal.managers.CustomItemManager;
 import org.ardal.managers.QuestManager;
+import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.JsonUtils;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,6 +25,8 @@ public class QuestObj implements Comparable<QuestObj> {
         this.isActive = isActive;
         this.itemsRequestId = new ArrayList<>();
         this.itemsRewardId = new ArrayList<>();
+
+        BukkitUtils.removeEnchant(book);
 
         this.setBook(book);
         this.setItemsRequest(itemsRequest);
@@ -109,6 +112,10 @@ public class QuestObj implements Comparable<QuestObj> {
     public List<ItemStack> getItemsReward() {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
         return customItemManager.getItemsByStrId(this.itemsRewardId);
+    }
+
+    public boolean getIsActive() {
+        return this.isActive;
     }
 
     public List<String> getItemsRequestId() {

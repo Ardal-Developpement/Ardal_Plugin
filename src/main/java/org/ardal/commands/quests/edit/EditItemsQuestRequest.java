@@ -2,7 +2,7 @@ package org.ardal.commands.quests.edit;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
-import org.ardal.callbacks.quest.EditQuestItemsRequestCallBack;
+import org.ardal.callbacks.quest.edititems.EditQuestItemsRequestCallBack;
 import org.ardal.inventories.CIDropBox;
 import org.ardal.managers.QuestManager;
 import org.ardal.objects.QuestObj;
