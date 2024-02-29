@@ -7,6 +7,7 @@ import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
 import org.ardal.npc.quest.QuestNpc;
+import org.ardal.utils.ChatUtils;
 import org.ardal.utils.PlayerUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -51,19 +52,19 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
     }
 
     /**
-     * @return true if player don't have an active quest that the npc have
+     * @return questName if player don't have an active quest that the npc have
      */
-    public boolean canGetNpcQuest(){
+    public String playerHasNpcActiveQuest(){
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
         List<String> playerQuestList = playerInfoManager.getPlayerActiveQuests(this.getPlayer());
 
         for(String questName : this.questNpc.getNpcActiveQuest()){
             if(playerQuestList.contains(questName)){
-                return false;
+                return questName;
             }
         }
 
-        return true;
+        return null;
     }
 
     private List<String> getRandomQuest(){
@@ -94,7 +95,8 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         playerInfoManager.addPlayerActiveQuest(player, questName);
 
-        player.sendMessage("You select a new quest: " + questName + "\nGood luck!");
+        String msg = "You select a new quest: " + questName + "\nGood luck!";
+        player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(), msg));
         PlayerUtils.giveItemStackToPlayer(questManager.getQuestBook(questName), player);
 
         this.unregisterInventory();

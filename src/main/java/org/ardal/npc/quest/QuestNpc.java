@@ -8,16 +8,22 @@ import org.ardal.api.npc.CustomNpcType;
 import org.ardal.inventories.quest.NpcQuestSelectorInventory;
 import org.ardal.inventories.quest.management.QuestIsActiveSelectorInventory;
 import org.ardal.managers.CustomNPCManager;
+import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
 import org.ardal.objects.CustomNPCObj;
 import org.ardal.objects.QuestObj;
+import org.ardal.utils.BukkitUtils;
+import org.ardal.utils.ChatUtils;
+import org.ardal.utils.PlayerUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,7 +63,7 @@ public class QuestNpc extends CustomNPCObj {
             }
         }
 
-        QuestNpcInfo questNpcInfo = new QuestNpcInfo(questObj.getQuestName(), 1, true);
+        QuestNpcInfo questNpcInfo = new QuestNpcInfo(questObj.getQuestName(), 1, false);
         this.questInfoList.add(questNpcInfo);
         return questNpcInfo;
     }
@@ -93,23 +99,45 @@ public class QuestNpc extends CustomNPCObj {
     @Override
     public void onNPCInteract(PlayerInteractEntityEvent event) {
         if(!hasOneQuestShowed()){
-            event.getPlayer().sendMessage("<"
-                    + this.getNpcName()
-                    + "> Hi "
-                    + event.getPlayer().getDisplayName()
-                    + ", I'm not working today, come back later."
-            );
+            String msg = String.format("Hi %s, I'm not working today, come back later.", event.getPlayer().getDisplayName());
+            event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), msg));
             return;
         }
 
         NpcQuestSelectorInventory npcInvsee = new NpcQuestSelectorInventory(this, event.getPlayer(), 9);
-        if(!npcInvsee.canGetNpcQuest()){
-            event.getPlayer().sendMessage("<" + this.getNpcName() + "> I can't give you another quest until you finish the previous one.");
+        String questName = npcInvsee.playerHasNpcActiveQuest();
+        if(questName != null){
+
+            //try to request item
+            if(this.isPlayerValidQuest(event, questName)){
+                String msg = "Well done!\nYou successfully complete the quest: " + questName + "\nGood job!";
+                event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), msg));
+            } else {
+                String msg = "You're missing some quest items, come back to me when you've got them all.";
+                event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), msg));
+            }
+
             npcInvsee.unregisterInventory();
             return;
         }
 
         npcInvsee.showInventory();
+    }
+
+    private boolean isPlayerValidQuest(PlayerInteractEntityEvent event, String questName){
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        List<ItemStack> itemsRequest = questManager.getItemsQuestRequest(questName);
+        if(BukkitUtils.itemListContainItems(
+                Arrays.asList(event.getPlayer().getInventory().getContents()), itemsRequest))
+        {
+            PlayerUtils.removeItemsToPlayer(itemsRequest, event.getPlayer());
+
+            PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
+            playerInfoManager.addPlayerFinishedQuest(event.getPlayer(), questName);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -150,5 +178,4 @@ public class QuestNpc extends CustomNPCObj {
         }
         return false;
     }
-
 }
