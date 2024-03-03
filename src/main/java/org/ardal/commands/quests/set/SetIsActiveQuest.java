@@ -41,7 +41,8 @@ public class SetIsActiveQuest implements ArdalCmd {
             return TabCompleteUtils.getTabCompleteForBool(argv.get(0));
         }
 
-        return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv.subList(1, argv.size()));
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(), argv.subList(1, argv.size()));
     }
 
     public String getHelp() {

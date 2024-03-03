@@ -124,7 +124,7 @@ public class QuestObj implements Comparable<QuestObj> {
         return this.isActive;
     }
 
-    public boolean isDelete() {
+    public boolean getIsDelete() {
         return isDelete;
     }
 

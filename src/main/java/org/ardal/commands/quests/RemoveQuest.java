@@ -33,7 +33,8 @@ public class RemoveQuest implements ArdalCmd {
 
     @Override
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv);
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(), argv);
     }
 
     public String getHelp() {

@@ -119,6 +119,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
         // Safe delete
         this.setQuestDeleted(questName);
+        this.setQuestActivity(questName, false);
 
         return true;
     }
@@ -176,7 +177,9 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         List<String> questNames = new ArrayList<>();
 
         for(QuestObj questObj : questObjs){
-            questNames.add(questObj.getQuestName());
+            if(!questObj.getIsDelete()) {
+                questNames.add(questObj.getQuestName());
+            }
         }
 
         return questNames;
