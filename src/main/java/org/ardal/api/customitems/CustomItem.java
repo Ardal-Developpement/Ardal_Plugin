@@ -40,6 +40,14 @@ public interface CustomItem {
     boolean removeItem(String hashId);
 
     /**
+     * Remove items from the db
+     *
+     * @param hashIds of items to remove
+     * @return true on success
+     */
+    boolean removeItems(List<String> hashIds);
+
+    /**
      * Get a list of items from db items range
      *
      * @param startIndex of items

@@ -59,6 +59,19 @@ public class CustomItemManager implements CustomItem, ArdalManager {
     }
 
     @Override
+    public boolean removeItems(List<String> hashIds) {
+        boolean finalState = true;
+
+        for(String hashId : hashIds){
+            if(!this.removeItem(hashId)){
+                finalState = false;
+            }
+        }
+
+        return finalState;
+    }
+
+    @Override
     public List<ItemStack> getItemsRange(int startIndex, int length) {
         return this.customItemDB.getItemsRange(startIndex, length);
     }

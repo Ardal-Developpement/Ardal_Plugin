@@ -108,13 +108,19 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     public boolean removeQuest(String questName) {
-        if(this.questExist(questName)){
-            this.getQuestDB().getDb().remove(questName);
-            this.getQuestDB().saveDB();
-            return true;
-        }
+        QuestObj questObj = this.getQuestObj(questName);
+        if(questName == null) { return false; }
 
-        return false;
+        // remove item quest usage
+        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
+        customItemManager.removeItem(questObj.getBookId());
+        customItemManager.removeItems(questObj.getItemsRequestId());
+        customItemManager.removeItems(questObj.getItemsRewardId());
+
+        this.getQuestDB().getDb().remove(questName);
+        this.getQuestDB().saveDB();
+
+        return true;
     }
 
     @Override
