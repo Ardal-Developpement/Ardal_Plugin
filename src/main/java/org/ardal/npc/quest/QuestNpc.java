@@ -79,7 +79,6 @@ public class QuestNpc extends CustomNPCObj {
         new QuestIsActiveSelectorInventory(this, (Player) event.getWhoClicked()).showInventory();
     }
 
-
     @Override
     public JsonArray additionalProperties() {
         JsonArray jsonArray = new JsonArray();
@@ -185,6 +184,11 @@ public class QuestNpc extends CustomNPCObj {
     }
 
     private boolean hasOneQuestShowed() {
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        if(questManager.getAllQuestNames().isEmpty()){
+            return false;
+        }
+
         for(QuestNpcInfo npcInfo : this.questInfoList){
             if(npcInfo.getIsShow() && !npcInfo.isQuestDelete()){
                 return true;

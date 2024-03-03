@@ -109,7 +109,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     @Override
     public boolean removeQuest(String questName) {
         QuestObj questObj = this.getQuestObj(questName);
-        if(questName == null) { return false; }
+        if(questObj == null) { return false; }
 
         // remove item quest usage
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
@@ -226,10 +226,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     @Override
     public boolean getQuestDeleteState(String questName) {
         JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
-        if(questName == null) { return true; }
-
         JsonElement stateObj = questObj.get("isDelete");
-        if(stateObj == null) { return false; }
 
         return stateObj.getAsBoolean();
     }

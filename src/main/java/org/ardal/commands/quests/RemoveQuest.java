@@ -21,11 +21,17 @@ public class RemoveQuest implements ArdalCmd {
 
         Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv);
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
 
-        if(Ardal.getInstance().getManager(QuestManager.class).removeQuest(questName)){
+        if(!questManager.questExist(questName)){
+            player.sendMessage("Unknown quest name.");
+            return true;
+        }
+
+        if(questManager.removeQuest(questName)){
             player.sendMessage("Success to remove quest: " + questName);
         } else {
-            player.sendMessage("Unknown quest name.");
+            player.sendMessage("Failed to remove quest: " + questName);
         }
 
         return true;
