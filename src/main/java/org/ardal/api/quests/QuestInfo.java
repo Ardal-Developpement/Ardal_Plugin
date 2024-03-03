@@ -90,6 +90,15 @@ public interface QuestInfo {
     Boolean setQuestActivity(String questName, boolean state);
 
     /**
+     * Set quest deleted (for safe delete)
+     *
+     * @param questName of the quest
+     * @return true on success
+     */
+    @Nullable
+    Boolean setQuestDeleted(String questName);
+
+    /**
      * Get the quest activity
      *
      * @param questName of the quest
@@ -99,10 +108,20 @@ public interface QuestInfo {
     Boolean getQuestActivity(String questName);
 
     /**
+     * Get the quest delete state
+     *
+     * @param questName of the quest
+     * @return state
+     */
+    boolean getQuestDeleteState(String questName);
+
+    /**
      * Return if the quest exist
      *
      * @param questName of the quest
      * @return true if the quest exist
      */
     boolean questExist(String questName);
+
+
 }

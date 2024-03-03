@@ -117,34 +117,43 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         customItemManager.removeItems(questObj.getItemsRequestId());
         customItemManager.removeItems(questObj.getItemsRewardId());
 
-        this.getQuestDB().getDb().remove(questName);
-        this.getQuestDB().saveDB();
+        // Safe delete
+        this.setQuestDeleted(questName);
 
         return true;
     }
 
     @Override
+    @Nullable
     public ItemStack getQuestBook(String questName) {
+        if(this.getQuestDeleteState(questName)) { return null; }
         return this.getQuestObj(questName).getBook();
     }
 
     @Override
+    @Nullable
     public List<ItemStack> getItemsQuestRequest(String questName) {
+        if(this.getQuestDeleteState(questName)) { return null; }
         return this.getQuestObj(questName).getItemsRequest();
     }
 
     @Override
+    @Nullable
     public List<ItemStack> getItemQuestReward(String questName) {
+        if(this.getQuestDeleteState(questName)) { return null; }
         return this.getQuestObj(questName).getItemsReward();
     }
 
     @Override
     public List<String> getItemsQuestRequestId(String questName) {
+        if(this.getQuestDeleteState(questName)) { return null; }
         return this.getQuestObj(questName).getItemsRequestId();
     }
 
     @Override
+    @Nullable
     public List<String> getItemQuestRewardId(String questName) {
+        if(this.getQuestDeleteState(questName)) { return null; }
         return this.getQuestObj(questName).getItemsRewardId();
     }
 
@@ -152,6 +161,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     public List<QuestObj> getAllQuestObj() {
         List<QuestObj> questObjs = new ArrayList<>();
         for(String questName : JsonUtils.getKeySet(this.getQuestDB().getDb())){
+            if(this.getQuestDeleteState(questName)) { continue; }
             questObjs.add(this.getQuestObj(questName));
         }
 
@@ -175,6 +185,8 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     @Override
     @Nullable
     public Boolean setQuestActivity(String questName, boolean state) {
+        if(this.getQuestDeleteState(questName)) { return null; }
+
         JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
         if(questName == null) { return null; }
 
@@ -185,7 +197,20 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     @Nullable
+    public Boolean setQuestDeleted(String questName) {
+        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
+        if(questName == null) { return null; }
+
+        questObj.addProperty("isDelete", true);
+        this.questDB.saveDB();
+        return true;
+    }
+
+    @Override
+    @Nullable
     public Boolean getQuestActivity(String questName) {
+        if(this.getQuestDeleteState(questName)) { return null; }
+
         JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
         if(questName == null) { return null; }
 
@@ -196,9 +221,19 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Override
-    public boolean questExist(String questName) {
-        return this.questDB.getQuestAsJsonObject(questName) != null;
+    public boolean getQuestDeleteState(String questName) {
+        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
+        if(questName == null) { return true; }
+
+        JsonElement stateObj = questObj.get("isDelete");
+        if(stateObj == null) { return false; }
+
+        return stateObj.getAsBoolean();
     }
 
-
+    @Override
+    public boolean questExist(String questName) {
+        if(this.getQuestDeleteState(questName)) { return false; }
+        return this.questDB.getQuestAsJsonObject(questName) != null;
+    }
 }

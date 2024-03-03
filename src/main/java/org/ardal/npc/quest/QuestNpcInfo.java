@@ -1,6 +1,8 @@
 package org.ardal.npc.quest;
 
 import com.google.gson.JsonObject;
+import org.ardal.Ardal;
+import org.ardal.managers.QuestManager;
 
 public class QuestNpcInfo {
     private String questName;
@@ -26,6 +28,11 @@ public class QuestNpcInfo {
         obj.addProperty("isShow", this.isShow);
 
         return obj;
+    }
+
+    public boolean isQuestDelete(){
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        return questManager.getQuestDeleteState(questName);
     }
 
     public String getQuestName() {

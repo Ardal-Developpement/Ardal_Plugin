@@ -144,7 +144,7 @@ public class QuestNpc extends CustomNPCObj {
     }
 
     private void giveRewardItemToPlayer(String questName, Player player) {
-        player.sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), "%s Here's your reward for this quest."));
+        player.sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), " Here's your reward for this quest."));
 
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         for (ItemStack item : questManager.getItemQuestReward(questName)){
@@ -163,7 +163,7 @@ public class QuestNpc extends CustomNPCObj {
     public List<String> getNpcActiveQuest(){
         List<String> list = new ArrayList<>();
         for(QuestNpcInfo questNpcInfo : this.questInfoList){
-            if(questNpcInfo.getIsShow()){
+            if(questNpcInfo.getIsShow() && !questNpcInfo.isQuestDelete()){
                 list.add(questNpcInfo.getQuestName());
             }
         }
@@ -175,7 +175,9 @@ public class QuestNpc extends CustomNPCObj {
         List<String> allQuest = new ArrayList<>();
         for(QuestNpcInfo questNpcInfo : this.questInfoList){
             for(int i = 0; i < questNpcInfo.getQuestCoef(); i++){
-                allQuest.add(questNpcInfo.getQuestName());
+                if(questNpcInfo.getIsShow() && !questNpcInfo.isQuestDelete()){
+                    allQuest.add(questNpcInfo.getQuestName());
+                }
             }
         }
 
@@ -184,7 +186,7 @@ public class QuestNpc extends CustomNPCObj {
 
     private boolean hasOneQuestShowed() {
         for(QuestNpcInfo npcInfo : this.questInfoList){
-            if(npcInfo.getIsShow()){
+            if(npcInfo.getIsShow() && !npcInfo.isQuestDelete()){
                 return true;
             }
         }

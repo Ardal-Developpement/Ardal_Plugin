@@ -19,10 +19,12 @@ public class QuestObj implements Comparable<QuestObj> {
     private List<String> itemsRequestId;
     private List<String>itemsRewardId;
     private final boolean isActive;
+    private final boolean isDelete;
 
     public QuestObj(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward, boolean isActive) {
         this.bookId = "";
         this.isActive = isActive;
+        this.isDelete = false;
         this.itemsRequestId = new ArrayList<>();
         this.itemsRewardId = new ArrayList<>();
 
@@ -36,11 +38,13 @@ public class QuestObj implements Comparable<QuestObj> {
     public QuestObj(JsonObject questObj) throws MalformedJsonException {
         JsonElement bookElem = questObj.get("bookId");
         JsonElement isActiveElem = questObj.get("isActive");
+        JsonElement isDeleteElem = questObj.get("isDelete");
         JsonElement itemsRequestElem = questObj.get("itemsRequestId");
         JsonElement itemsRewardElem = questObj.get("itemsRewardId");
 
         if(bookElem == null
             || isActiveElem == null
+            || isDeleteElem == null
             || itemsRequestElem == null
             || itemsRewardElem == null)
         {
@@ -49,6 +53,7 @@ public class QuestObj implements Comparable<QuestObj> {
 
         this.bookId = bookElem.getAsString();
         this.isActive = isActiveElem.getAsBoolean();
+        this.isDelete = isDeleteElem.getAsBoolean();
         this.itemsRequestId = JsonUtils.jsonArrayToStrList(itemsRequestElem);
         this.itemsRewardId = JsonUtils.jsonArrayToStrList(itemsRewardElem);
     }
@@ -60,7 +65,8 @@ public class QuestObj implements Comparable<QuestObj> {
 
         questObj.addProperty("bookId", this.bookId);
         questObj.addProperty("isActive", this.isActive);
-        
+        questObj.addProperty("isDelete", this.isDelete);
+
         for(String itemId : this.getItemsRequestId()){
             itemRequestArray.add(itemId);
         }
@@ -116,6 +122,10 @@ public class QuestObj implements Comparable<QuestObj> {
 
     public boolean getIsActive() {
         return this.isActive;
+    }
+
+    public boolean isDelete() {
+        return isDelete;
     }
 
     public List<String> getItemsRequestId() {
@@ -179,8 +189,6 @@ public class QuestObj implements Comparable<QuestObj> {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
         this.bookId = customItemManager.addItem(item).toString();
     }
-
-
 
     @Override
     public int compareTo(QuestObj otherQuestObj) {
