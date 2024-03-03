@@ -29,7 +29,7 @@ public final class Ardal extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        //disableManagers();
+        disableManagers();
     }
 
     private void enableManagers(){

@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CustomItemManager implements CustomItem, ArdalManager {
     private final CustomItemDB customItemDB;
@@ -20,7 +19,6 @@ public class CustomItemManager implements CustomItem, ArdalManager {
     public CustomItemDB getCustomItemDB() {
         return customItemDB;
     }
-
     @Override
     public void onEnable() {
 
@@ -32,37 +30,22 @@ public class CustomItemManager implements CustomItem, ArdalManager {
     }
 
     @Override
-    public ItemStack getItemByStrId(String id) {
+    public ItemStack getItem(String id) {
         return this.customItemDB.getItem(id).clone();
     }
 
     @Override
-    public List<ItemStack> getItemsByUUID(List<UUID> ids) {
-        List<ItemStack> items = new ArrayList<>();
-        for(UUID id : ids){
-            items.add(this.getItemByUUID(id));
-        }
-
-        return items;
-    }
-
-    @Override
-    public List<ItemStack> getItemsByStrId(List<String> ids) {
+    public List<ItemStack> getItems(List<String> ids) {
         List<ItemStack> items = new ArrayList<>();
         for(String id : ids){
-            items.add(this.getItemByStrId(id));
+            items.add(this.getItem(id));
         }
 
         return items;
     }
 
     @Override
-    public ItemStack getItemByUUID(UUID id) {
-        return this.getItemByStrId(id.toString());
-    }
-
-    @Override
-    public UUID addItem(ItemStack item) {
+    public String addItem(ItemStack item) {
         if(item == null){
             return null;
         }
@@ -73,23 +56,6 @@ public class CustomItemManager implements CustomItem, ArdalManager {
     @Override
     public boolean removeItem(String id) {
         return this.customItemDB.removeItem(id);
-    }
-
-    @Override
-    public boolean removeItem(UUID id) {
-        return this.removeItem(id.toString());
-    }
-
-    @Override
-    public boolean removeItem(ItemStack item) {
-        List<ItemStack> items = this.customItemDB.getItemsRange(0, -1);
-        for(int i = 0; i < items.size(); i++){
-            if(items.get(i) == item){
-                return this.removeItem(this.getCustomItemDB().getKeySet().get(i));
-            }
-        }
-
-        return false;
     }
 
     @Override

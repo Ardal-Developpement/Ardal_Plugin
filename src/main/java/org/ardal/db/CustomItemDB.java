@@ -1,12 +1,14 @@
 package org.ardal.db;
 
 import org.ardal.api.db.YamlDBStruct;
+import org.ardal.objects.CustomItemObj;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CustomItemDB extends YamlDBStruct {
     private static final String DB_FILE_NAME = "CustomItem.yml";
@@ -15,32 +17,38 @@ public class CustomItemDB extends YamlDBStruct {
         super(pluginDirPath, DB_FILE_NAME);
     }
 
-    public UUID addItem(ItemStack item){
-        UUID id = UUID.randomUUID();
-        this.getDB().set(id.toString(), item);
+    public String addItem(ItemStack item){
+        CustomItemObj customItemObj = new CustomItemObj(item);
+        customItemObj.addItem(this.getDB());
         this.saveDB();
-        return id;
+
+        return customItemObj.getHashId();
     }
 
-    public ItemStack getItem(String id){
-        return this.getDB().getItemStack(id);
-    }
+    public boolean removeItem(String hashId) {
+        ConfigurationSection containerSection = this.getDB().getConfigurationSection(hashId);
 
-    public ItemStack getItem(UUID id){
-        return this.getItem(id.toString());
-    }
-
-    public boolean removeItem(String id) {
-        if (this.getItem(id) != null) {
-            this.getDB().set(id.toString(), null);
-            return true;
+        if(containerSection == null){
+            return false;
         }
 
-        return false;
+        int itemNbUsage = containerSection.getInt("nbUsage");
+        if(itemNbUsage - 1 == 0){
+            this.getDB().set(hashId, null);
+        } else {
+            containerSection.set("nbUsage", itemNbUsage - 1);
+        }
+
+        this.saveDB();
+        return true;
     }
 
-    public boolean removeItem(UUID id) {
-        return this.removeItem(id.toString());
+    @Nullable
+    public ItemStack getItem(String hashId){
+        ConfigurationSection itemSection = this.getDB().getConfigurationSection(hashId);
+        if(itemSection == null) { return null; }
+
+        return new CustomItemObj(itemSection).getItem();
     }
 
     public List<ItemStack> getItemsRange(int startIndex, int length) {

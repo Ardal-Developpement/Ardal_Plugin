@@ -101,17 +101,17 @@ public class QuestObj implements Comparable<QuestObj> {
 
     public ItemStack getBook(){
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return customItemManager.getItemByStrId(this.bookId);
+        return customItemManager.getItem(this.bookId);
     }
 
     public List<ItemStack> getItemsRequest() {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return customItemManager.getItemsByStrId(this.itemsRequestId);
+        return customItemManager.getItems(this.itemsRequestId);
     }
 
     public List<ItemStack> getItemsReward() {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return customItemManager.getItemsByStrId(this.itemsRewardId);
+        return customItemManager.getItems(this.itemsRewardId);
     }
 
     public boolean getIsActive() {
@@ -146,6 +146,7 @@ public class QuestObj implements Comparable<QuestObj> {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
         return this.itemsRequestId.add(customItemManager.addItem(item).toString());
     }
+
     public boolean addItemReward(ItemStack item){
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
         return this.itemsRewardId.add(customItemManager.addItem(item).toString());
