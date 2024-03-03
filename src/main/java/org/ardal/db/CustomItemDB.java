@@ -33,8 +33,10 @@ public class CustomItemDB extends YamlDBStruct {
         }
 
         int itemNbUsage = containerSection.getInt("nbUsage");
-        if(itemNbUsage - 1 == 0){
-            this.getDB().set(hashId, null);
+        if(itemNbUsage - 1 <= 0){
+            // Safe delete
+            containerSection.set("nbUsage", -1);
+
         } else {
             containerSection.set("nbUsage", itemNbUsage - 1);
         }
