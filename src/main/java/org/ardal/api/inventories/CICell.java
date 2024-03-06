@@ -16,9 +16,6 @@ public class CICell {
     private ItemStack item;
     private int slot;
 
-
-
-
     public CICell(ItemStack item, int slot,
                   @Nullable CellCallBack onRightClickCB,
                   @Nullable CellCallBack onRightShieftClickCB,
@@ -98,4 +95,19 @@ public class CICell {
         return this.slot;
     }
 
+    public CellCallBack getOnLeftClickCB() {
+        return onLeftClickCB;
+    }
+
+    public CellCallBack getOnLeftShieftClickCB() {
+        return onLeftShieftClickCB;
+    }
+
+    public CellCallBack getOnRightClickCB() {
+        return onRightClickCB;
+    }
+
+    public CellCallBack getOnRightShieftClickCB() {
+        return onRightShieftClickCB;
+    }
 }
