@@ -6,7 +6,6 @@ import org.ardal.api.inventories.callback.CellCallBack;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -14,20 +13,24 @@ import java.util.List;
 
 public abstract class CICarousel extends CustomInventory implements CellCallBack {
     private final List<ItemStack> items;
-    private final CICell cellTemplate;
+    private CICell cellTemplate;
     private int currentStartIndex;
     private  int showedRange;
-    public CICarousel(String title, int size, Player player, List<ItemStack> items, CICell cellTemplate) {
+
+    public CICarousel(String title, int size, Player player, List<ItemStack> items) {
         super(title, size, player);
 
         this.items = items;
-        this.cellTemplate = cellTemplate;
         this.currentStartIndex = 0;
         this.showedRange = size - 9; //keep the last line
+    }
 
+    public CICarousel buildCarousel(CICell cellTemplate){
+        this.cellTemplate = cellTemplate;
+        this.showPage(true);
         this.setPreviousPageItem();
         this.setNextPageItem();
-        this.showPage(true);
+        return this;
     }
 
     private void showPage(boolean nextPage) {
@@ -105,6 +108,4 @@ public abstract class CICarousel extends CustomInventory implements CellCallBack
             cell.onCellClick(event);
         }
     }
-
-    public abstract void onCIClose(InventoryCloseEvent event);
 }

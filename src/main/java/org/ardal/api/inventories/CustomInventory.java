@@ -63,6 +63,7 @@ public abstract class CustomInventory implements InventoryHolder {
     }
 
     public void closeInventory(){
+        this.unregisterInventory();
         this.player.closeInventory();
     }
 

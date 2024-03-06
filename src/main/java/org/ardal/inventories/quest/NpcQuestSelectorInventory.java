@@ -105,7 +105,6 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(), msg));
         PlayerUtils.giveItemStackToPlayer(questManager.getQuestBook(questName), player);
 
-        this.unregisterInventory();
         this.closeInventory();
     }
 }

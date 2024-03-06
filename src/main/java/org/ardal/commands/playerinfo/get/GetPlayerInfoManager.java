@@ -13,6 +13,7 @@ public class GetPlayerInfoManager extends ArdalCmdNode implements ArdalCmd {
     public GetPlayerInfoManager(){
         super(CMD_NAME);
         this.registerCmd(new GetAdventureLevel());
+        this.registerCmd(new GetAdventureStory());
     }
 
     @Override
