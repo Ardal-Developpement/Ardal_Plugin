@@ -10,16 +10,18 @@ import org.ardal.managers.QuestManager;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.JsonUtils;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestObj implements Comparable<QuestObj> {
-    private String bookId;
-    private List<String> itemsRequestId;
-    private List<String>itemsRewardId;
     private final boolean isActive;
     private final boolean isDelete;
+    private String bookId;
+    private String synopsis;
+    private List<String> itemsRequestId;
+    private List<String>itemsRewardId;
 
     public QuestObj(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward, boolean isActive) {
         this.bookId = "";
@@ -42,6 +44,8 @@ public class QuestObj implements Comparable<QuestObj> {
         JsonElement itemsRequestElem = questObj.get("itemsRequestId");
         JsonElement itemsRewardElem = questObj.get("itemsRewardId");
 
+        JsonElement synopsisElem = questObj.get("synopsis");
+
         if(bookElem == null
             || isActiveElem == null
             || isDeleteElem == null
@@ -56,6 +60,8 @@ public class QuestObj implements Comparable<QuestObj> {
         this.isDelete = isDeleteElem.getAsBoolean();
         this.itemsRequestId = JsonUtils.jsonArrayToStrList(itemsRequestElem);
         this.itemsRewardId = JsonUtils.jsonArrayToStrList(itemsRewardElem);
+
+        if(synopsisElem != null) { this.synopsis = synopsisElem.getAsString(); }
     }
 
     public JsonObject toJson(){
@@ -66,6 +72,8 @@ public class QuestObj implements Comparable<QuestObj> {
         questObj.addProperty("bookId", this.bookId);
         questObj.addProperty("isActive", this.isActive);
         questObj.addProperty("isDelete", this.isDelete);
+
+        if(this.synopsis != null) { questObj.addProperty("synopsis", this.synopsis); }
 
         for(String itemId : this.getItemsRequestId()){
             itemRequestArray.add(itemId);
@@ -83,7 +91,7 @@ public class QuestObj implements Comparable<QuestObj> {
     public void save(){
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
 
-        if(!questManager.getQuestDB().getKeySet().contains(this.getQuestName())){ //TODO optimisation: case for edit (not rewrite all data)
+        if(!questManager.getQuestDB().getKeySet().contains(this.getQuestName())) {
             Ardal.writeToLogger("Adding quest: " + this.getQuestName());
         }else{
             Ardal.writeToLogger("Saving quest: " + this.getQuestName());
@@ -128,6 +136,10 @@ public class QuestObj implements Comparable<QuestObj> {
         return isDelete;
     }
 
+    public String getSynopsis() {
+        return this.synopsis == null ? "" : this.synopsis;
+    }
+
     public List<String> getItemsRequestId() {
         return itemsRequestId;
     }
@@ -160,6 +172,10 @@ public class QuestObj implements Comparable<QuestObj> {
     public boolean addItemReward(ItemStack item){
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
         return this.itemsRewardId.add(customItemManager.addItem(item).toString());
+    }
+
+    public void setSynopsis(@Nullable String synopsis){
+        this.synopsis = synopsis;
     }
 
     public boolean setItemsRequest(List<ItemStack> items){

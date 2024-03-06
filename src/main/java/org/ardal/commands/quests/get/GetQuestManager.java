@@ -1,4 +1,4 @@
-package org.ardal.commands.quests.set;
+package org.ardal.commands.quests.get;
 
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.api.commands.ArdalCmdNode;
@@ -8,13 +8,12 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class SetQuestManager extends ArdalCmdNode implements ArdalCmd {
-    private static final String CMD_NAME = "set";
+public class GetQuestManager extends ArdalCmdNode implements ArdalCmd {
+    private static final String CMD_NAME = "get";
 
-    public SetQuestManager(){
+    public GetQuestManager(){
         super(CMD_NAME);
-        this.registerCmd(new SetIsActiveQuest());
-        this.registerCmd(new SetQuestSynopsis());
+        this.registerCmd(new GetQuestSynopsis());
     }
 
     @Override
@@ -29,7 +28,7 @@ public class SetQuestManager extends ArdalCmdNode implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return String.format("%s%s:%s set quest properties.",
+        return String.format("%s%s:%s get quest properties.",
                 ChatColor.GOLD,
                 getCmdName(),
                 ChatColor.WHITE);

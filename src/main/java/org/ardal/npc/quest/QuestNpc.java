@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -196,5 +197,23 @@ public class QuestNpc extends CustomNPCObj {
         }
 
         return false;
+    }
+
+    public static void addSynopsisToQuestBook(@NotNull ItemStack book, String synopsis){
+        ItemMeta meta = book.getItemMeta();
+
+        List<String> lore = meta.getLore();
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+
+        String[] lines = synopsis.split("\n");
+
+        for(int i = lines.length - 1; i >= 0; i--){
+            lore.add(0, lines[i]);
+        }
+
+        meta.setLore(lore);
+        book.setItemMeta(meta);
     }
 }

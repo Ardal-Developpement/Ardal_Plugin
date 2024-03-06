@@ -27,11 +27,9 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         this.questNpc = npc;
         this.nbRandomQuest = nbRandomQuest;
 
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-
         int i = 0;
         for(String questName : this.getRandomQuest()){
-            this.setCell(new CICell(questManager.getQuestBook(questName),
+            this.setCell(new CICell(this.getFormattedQuestBook(questName),
                     i++,
                     null,
                     null,
@@ -39,6 +37,14 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
                     null
             ));
         }
+    }
+
+    private ItemStack getFormattedQuestBook(String questName){
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        ItemStack book = questManager.getQuestBook(questName);
+        QuestNpc.addSynopsisToQuestBook(book, questManager.getQuestSynopsis(questName));
+
+        return book;
     }
 
     @Override

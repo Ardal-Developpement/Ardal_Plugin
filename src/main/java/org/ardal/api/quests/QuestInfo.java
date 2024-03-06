@@ -99,6 +99,14 @@ public interface QuestInfo {
     Boolean setQuestDeleted(String questName);
 
     /**
+     * Set a new quest synopsis
+     *
+     * @param questName of the quest
+     * @param synopsis new synopsis
+     */
+    void setQuestSynopsis(String questName, @Nullable String synopsis);
+
+    /**
      * Get the quest activity
      *
      * @param questName of the quest
@@ -122,6 +130,15 @@ public interface QuestInfo {
      * @return true if the quest exist
      */
     boolean questExist(String questName);
+
+    /**
+     * Get the synopsis of the quest
+     *
+     * @param questName of the quest
+     * @return quest synopsis
+     */
+    @Nullable
+    String getQuestSynopsis(String questName);
 
 
 }

@@ -10,6 +10,7 @@ import org.ardal.api.quests.QuestInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.quests.*;
 import org.ardal.commands.quests.edit.EditQuestManager;
+import org.ardal.commands.quests.get.GetQuestManager;
 import org.ardal.commands.quests.give.GiveQuestManager;
 import org.ardal.commands.quests.set.SetQuestManager;
 import org.ardal.db.QuestDB;
@@ -40,9 +41,11 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         this.registerCmd(new OpenQuestGUI());
         this.registerCmd(new RemoveQuest());
         this.registerCmd(new HelpQuest());
+
         this.registerCmd(new SetQuestManager());
         this.registerCmd(new EditQuestManager());
         this.registerCmd(new GiveQuestManager());
+        this.registerCmd(new GetQuestManager());
 
         this.questDB = new QuestDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
     }
@@ -210,6 +213,15 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Override
+    public void setQuestSynopsis(String questName, @Nullable String synopsis) {
+        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
+        if(questName == null) { return; }
+
+        questObj.addProperty("synopsis", synopsis);
+        this.questDB.saveDB();
+    }
+
+    @Override
     @Nullable
     public Boolean getQuestActivity(String questName) {
         if(this.getQuestDeleteState(questName)) { return null; }
@@ -233,7 +245,15 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     public boolean questExist(String questName) {
-        if(this.getQuestDeleteState(questName)) { return false; }
+        if(questName == null || this.getQuestDeleteState(questName)) { return false; }
         return this.questDB.getQuestAsJsonObject(questName) != null;
+    }
+
+    @Override
+    @Nullable
+    public String getQuestSynopsis(String questName) {
+        if(!this.questExist(questName)) { return null; }
+
+        return this.getQuestObj(questName).getSynopsis();
     }
 }
