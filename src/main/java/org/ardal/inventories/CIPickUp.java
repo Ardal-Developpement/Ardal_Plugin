@@ -15,14 +15,14 @@ public class CIPickUp extends CICarousel {
     private final int nbItemPickedUpLimit;
     private int nbPickedUp;
     public CIPickUp(String title, int size, Player player, List<ItemStack> items, boolean pickUpOnce, int nbItemPickedUpLimit) {
-        super(title, size, player, items);
+        super(title, size, player);
 
         this.nbItemPickedUpLimit = nbItemPickedUpLimit;
         this.nbPickedUp = 0;
         this.pickedUpOnce = pickUpOnce;
         this.itemPickedUp = new ArrayList<>();
 
-        this.buildCarousel(new CICell(null, -1,
+        this.buildCarousel(items, new CICell(null, -1,
                 null,
                 null,
                 this,

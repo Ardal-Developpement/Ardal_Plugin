@@ -12,22 +12,22 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public abstract class CICarousel extends CustomInventory implements CellCallBack {
-    private final List<ItemStack> items;
+    private List<ItemStack> items;
     private CICell cellTemplate;
     private int currentStartIndex;
     private  int showedRange;
 
-    public CICarousel(String title, int size, Player player, List<ItemStack> items) {
+    public CICarousel(String title, int size, Player player) {
         super(title, size, player);
 
-        this.items = items;
         this.currentStartIndex = 0;
         this.showedRange = size - 9; //keep the last line
     }
 
     public abstract void onItemsClick(InventoryClickEvent event);
 
-    public CICarousel buildCarousel(CICell cellTemplate){
+    public CICarousel buildCarousel(List<ItemStack> items, CICell cellTemplate){
+        this.items = items;
         this.cellTemplate = cellTemplate;
         this.showPage(true);
         this.setPreviousPageItem();
