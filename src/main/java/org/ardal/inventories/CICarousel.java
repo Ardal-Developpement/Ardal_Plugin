@@ -25,6 +25,8 @@ public abstract class CICarousel extends CustomInventory implements CellCallBack
         this.showedRange = size - 9; //keep the last line
     }
 
+    public abstract void onItemsClick(InventoryClickEvent event);
+
     public CICarousel buildCarousel(CICell cellTemplate){
         this.cellTemplate = cellTemplate;
         this.showPage(true);
@@ -43,7 +45,10 @@ public abstract class CICarousel extends CustomInventory implements CellCallBack
         } else {
             newIndex = this.currentStartIndex - this.showedRange;
             if (newIndex < 0) {
-                newIndex = this.items.size() - 1;
+                newIndex = this.items.size() - 1 - this.showedRange;
+                if(newIndex < 0){
+                    newIndex = 0;
+                }
             }
         }
 
@@ -75,7 +80,7 @@ public abstract class CICarousel extends CustomInventory implements CellCallBack
 
         this.setCell(new CICell(
                 item,
-                5, 5,
+                5, this.getSize() / 9  - 1,
                 null,
                 null,
                 this,
@@ -92,12 +97,32 @@ public abstract class CICarousel extends CustomInventory implements CellCallBack
         item.setItemMeta(meta);
         this.setCell(new CICell(
                 item,
-                3, 5,
+                3, this.getSize() / 9  - 1,
                 null,
                 null,
                 this,
                 null
         ));
+    }
+
+    @Override
+    public void onClick(InventoryClickEvent event) {
+        ItemStack item = event.getCurrentItem();
+        if(item == null) { return; }
+
+        if(event.getSlot() < this.getSize() - 9){
+            this.onItemsClick(event);
+            return;
+        }
+
+        switch (item.getType()) {
+            case CAMPFIRE:
+                this.showPage(true);
+                break;
+            case SOUL_CAMPFIRE:
+                this.showPage(false);
+                break;
+        }
     }
 
     @Override

@@ -31,7 +31,7 @@ public class CIPickUp extends CICarousel {
     }
 
     @Override
-    public void onClick(InventoryClickEvent event) {
+    public void onItemsClick(InventoryClickEvent event) {
         // Give item to player
         if(this.pickedUpOnce){
             if(this.itemPickedUp.contains(event.getCurrentItem())){
