@@ -5,11 +5,19 @@ api-version: '1.16'
 commands:
   quest:
     description: Manage quests.
+    permission: ardal_plugin.quest
   ardal:
-    description: Manage player infos.
+    description: Manager player info
+    permission: ardal_plugin.ardal
   npc:
     description: Manager npc.
+    permission: ardal_plugin.npc
   ec:
     description: Open enderchest.
+    permission: ardal_plugin.ec
+  story:
+    description: Open your adventure story.
+    permission: ardal_plugin.story
   adventureLevel:
-    description: Get adventure player.
+    description: your adventure level.
+    permission: ardal_plugin.adventureLevel

@@ -35,9 +35,6 @@ Base command: `/ardal`.
 - `add`
   - `activeQuest [player]`: add an active quest to the player.
   - `finishedQuest [player]`: add a finished quest to the player.
-- `get`:
-  - `adventureLevel [@Nullable player]`: get the adventure level of the player (or of itself).
-  - `story`: get your adventure story.
 - `list`:
   - `activeQuest [@Nullable player]`: get the list of active quest of the player.
   - `finishedQuest [@Nullable player]`: get the list of finished quest of the player.
@@ -56,7 +53,7 @@ Base command: `/npc`.
 ### Shortcut commands usage:
 - `/ec [@Nullable player]`: open enderchest of the player (or of itself).
 - `/adventureLevel [@Nullable player]`: get the adventure level of the player (or of itself).
-
+- `/story`: get your adventure story.
 
 ## Database:
 

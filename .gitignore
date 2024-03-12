@@ -6,3 +6,5 @@ server/*
 !server/start.bat
 !server/server-icon.png
 !server/eula.txt
+!server/plugins/LuckPerms/
+!server/plugins/LuckPerms-Bukkit-5.4.102.jar

@@ -1,4 +1,4 @@
-package org.ardal.commands;
+package org.ardal.commands.individual;
 
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.utils.BukkitUtils;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ECCmd implements ArdalCmd {
+public class EC implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player;

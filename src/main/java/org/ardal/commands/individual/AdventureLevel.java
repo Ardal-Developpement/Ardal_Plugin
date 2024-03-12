@@ -1,4 +1,4 @@
-package org.ardal.commands.playerinfo.get;
+package org.ardal.commands.individual;
 
 
 import org.ardal.Ardal;
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class GetAdventureLevel implements ArdalCmd {
+public class AdventureLevel implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player;

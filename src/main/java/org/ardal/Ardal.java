@@ -22,7 +22,7 @@ public final class Ardal extends JavaPlugin {
         this.registerManager(new QuestManager());
         this.registerManager(new CustomItemManager());
         this.registerManager(new CustomInventoryManager());
-        this.registerManager(new ShortCutCmdManager());
+        this.registerManager(new IndividualCmdManager());
 
         enableManagers();
     }
