@@ -38,7 +38,7 @@ public class GetQuestSynopsis implements ArdalCmd {
     }
 
     public String getHelp() {
-        return String.format("%s%s:%s get quest synopsis.",
+        return String.format("%s%s:%s get synopsis.",
                 ChatColor.GOLD,
                 getCmdName(),
                 ChatColor.WHITE);
@@ -46,6 +46,6 @@ public class GetQuestSynopsis implements ArdalCmd {
 
     @Override
     public String getCmdName() {
-        return "questSynopsis";
+        return "synopsis";
     }
 }
