@@ -1,4 +1,4 @@
-package org.ardal.inventories.quest.management;
+package org.ardal.inventories.npc;
 
 import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;

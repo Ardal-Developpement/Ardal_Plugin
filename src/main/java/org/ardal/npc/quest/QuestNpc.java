@@ -5,16 +5,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.ardal.Ardal;
 import org.ardal.api.npc.CustomNpcType;
-import org.ardal.inventories.quest.NpcQuestSelectorInventory;
-import org.ardal.inventories.quest.management.QuestIsActiveSelectorInventory;
+import org.ardal.inventories.npc.quest.NpcMenuSelectorInventory;
+import org.ardal.inventories.npc.quest.NpcQuestSelectorInventory;
+import org.ardal.inventories.npc.quest.management.QuestIsActiveSelectorInventory;
 import org.ardal.managers.CustomNPCManager;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
 import org.ardal.objects.CustomNPCObj;
 import org.ardal.objects.QuestObj;
-import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.ChatUtils;
-import org.ardal.utils.PlayerUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -24,7 +23,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -104,53 +102,31 @@ public class QuestNpc extends CustomNPCObj {
             return;
         }
 
-        NpcQuestSelectorInventory npcInvsee = new NpcQuestSelectorInventory(this, event.getPlayer(), 9);
-        String questName = npcInvsee.playerHasNpcActiveQuest();
+        String questName = this.playerHasNpcActiveQuest(event.getPlayer());
         if(questName != null){
+            new NpcMenuSelectorInventory(this, event.getPlayer(), questName).showInventory();
+        } else {
+            new NpcQuestSelectorInventory(this, event.getPlayer(), 9).showInventory();
+        }
+    }
 
-            //try to request item
-            if(this.isPlayerValidQuest(event, questName)){
-                String msg = "Well done!\nYou successfully complete the quest: " + questName + "\nGood job!";
-                event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), msg));
-            } else {
-                String msg = "You're missing some quest items, come back to me when you've got them all.";
-                event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), msg));
+    /**
+     * @return questName if player don't have an active quest that the npc have
+     */
+    private String playerHasNpcActiveQuest(Player player){
+        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
+        List<String> playerQuestList = playerInfoManager.getPlayerActiveQuests(player);
+
+        for(String questName : this.getNpcActiveQuest()){
+            if(playerQuestList.contains(questName)){
+                return questName;
             }
-
-            npcInvsee.unregisterInventory();
-            return;
         }
 
-        npcInvsee.showInventory();
+        return null;
     }
 
-    private boolean isPlayerValidQuest(PlayerInteractEntityEvent event, String questName){
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        List<ItemStack> itemsRequest = questManager.getItemsQuestRequest(questName);
-        if(BukkitUtils.itemListContainItems(
-                Arrays.asList(event.getPlayer().getInventory().getContents()), itemsRequest))
-        {
-            PlayerUtils.removeItemsToPlayer(itemsRequest, event.getPlayer());
 
-            PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-            playerInfoManager.addPlayerFinishedQuest(event.getPlayer(), questName);
-
-            this.giveRewardItemToPlayer(questName, event.getPlayer());
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private void giveRewardItemToPlayer(String questName, Player player) {
-        player.sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), " Here's your reward for this quest."));
-
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        for (ItemStack item : questManager.getItemQuestReward(questName)){
-            PlayerUtils.giveItemStackToPlayer(item, player);
-        }
-    }
 
     @Override
     public void onNpcManageToolInteract(PlayerInteractEntityEvent event) {

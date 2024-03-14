@@ -1,6 +1,7 @@
-package org.ardal.inventories.quest.management;
+package org.ardal.inventories.npc.quest.management;
 
 import org.ardal.Ardal;
+import org.ardal.inventories.npc.NpcManagementInventory;
 import org.ardal.objects.CustomNPCObj;
 import org.ardal.utils.PlayerUtils;
 import org.bukkit.Bukkit;

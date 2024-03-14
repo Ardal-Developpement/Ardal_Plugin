@@ -1,4 +1,4 @@
-package org.ardal.inventories.quest;
+package org.ardal.inventories.npc.quest;
 
 import org.ardal.Ardal;
 import org.ardal.api.inventories.CICell;
@@ -55,22 +55,6 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
             cell.onCellClick(event);
         }
 
-    }
-
-    /**
-     * @return questName if player don't have an active quest that the npc have
-     */
-    public String playerHasNpcActiveQuest(){
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        List<String> playerQuestList = playerInfoManager.getPlayerActiveQuests(this.getPlayer());
-
-        for(String questName : this.questNpc.getNpcActiveQuest()){
-            if(playerQuestList.contains(questName)){
-                return questName;
-            }
-        }
-
-        return null;
     }
 
     private List<String> getRandomQuest(){
