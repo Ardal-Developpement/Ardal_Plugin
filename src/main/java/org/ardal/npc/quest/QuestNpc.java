@@ -97,8 +97,20 @@ public class QuestNpc extends CustomNPCObj {
     @Override
     public void onNPCInteract(PlayerInteractEntityEvent event) {
         if(!hasOneQuestShowed()){
-            String msg = String.format("Hi %s, I'm not working today, come back later.", event.getPlayer().getDisplayName());
-            event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(), msg));
+            event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(),
+                    String.format("Hey %s, I'm not working today, come back later.",
+                            event.getPlayer().getDisplayName())));
+
+            return;
+        }
+
+        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
+        int questCooldown = playerInfoManager.getQuestCooldown(event.getPlayer());
+        if(questCooldown != 0){
+            event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getNpcName(),
+                    String.format("Hey %s, I'm busy, please come back in %d minutes.",
+                            event.getPlayer().getDisplayName(), questCooldown)));
+
             return;
         }
 
@@ -125,8 +137,6 @@ public class QuestNpc extends CustomNPCObj {
 
         return null;
     }
-
-
 
     @Override
     public void onNpcManageToolInteract(PlayerInteractEntityEvent event) {

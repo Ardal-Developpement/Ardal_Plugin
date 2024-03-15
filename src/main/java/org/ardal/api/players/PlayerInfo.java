@@ -81,4 +81,27 @@ public interface PlayerInfo {
      * @return true in player register in the db, else false
      */
     boolean isPlayerRegistered(OfflinePlayer player);
+
+    /**
+     * Set quest cooldown to a player
+     *
+     * @param player to set quest cooldown
+     * @param minutes of the cooldown (from now)
+     */
+    void setQuestCooldown(OfflinePlayer player, int minutes);
+
+    /**
+     * Clear the quest cooldown of a player
+     *
+     * @param player to clear quest cooldown
+     */
+    void clearQuestCooldown(OfflinePlayer player);
+
+    /**
+     * get player quest cooldown
+     *
+     * @param player to get quest cooldown
+     * @return the cooldown of the player
+     */
+    Integer getQuestCooldown(OfflinePlayer player);
 }

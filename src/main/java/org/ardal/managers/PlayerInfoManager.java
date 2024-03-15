@@ -10,6 +10,7 @@ import org.ardal.commands.playerinfo.list.ListPlayerInfoManager;
 import org.ardal.commands.playerinfo.remove.RemovePlayerInfoManager;
 import org.ardal.db.PlayerInfoDB;
 import org.ardal.objects.PlayerInfoObj;
+import org.ardal.utils.DateUtils;
 import org.ardal.utils.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -20,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager, Listener {
@@ -151,6 +153,36 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     @Override
     public boolean isPlayerRegistered(OfflinePlayer offlinePlayer) {
         return offlinePlayer.getName() != null && this.getPlayerInfo(offlinePlayer) != null;
+    }
+
+    @Override
+    public void setQuestCooldown(OfflinePlayer player, int minutes) {
+        PlayerInfoObj playerInfoObj = this.getPlayerInfo(player);
+        if(playerInfoObj == null) { return; }
+
+        Date newCoolDown = DateUtils.addMinutes(new Date(), minutes);
+        if (playerInfoObj.getQuestCooldown() == null || playerInfoObj.getQuestCooldown().before(newCoolDown)) {
+            playerInfoObj.setQuestCooldown(newCoolDown);
+        }
+    }
+
+    @Override
+    public void clearQuestCooldown(OfflinePlayer player) {
+        PlayerInfoObj playerInfoObj = this.getPlayerInfo(player);
+        if(playerInfoObj == null) { return; }
+
+        playerInfoObj.setQuestCooldown(null);
+
+    }
+
+    @Override
+    public Integer getQuestCooldown(OfflinePlayer player) {
+        PlayerInfoObj playerInfoObj = this.getPlayerInfo(player);
+        if(playerInfoObj == null) { return null; }
+
+        if(playerInfoObj.getQuestCooldown() == null) { return 0; }
+
+        return DateUtils.getMinutesDiff(new Date(), playerInfoObj.getQuestCooldown());
     }
 
     @EventHandler

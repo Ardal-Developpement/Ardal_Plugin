@@ -56,6 +56,9 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
         player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(),
         "Hey, I remove your quest: " + this.questName + "."));
 
+        // Add quest cooldown
+        playerInfoManager.setQuestCooldown(player, 3);
+
         this.closeInventory();
     }
 

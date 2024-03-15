@@ -5,10 +5,13 @@ import com.google.gson.JsonObject;
 import org.ardal.Ardal;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
+import org.ardal.utils.DateUtils;
 import org.ardal.utils.JsonUtils;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -18,6 +21,7 @@ public class PlayerInfoObj {
     private long adventureLevel;
     private List<String> activeQuest;
     private List<String> finishedQuest;
+    private Date questCooldown;
 
     public PlayerInfoObj(Player player){
         this.playerName = player.getName();
@@ -33,6 +37,7 @@ public class PlayerInfoObj {
         JsonElement adventureLevelElem = playerInfoObj.get("adventureLevel");
         JsonElement activeQuestElem = playerInfoObj.get("activeQuests");
         JsonElement finishedQuestElem = playerInfoObj.get("finishedQuests");
+        JsonElement questCooldownElem = playerInfoObj.get("questCooldown");
 
         if(playerNameElem == null
             || playerUUIDElem == null
@@ -48,6 +53,13 @@ public class PlayerInfoObj {
         this.adventureLevel = adventureLevelElem.getAsLong();
         this.activeQuest = JsonUtils.jsonArrayToStrList(activeQuestElem);
         this.finishedQuest = JsonUtils.jsonArrayToStrList(finishedQuestElem);
+
+        if(questCooldownElem != null) {
+            this.questCooldown = DateUtils.toDate(questCooldownElem.getAsString());
+            if(this.questCooldown != null && new Date().after(this.questCooldown)) {
+                this.questCooldown = null;
+            }
+        }
     }
 
     public JsonObject toJson(){
@@ -57,6 +69,10 @@ public class PlayerInfoObj {
         playerInfoObj.addProperty("adventureLevel", this.adventureLevel);
         playerInfoObj.add("activeQuests", JsonUtils.jsonArrayFromStrList(this.activeQuest));
         playerInfoObj.add("finishedQuests", JsonUtils.jsonArrayFromStrList(this.finishedQuest));
+
+        if(this.questCooldown != null && new Date().before(this.questCooldown)){
+            playerInfoObj.addProperty("questCooldown", DateUtils.toString(this.questCooldown));
+        }
 
         return playerInfoObj;
     }
@@ -85,6 +101,15 @@ public class PlayerInfoObj {
 
     public List<String> getFinishedQuest() {
         return finishedQuest;
+    }
+
+    @Nullable
+    public Date getQuestCooldown() {
+        if(this.questCooldown != null && new Date().after(this.questCooldown)){
+            this.setQuestCooldown(null);
+        }
+
+        return this.questCooldown;
     }
 
     public void addAdventureLevel(long level){
@@ -125,6 +150,11 @@ public class PlayerInfoObj {
         }
 
         return true;
+    }
+
+    public void setQuestCooldown(@Nullable Date cooldown) {
+        this.questCooldown = cooldown;
+        this.savePlayerInfo();
     }
 
     public boolean removeActiveQuest(String questString){
