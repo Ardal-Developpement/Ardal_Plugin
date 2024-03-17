@@ -1,9 +1,10 @@
 package org.ardal.inventories.npc;
 
+import org.ardal.Ardal;
 import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
-import org.ardal.callbacks.npc.DeleteNpcCallBack;
+import org.ardal.managers.CustomNPCManager;
 import org.ardal.objects.CustomNPCObj;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -17,8 +18,6 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
     public NpcManagementInventory(CustomNPCObj npc, Player player){
         super(npc.getNpcName() + " management:", 27, player);
         this.npc = npc;
-
-        CellCallBack deleteNpcCB = new DeleteNpcCallBack(npc.getId());
 
         this.setCell(new CICell(
                 this.getAdvancedPropertiesItem(),
@@ -34,7 +33,7 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
                 6, 1,
                 null,
                 null,
-                deleteNpcCB,
+                this,
                 null)
         );
 
@@ -70,6 +69,18 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
         return this.propertiesItem;
     }
 
+    private void deleteNpc(InventoryClickEvent event){
+        Player player = (Player) event.getWhoClicked();
+
+        if(Ardal.getInstance().getManager(CustomNPCManager.class).deleteNpc(this.npc.getId())){
+            player.sendMessage("Success to delete npc.");
+        } else {
+            player.sendMessage("Failed to delete npc.");
+        }
+
+        player.closeInventory();
+    }
+
     @Override
     public void onCIClick(InventoryClickEvent event){
         event.setCancelled(true);
@@ -82,10 +93,15 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
     @Override
     public void onClick(InventoryClickEvent event) {
         ItemStack item = event.getCurrentItem();
-        if(item == null || !item.isSimilar(this.getAdvancedPropertiesItem())){
-            return;
-        }
+        if(item == null) { return; }
 
-        this.npc.onNpcManagmentClickEvent(event);
+        switch (item.getType()){
+            case WOODEN_PICKAXE:
+                this.npc.onNpcManagmentClickEvent(event);
+                break;
+            case COBWEB:
+                this.deleteNpc(event);
+                break;
+        }
     }
 }
