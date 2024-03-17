@@ -6,6 +6,9 @@ import org.ardal.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,19 @@ public final class Ardal extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        String url = "jdbc:mysql://localhost/ardal";
+        String user = "root";
+        String password = "";
+
+        try {
+            Connection connection = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to ardal db.");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         instance = this;
 
         this.registerManager(new CustomNPCManager());
