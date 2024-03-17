@@ -1,7 +1,6 @@
 package org.ardal.models;
 
 import org.ardal.Ardal;
-import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +14,7 @@ public class MPlayer {
     private String name;
     private int adventure_level;
     private Date quest_cooldown;
-    private MPlayer(String uuid, String name, int adventure_level, @Nullable Date quest_cooldown) {
+    public MPlayer(String uuid, String name, int adventure_level, @Nullable Date quest_cooldown) {
         this.uuid = uuid;
         this.name = name;
         this.adventure_level = adventure_level;
@@ -23,9 +22,7 @@ public class MPlayer {
     }
 
     @Nullable
-    public MPlayer createPlayer(@NotNull OfflinePlayer player) throws SQLException {
-        MPlayer mPlayer = new MPlayer(player.getUniqueId().toString(), player.getName(), 0, null);
-
+    public void createPlayer(@NotNull MPlayer mPlayer) throws SQLException {
         PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
                 .prepareStatement("insert into player(uuid, name, adventure_level, quest_cooldown) values (?,?,?,?)");
 
@@ -34,7 +31,8 @@ public class MPlayer {
         statement.setInt(3, mPlayer.getAdventure_level());
         statement.setTimestamp(4, new Timestamp(mPlayer.getQuest_cooldown().getTime()));
 
-        return mPlayer;
+        statement.execute();
+        statement.close();
     }
 
     @Nullable
@@ -60,8 +58,8 @@ public class MPlayer {
         return null;
     }
 
-    public List<String> getKeySet() {
-        List<String> keySet = new ArrayList<>();
+    public List<String> getPlayerUuids() {
+        List<String> playerUuidList = new ArrayList<>();
 
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
@@ -69,13 +67,13 @@ public class MPlayer {
         {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    keySet.add(resultSet.getString("uuid"));
+                    playerUuidList.add(resultSet.getString("uuid"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return keySet;
+        return playerUuidList;
     }
 
     public List<String> getPlayerNames() {

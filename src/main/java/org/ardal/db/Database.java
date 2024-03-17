@@ -45,7 +45,7 @@ public class Database {
             statement.execute(sql);
 
             sql = "create table if not exists quest(" +
-                    "id int primary key," +
+                    "id int auto_increment primary key," +
                     "name varchar(255)," +
                     "book_id int," +
                     "request_item_id int," +
@@ -70,7 +70,7 @@ public class Database {
             statement.execute(sql);
 
             sql = "create table if not exists location(" +
-                    "id int primary key," +
+                    "id int auto_increment primary key," +
                     "world_uuid varchar(36)," +
                     "x double," +
                     "y double," +
@@ -80,7 +80,7 @@ public class Database {
             statement.execute(sql);
 
             sql = "create table if not exists quest_player(" +
-                    "quest_name varchar(255)," +
+                    "quest_id int," +
                     "player_uuid varchar(36)," +
                     "is_finished bool," +
                     "start_date datetime)";

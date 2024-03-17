@@ -1,5 +1,11 @@
 package org.ardal.models;
 
+import org.ardal.Ardal;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.sql.*;
+
 public class MQuest {
     private String name;
     private int book_id;
@@ -16,6 +22,52 @@ public class MQuest {
         this.is_active = is_active;
         this.is_delete = is_delete;
     }
+
+    @Nullable
+    public int createQuest(@NotNull MQuest mQuest) throws SQLException {
+        PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
+                .prepareStatement("insert into quest(name, book_id, request_item_id, reward_item_id, is_active, is_delete) values (?,?,?,?,?,?)",
+                        Statement.RETURN_GENERATED_KEYS);
+
+        statement.setString(1, mQuest.name);
+        statement.setInt(2, mQuest.book_id);
+        statement.setInt(3, mQuest.request_item_id);
+        statement.setInt(4, mQuest.reward_item_id);
+        statement.setBoolean(5, is_active);
+        statement.setBoolean(6, is_delete);
+
+        statement.execute();
+        int id = statement.getGeneratedKeys().getInt(1);
+        statement.close();
+
+        return id;
+    }
+
+    @Nullable
+    public MQuest findQuestByName(@NotNull String name){
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("SELECT book_id, request_item_id, reward_item_id, is_active, is_delete FROM quest WHERE name = ?"))
+        {
+
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int book_id = resultSet.getInt("book_id");
+                    int request_item_id = resultSet.getInt("request_item_id");
+                    int reward_item_id = resultSet.getInt("reward_item_id");
+                    boolean is_active = resultSet.getBoolean("is_active");
+                    boolean is_delete = resultSet.getBoolean("is_delete");
+
+                    return new MQuest(name, book_id, request_item_id, reward_item_id, is_active, is_delete);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public String getName() {
         return name;

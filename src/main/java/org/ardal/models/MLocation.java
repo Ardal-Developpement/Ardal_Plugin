@@ -1,5 +1,13 @@
 package org.ardal.models;
 
+import org.ardal.Ardal;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class MLocation {
     private int id;
     private String world_uuid;
@@ -17,6 +25,30 @@ public class MLocation {
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
+    }
+
+    @Nullable
+    public int createLocation(@NotNull MLocation mLocation) throws SQLException {
+        PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
+                .prepareStatement("insert into location(world_uuid, x, y, z, yaw, pitch) values (?,?,?,?,?,?)",
+                        Statement.RETURN_GENERATED_KEYS);
+
+        statement.setString(1, mLocation.world_uuid);
+        statement.setDouble(2, x);
+        statement.setDouble(3, y);
+        statement.setDouble(4, z);
+        statement.setDouble(5, yaw);
+        statement.setDouble(6, pitch);
+
+        statement.execute();
+        int id = statement.getGeneratedKeys().getInt(1);
+        statement.close();
+
+        return id;
+    }
+
+    public MLocation findLocationById(int id) {
+        return null;
     }
 
     public int getId() {
