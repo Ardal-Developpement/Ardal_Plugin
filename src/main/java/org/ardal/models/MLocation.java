@@ -1,17 +1,15 @@
 package org.ardal.models;
 
-import java.util.UUID;
-
 public class MLocation {
     private int id;
-    private UUID world_uuid;
+    private String world_uuid;
     private double x;
     private double y;
     private double z;
     private double yaw;
     private double pitch;
 
-    public MLocation(int id, UUID world_uuid, double x, double y, double z, double yaw, double pitch) {
+    public MLocation(int id, String world_uuid, double x, double y, double z, double yaw, double pitch) {
         this.id = id;
         this.world_uuid = world_uuid;
         this.x = x;
@@ -29,11 +27,11 @@ public class MLocation {
         this.id = id;
     }
 
-    public UUID getWorld_uuid() {
+    public String getWorld_uuid() {
         return world_uuid;
     }
 
-    public void setWorld_uuid(UUID world_uuid) {
+    public void setWorld_uuid(String world_uuid) {
         this.world_uuid = world_uuid;
     }
 

@@ -1,15 +1,13 @@
 package org.ardal.models.npc.core;
 
-import java.util.UUID;
-
 public class MNpc {
-    private UUID uuid;
+    private String uuid;
     private String name;
     private boolean is_visible;
     private int location_id;
     private String type;
 
-    public MNpc(UUID uuid, String name, boolean is_visible, int location_id, String type) {
+    public MNpc(String uuid, String name, boolean is_visible, int location_id, String type) {
         this.uuid = uuid;
         this.name = name;
         this.is_visible = is_visible;
@@ -17,11 +15,11 @@ public class MNpc {
         this.type = type;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 

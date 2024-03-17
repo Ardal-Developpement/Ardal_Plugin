@@ -1,15 +1,14 @@
 package org.ardal.models.pivot;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class MQuestPlayer {
     private int quest_id;
-    private UUID player_uuid;
+    private String player_uuid;
     private boolean is_finished;
     private Date start_date;
 
-    public MQuestPlayer(int quest_id, UUID player_uuid, boolean is_finished, Date start_date) {
+    public MQuestPlayer(int quest_id, String player_uuid, boolean is_finished, Date start_date) {
         this.quest_id = quest_id;
         this.player_uuid = player_uuid;
         this.is_finished = is_finished;
@@ -24,11 +23,11 @@ public class MQuestPlayer {
         this.quest_id = quest_id;
     }
 
-    public UUID getPlayer_uuid() {
+    public String getPlayer_uuid() {
         return player_uuid;
     }
 
-    public void setPlayer_uuid(UUID player_uuid) {
+    public void setPlayer_uuid(String player_uuid) {
         this.player_uuid = player_uuid;
     }
 

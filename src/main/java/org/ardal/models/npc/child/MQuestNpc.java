@@ -1,25 +1,23 @@
 package org.ardal.models.npc.child;
 
-import java.util.UUID;
-
 public class MQuestNpc {
-    private UUID uuid;
+    private String uuid;
     private String quest_name;
     private int quest_coef;
     private boolean is_show;
 
-    public MQuestNpc(UUID uuid, String quest_name, int quest_coef, boolean is_show) {
+    public MQuestNpc(String uuid, String quest_name, int quest_coef, boolean is_show) {
         this.uuid = uuid;
         this.quest_name = quest_name;
         this.quest_coef = quest_coef;
         this.is_show = is_show;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 

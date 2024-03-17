@@ -13,12 +13,13 @@ import java.util.List;
 public final class Ardal extends JavaPlugin {
     private static Ardal instance;
     private List<ArdalManager> ardalManagers;
+    private Database db;
 
     @Override
     public void onEnable() {
         instance = this;
 
-        Database db = new Database();
+        this.db = new Database();
         db.initDb();
 
         this.registerManager(new CustomNPCManager());
@@ -67,6 +68,10 @@ public final class Ardal extends JavaPlugin {
 
     public static Ardal getInstance(){
         return instance;
+    }
+
+    public Database getDb() {
+        return db;
     }
 
     public static void writeToLogger(String msg){
