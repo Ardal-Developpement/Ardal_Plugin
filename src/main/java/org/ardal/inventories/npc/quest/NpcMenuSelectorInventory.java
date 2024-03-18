@@ -52,7 +52,7 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
         Player player = (Player) event.getWhoClicked();
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
 
-        playerInfoManager.removePlayerActiveQuest(player, this.questName);
+        playerInfoManager.removePlayerQuest(player, this.questName);
         player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(),
         "Hey, I remove your quest: " + this.questName + "."));
 

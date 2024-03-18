@@ -79,8 +79,7 @@ public class PlayerInfoObj {
 
     public void savePlayerInfo(){
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        playerInfoManager.getPlayerInfoDB().getDb().add(this.playerUUID, this.toJson());
-        playerInfoManager.getPlayerInfoDB().saveDB();
+
     }
 
     public String getPlayerUUID() {

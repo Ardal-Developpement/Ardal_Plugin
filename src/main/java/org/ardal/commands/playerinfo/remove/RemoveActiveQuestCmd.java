@@ -42,7 +42,7 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
             return true;
         }
 
-        playerInfoManager.removePlayerActiveQuest(player, questName);
+        playerInfoManager.removePlayerQuest(player, questName);
         return true;
     }
 

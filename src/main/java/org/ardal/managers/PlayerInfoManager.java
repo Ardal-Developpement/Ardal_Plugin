@@ -8,8 +8,12 @@ import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.playerinfo.add.AddPlayerInfoManager;
 import org.ardal.commands.playerinfo.list.ListPlayerInfoManager;
 import org.ardal.commands.playerinfo.remove.RemovePlayerInfoManager;
-import org.ardal.db.PlayerInfoDB;
-import org.ardal.objects.PlayerInfoObj;
+import org.ardal.db.tables.TPlayer;
+import org.ardal.db.tables.TQuest;
+import org.ardal.db.tables.TQuestPlayer;
+import org.ardal.models.MPlayer;
+import org.ardal.models.MQuest;
+import org.ardal.models.pivot.MQuestPlayer;
 import org.ardal.utils.DateUtils;
 import org.ardal.utils.StringUtils;
 import org.bukkit.OfflinePlayer;
@@ -20,12 +24,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager, Listener {
-    private final PlayerInfoDB playerInfoDB;
+    private TPlayer tPlayer;
+    private TQuestPlayer tQuestPlayer;
+    private TQuest tQuest;
 
     public PlayerInfoManager(){
         super(BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
@@ -34,162 +42,152 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
         this.registerCmd(new RemovePlayerInfoManager());
         this.registerCmd(new ListPlayerInfoManager());
 
-        this.playerInfoDB = new PlayerInfoDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
+        this.tPlayer = new TPlayer();
+        this.tQuestPlayer = new TQuestPlayer();
+        this.tQuest = new TQuest();
+
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
 
-    public PlayerInfoDB getPlayerInfoDB() {
-        return playerInfoDB;
-    }
+    @Override
+    public void onEnable() { }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onDisable(){ }
 
     @Override
-    public void onDisable(){
-        this.playerInfoDB.saveDB();
-    }
-
-    public PlayerInfoObj getPlayerInfo(OfflinePlayer player){
-        if(player.getName() == null) { return null; }
-        return this.playerInfoDB.getPlayerInfo(player.getUniqueId());
-    }
-
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if(!(commandSender instanceof Player)){
-            commandSender.sendMessage("Command can be only used by player.");
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
+        if(!(sender instanceof Player)){
+            sender.sendMessage("Command can be only used by player.");
             return true;
         }
 
-        return this.onSubCmd(commandSender, command, s, StringUtils.getStrListFromStrArray(strings));
-    }
-
-    @Override
-    public boolean addAdventureLevel(OfflinePlayer offlinePlayer, long l) {
-        if(offlinePlayer.getName() == null){
-            return false;
-        }
-
-        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        if(player == null) { return false; }
-
-        player.addAdventureLevel(l);
-        return true;
-    }
-
-    @Override
-    public long getAdventureLevel(OfflinePlayer offlinePlayer) {
-        if(offlinePlayer.getName() == null){
-            return 0;
-        }
-
-        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null ? player.getAdventureLevel() : 0;
-    }
-
-    @Override
-    public List<String> getPlayerActiveQuests(OfflinePlayer offlinePlayer) {
-        if(offlinePlayer.getName() == null){
-            return new ArrayList<>();
-        }
-
-        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null ? player.getActiveQuest() : new ArrayList<>();
-    }
-
-    @Override
-    public List<String> getPlayerFinishedQuests(OfflinePlayer offlinePlayer) {
-        if(offlinePlayer.getName() == null){
-            return new ArrayList<>();
-        }
-
-        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null ? player.getFinishedQuest() : new ArrayList<>();
-    }
-
-    @Override
-    public boolean addPlayerActiveQuest(OfflinePlayer offlinePlayer, String questName) {
-        if(offlinePlayer.getName() == null){
-            return false;
-        }
-
-        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null && player.addActiveQuest(questName);
-    }
-
-    @Override
-    public boolean addPlayerFinishedQuest(OfflinePlayer offlinePlayer, String questName) {
-        if(offlinePlayer.getName() == null){
-            return false;
-        }
-
-        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null && player.addFinishedQuest(questName);
-    }
-
-    @Override
-    public boolean removePlayerActiveQuest(OfflinePlayer offlinePlayer, String questName) {
-        if(offlinePlayer.getName() == null){
-            return false;
-        }
-
-        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null && player.removeActiveQuest(questName);
-    }
-
-    @Override
-    public boolean removePlayerFinishedQuest(OfflinePlayer offlinePlayer, String questName) {
-        if(offlinePlayer.getName() == null){
-            return false;
-        }
-
-        PlayerInfoObj player = this.getPlayerInfo(offlinePlayer);
-        return player != null && player.removeFinishedQuest(questName);
-    }
-
-    @Override
-    public boolean isPlayerRegistered(OfflinePlayer offlinePlayer) {
-        return offlinePlayer.getName() != null && this.getPlayerInfo(offlinePlayer) != null;
-    }
-
-    @Override
-    public void setQuestCooldown(OfflinePlayer player, int minutes) {
-        PlayerInfoObj playerInfoObj = this.getPlayerInfo(player);
-        if(playerInfoObj == null) { return; }
-
-        Date newCoolDown = DateUtils.addMinutes(new Date(), minutes);
-        if (playerInfoObj.getQuestCooldown() == null || playerInfoObj.getQuestCooldown().before(newCoolDown)) {
-            playerInfoObj.setQuestCooldown(newCoolDown);
-        }
-    }
-
-    @Override
-    public void clearQuestCooldown(OfflinePlayer player) {
-        PlayerInfoObj playerInfoObj = this.getPlayerInfo(player);
-        if(playerInfoObj == null) { return; }
-
-        playerInfoObj.setQuestCooldown(null);
-
-    }
-
-    @Override
-    public Integer getQuestCooldown(OfflinePlayer player) {
-        PlayerInfoObj playerInfoObj = this.getPlayerInfo(player);
-        if(playerInfoObj == null) { return null; }
-
-        if(playerInfoObj.getQuestCooldown() == null) { return 0; }
-
-        return DateUtils.getMinutesDiff(new Date(), playerInfoObj.getQuestCooldown());
+        return this.onSubCmd(sender, command, s, StringUtils.getStrListFromStrArray(strings));
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
-        if(this.playerInfoDB.getDb().getAsJsonObject(player.getUniqueId().toString()) == null){
-            this.playerInfoDB.addPlayer(new PlayerInfoObj(player));
+        if(!this.isPlayerRegistered(player)){
+            MPlayer mPlayer = new MPlayer(
+                    player.getUniqueId().toString(),
+                    player.getName(),
+                    0,
+                    null);
+
+            this.tPlayer.savePlayer(mPlayer);
         }
+    }
+
+    @Override
+    public boolean addAdventureLevel(OfflinePlayer player, int level) {
+        return player.getName() != null
+                && this.tPlayer.setAdventureLevel(player.getUniqueId().toString(), level);
+    }
+
+    @Override
+    public int getAdventureLevel(OfflinePlayer player) {
+        MPlayer mPlayer = this.tPlayer.getPlayerByUUID(player.getUniqueId().toString());
+        return mPlayer == null ? -1 : mPlayer.getAdventureLevel();
+    }
+
+    public List<String> getPlayerQuests(OfflinePlayer player, boolean isFinished) {
+        List<Integer> questIds = this.tQuestPlayer.getQuestsIdByPlayerUuid(player.getUniqueId().toString(), isFinished);
+        List<String> questNames = new ArrayList<>();
+        for(Integer id : questIds) {
+            MQuest mQuest = this.tQuest.getQuestById(id);
+            if(mQuest != null) {
+                questNames.add(mQuest.getName());
+            }
+        }
+
+        return questNames;
+    }
+
+    @Override
+    public List<String> getPlayerActiveQuests(OfflinePlayer player) {
+        return this.getPlayerQuests(player, false);
+    }
+
+    @Override
+    public List<String> getPlayerFinishedQuests(OfflinePlayer player) {
+        return this.getPlayerQuests(player, true);
+    }
+
+    private boolean addPlayerQuest(OfflinePlayer player, String questName, boolean isFinished) {
+        Integer questId = this.tQuest.getQuestIdByName(questName);
+        if(questId == null || player.getName() == null) {
+            return false;
+        }
+
+        if(!this.tQuestPlayer.setIsFinishedQuestPlayer(questId, player.getUniqueId().toString(), isFinished)) {
+            MQuestPlayer mQuestPlayer = new MQuestPlayer(
+                    questId,
+                    player.getUniqueId().toString(),
+                    isFinished,
+                    new Date()
+            );
+
+            return this.tQuestPlayer.saveQuestPlayer(mQuestPlayer);
+        }
+
+        return true;
+    }
+    @Override
+    public boolean addPlayerActiveQuest(OfflinePlayer player, String questName) {
+        return this.addPlayerQuest(player, questName, false);
+    }
+
+    @Override
+    public boolean addPlayerFinishedQuest(OfflinePlayer player, String questName) {
+        return this.addPlayerQuest(player, questName, true);
+    }
+
+    @Override
+    public boolean removePlayerQuest(OfflinePlayer player, String questName) {
+        Integer questId = this.tQuest.getQuestIdByName(questName);
+        if(questId == null || player.getName() == null) {
+            return false;
+        }
+
+        return this.tQuestPlayer.removeQuestPlayer(questId, player.getUniqueId().toString());
+    }
+
+    @Override
+    public boolean isPlayerRegistered(OfflinePlayer player) {
+        return player.getName() != null
+                || this.tPlayer.isPlayerExistByUuid(player.getUniqueId().toString());
+    }
+
+    @Override
+    public void setQuestCooldown(OfflinePlayer player, int minutes) {
+        if(player.getName() != null){
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE, minutes);
+            Timestamp timestamp = new Timestamp(calendar.getTimeInMillis());
+
+            this.tPlayer.setQuestCooldown(
+                    player.getUniqueId().toString(),
+                    timestamp
+            );
+        }
+    }
+
+    @Override
+    public void clearQuestCooldown(OfflinePlayer player) {
+        this.tPlayer.setQuestCooldown(
+                player.getUniqueId().toString(),
+                null
+        );
+    }
+
+    @Override
+    public int getQuestCooldown(OfflinePlayer player) {
+        MPlayer mPlayer = this.tPlayer.getPlayerByUUID(player.getUniqueId().toString());
+        if(mPlayer == null || mPlayer.getQuestCooldown() == null){
+            return 0;
+        }
+
+        return DateUtils.getMinutesDiff(new Date(), mPlayer.getQuestCooldown());
     }
 }

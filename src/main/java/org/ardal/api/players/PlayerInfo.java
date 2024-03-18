@@ -11,7 +11,7 @@ public interface PlayerInfo {
      * @param player to get adventure level
      * @param level to add to the player
      */
-    boolean addAdventureLevel(OfflinePlayer player, long level);
+    boolean addAdventureLevel(OfflinePlayer player, int level);
 
     /**
      * Get the adventure level of a player
@@ -19,7 +19,7 @@ public interface PlayerInfo {
      * @param player to get adventure level
      * @return adventure level
      */
-    long getAdventureLevel(OfflinePlayer player);
+    int getAdventureLevel(OfflinePlayer player);
 
     /**
      * Get the player's active quests
@@ -55,27 +55,17 @@ public interface PlayerInfo {
      */
     boolean addPlayerFinishedQuest(OfflinePlayer player, String questName);
 
-
     /**
-     * Remove an active quest for a player
-     *
-     * @param player to remove the active quest
-     * @param questName of the quest
-     * @return true in success to remove active quest
-     */
-    boolean removePlayerActiveQuest(OfflinePlayer player, String questName);
-
-    /**
-     * Remove a finished quest for a player
+     * Remove quest for a player
      *
      * @param player to remove the finished quest
      * @param questName of the quest
-     * @return true in success to remove finished quest
+     * @return true in success to remove quest
      */
-    boolean removePlayerFinishedQuest(OfflinePlayer player, String questName);
+    boolean removePlayerQuest(OfflinePlayer player, String questName);
 
     /**
-     * Get if a player info is saved
+     * Get if a player info is saved in the db
      *
      * @param player to check
      * @return true in player register in the db, else false
@@ -103,5 +93,5 @@ public interface PlayerInfo {
      * @param player to get quest cooldown
      * @return the cooldown of the player
      */
-    Integer getQuestCooldown(OfflinePlayer player);
+    int getQuestCooldown(OfflinePlayer player);
 }

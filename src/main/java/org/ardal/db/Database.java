@@ -37,11 +37,12 @@ public class Database {
 
         try {
             Statement statement = this.connection.createStatement();
+
             String sql = "create table if not exists player(" +
                     "uuid varchar(36) primary key,  " +
                     "name varchar(255), " +
                     "adventure_level int," +
-                    "quest_cooldown datetime)";
+                    "quest_cooldown datetime null)";
             statement.execute(sql);
 
             sql = "create table if not exists quest(" +
