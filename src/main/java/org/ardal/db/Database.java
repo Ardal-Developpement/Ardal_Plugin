@@ -1,9 +1,7 @@
 package org.ardal.db;
 
 import org.ardal.Ardal;
-import org.ardal.db.tables.TPlayer;
-import org.ardal.db.tables.TQuest;
-import org.ardal.db.tables.TQuestPlayer;
+import org.ardal.db.tables.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,14 +16,18 @@ public class Database {
 
 
 
-    private final TPlayer tPlayer;
-    private final TQuest tQuest;
+    private final TPlayers tPlayers;
+    private final TQuests tQuests;
     private final TQuestPlayer tQuestPlayer;
+    private final TGroups tGroups;
+    private final TItemGroup tItemGroup;
 
     public Database(){
-        this.tQuest = new TQuest();
+        this.tQuests = new TQuests();
         this.tQuestPlayer = new TQuestPlayer();
-        this.tPlayer = new TPlayer();
+        this.tPlayers = new TPlayers();
+        this.tGroups = new TGroups();
+        this.tItemGroup = new TItemGroup();
     }
     private Connection connection;
 
@@ -63,7 +65,8 @@ public class Database {
             sql = "create table if not exists quests(" +
                     "id int auto_increment primary key," +
                     "name varchar(255)," +
-                    "book_id int," +
+                    "book_id varchar(40)," +
+                    "synopsis text," +
                     "request_item_group_id int," +
                     "reward_item_group_id int," +
                     "is_active bool," +
@@ -128,15 +131,23 @@ public class Database {
         }
     }
 
-    public TPlayer gettPlayer() {
-        return tPlayer;
+    public TPlayers gettPlayer() {
+        return tPlayers;
     }
 
-    public TQuest gettQuest() {
-        return tQuest;
+    public TQuests gettQuest() {
+        return tQuests;
     }
 
     public TQuestPlayer gettQuestPlayer() {
         return tQuestPlayer;
+    }
+
+    public TGroups gettGroups() {
+        return tGroups;
+    }
+
+    public TItemGroup gettItemGroup() {
+        return tItemGroup;
     }
 }

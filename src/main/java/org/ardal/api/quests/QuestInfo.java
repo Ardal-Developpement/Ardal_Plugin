@@ -1,6 +1,5 @@
 package org.ardal.api.quests;
 
-import org.ardal.objects.QuestObj;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,29 +49,6 @@ public interface QuestInfo {
     List<ItemStack> getItemQuestReward(String questName);
 
     /**
-     * Get item ids request by the quest
-     *
-     * @param questName of the quest
-     * @return list of item ids
-     */
-    List<String> getItemsQuestRequestId(String questName);
-
-    /**
-     * Get item ids reward by the quest
-     *
-     * @param questName of the quest
-     * @return list of item ids
-     */
-    List<String> getItemQuestRewardId(String questName);
-
-    /**
-     * Get all quest saved (sorted by names)
-     *
-     * @return list of quest objs
-     */
-    List<QuestObj> getAllQuestObj();
-
-    /**
      * Get all quest names (sorted by names)
      *
      * @return list of quest names
@@ -104,7 +80,7 @@ public interface QuestInfo {
      * @param questName of the quest
      * @param synopsis new synopsis
      */
-    void setQuestSynopsis(String questName, @Nullable String synopsis);
+    boolean setQuestSynopsis(String questName, @Nullable String synopsis);
 
     /**
      * Get the quest activity

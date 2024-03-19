@@ -9,11 +9,11 @@ import org.ardal.commands.playerinfo.add.AddPlayerInfoManager;
 import org.ardal.commands.playerinfo.list.ListPlayerInfoManager;
 import org.ardal.commands.playerinfo.remove.RemovePlayerInfoManager;
 import org.ardal.db.Database;
-import org.ardal.db.tables.TPlayer;
-import org.ardal.db.tables.TQuest;
+import org.ardal.db.tables.TPlayers;
+import org.ardal.db.tables.TQuests;
 import org.ardal.db.tables.TQuestPlayer;
-import org.ardal.models.MPlayer;
-import org.ardal.models.MQuest;
+import org.ardal.models.MPlayers;
+import org.ardal.models.MQuests;
 import org.ardal.models.pivot.MQuestPlayer;
 import org.ardal.utils.DateUtils;
 import org.ardal.utils.StringUtils;
@@ -32,9 +32,9 @@ import java.util.Date;
 import java.util.List;
 
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager, Listener {
-    private TPlayer tPlayer;
+    private TPlayers tPlayers;
     private TQuestPlayer tQuestPlayer;
-    private TQuest tQuest;
+    private TQuests tQuests;
 
     public PlayerInfoManager(){
         super(BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
@@ -45,9 +45,9 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
 
         Database db = Ardal.getInstance().getDb();
 
-        this.tQuest = db.gettQuest();
+        this.tQuests = db.gettQuest();
         this.tQuestPlayer = db.gettQuestPlayer();
-        this.tPlayer = db.gettPlayer();
+        this.tPlayers = db.gettPlayer();
 
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
@@ -72,35 +72,35 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         if(!this.isPlayerRegistered(player)){
-            MPlayer mPlayer = new MPlayer(
+            MPlayers mPlayers = new MPlayers(
                     player.getUniqueId().toString(),
                     player.getName(),
                     0,
                     null);
 
-            this.tPlayer.savePlayer(mPlayer);
+            this.tPlayers.savePlayer(mPlayers);
         }
     }
 
     @Override
     public boolean addAdventureLevel(OfflinePlayer player, int level) {
         return player.getName() != null
-                && this.tPlayer.setAdventureLevel(player.getUniqueId().toString(), level);
+                && this.tPlayers.setAdventureLevel(player.getUniqueId().toString(), level);
     }
 
     @Override
     public int getAdventureLevel(OfflinePlayer player) {
-        MPlayer mPlayer = this.tPlayer.getPlayerByUUID(player.getUniqueId().toString());
-        return mPlayer == null ? -1 : mPlayer.getAdventureLevel();
+        MPlayers mPlayers = this.tPlayers.getPlayerByUUID(player.getUniqueId().toString());
+        return mPlayers == null ? -1 : mPlayers.getAdventureLevel();
     }
 
     public List<String> getPlayerQuests(OfflinePlayer player, boolean isFinished) {
         List<Integer> questIds = this.tQuestPlayer.getQuestsIdByPlayerUuid(player.getUniqueId().toString(), isFinished);
         List<String> questNames = new ArrayList<>();
         for(Integer id : questIds) {
-            MQuest mQuest = this.tQuest.getQuestById(id);
-            if(mQuest != null) {
-                questNames.add(mQuest.getName());
+            MQuests mQuests = this.tQuests.getQuestById(id);
+            if(mQuests != null) {
+                questNames.add(mQuests.getName());
             }
         }
 
@@ -118,7 +118,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     }
 
     private boolean addPlayerQuest(OfflinePlayer player, String questName, boolean isFinished) {
-        Integer questId = this.tQuest.getQuestIdByName(questName);
+        Integer questId = this.tQuests.getQuestIdByName(questName);
         if(questId == null || player.getName() == null) {
             return false;
         }
@@ -148,7 +148,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
 
     @Override
     public boolean removePlayerQuest(OfflinePlayer player, String questName) {
-        Integer questId = this.tQuest.getQuestIdByName(questName);
+        Integer questId = this.tQuests.getQuestIdByName(questName);
         if(questId == null || player.getName() == null) {
             return false;
         }
@@ -159,7 +159,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     @Override
     public boolean isPlayerRegistered(OfflinePlayer player) {
         return player.getName() != null
-                || this.tPlayer.isPlayerExistByUuid(player.getUniqueId().toString());
+                || this.tPlayers.isPlayerExistByUuid(player.getUniqueId().toString());
     }
 
     @Override
@@ -169,7 +169,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
             calendar.add(Calendar.MINUTE, minutes);
             Timestamp timestamp = new Timestamp(calendar.getTimeInMillis());
 
-            this.tPlayer.setQuestCooldown(
+            this.tPlayers.setQuestCooldown(
                     player.getUniqueId().toString(),
                     timestamp
             );
@@ -178,7 +178,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
 
     @Override
     public void clearQuestCooldown(OfflinePlayer player) {
-        this.tPlayer.setQuestCooldown(
+        this.tPlayers.setQuestCooldown(
                 player.getUniqueId().toString(),
                 null
         );
@@ -186,11 +186,11 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
 
     @Override
     public int getQuestCooldown(OfflinePlayer player) {
-        MPlayer mPlayer = this.tPlayer.getPlayerByUUID(player.getUniqueId().toString());
-        if(mPlayer == null || mPlayer.getQuestCooldown() == null){
+        MPlayers mPlayers = this.tPlayers.getPlayerByUUID(player.getUniqueId().toString());
+        if(mPlayers == null || mPlayers.getQuestCooldown() == null){
             return 0;
         }
 
-        return DateUtils.getMinutesDiff(new Date(), mPlayer.getQuestCooldown());
+        return DateUtils.getMinutesDiff(new Date(), mPlayers.getQuestCooldown());
     }
 }

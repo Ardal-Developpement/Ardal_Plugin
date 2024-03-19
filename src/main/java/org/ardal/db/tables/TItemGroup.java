@@ -1,7 +1,9 @@
 package org.ardal.db.tables;
 
 import org.ardal.Ardal;
+import org.ardal.managers.CustomItemManager;
 import org.ardal.models.MItemGroup;
+import org.bukkit.inventory.ItemStack;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +20,7 @@ public class TItemGroup {
 
             statement.setString(1, mItemGroup.getItemId());
 
-            statement.execute();
+            statement.executeUpdate();
             statement.close();
         } catch (SQLException e){
             Ardal.writeToLogger("Failed to save quest_player.");
@@ -26,25 +28,49 @@ public class TItemGroup {
         }
     }
 
-    public List<MItemGroup> getItemsByGroupId(int groupId) {
-        List<MItemGroup> mItemGroups = new ArrayList<>();
+    public int saveItemsByGroupId(List<ItemStack> items){
+        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
+
+        int groupId = Ardal.getInstance().getDb().gettGroups().createGroup();
+        if(groupId != -1) {
+
+        try {
+            PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
+                    .prepareStatement("insert into item_group(item_id, group_id) values (?,?)");
+
+            for (ItemStack item : items) {
+                statement.setString(1, customItemManager.addItem(item));
+                statement.setInt(2, groupId);
+                statement.executeUpdate();
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to save quest_player.");
+            e.printStackTrace();
+            }
+        }
+
+        return groupId;
+    }
+
+    public List<String> getItemsByGroupId(int groupId) {
+        List<String> items = new ArrayList<>();
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT item_group_id, item_id FROM item_group WHERE item_group_id = ?"))
+                     .prepareStatement("SELECT item_id FROM item_group WHERE group_id = ?"))
         {
 
             statement.setInt(1, groupId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while(resultSet.next()){
-                    mItemGroups.add(new MItemGroup(
-                            resultSet.getInt("item_group_id"),
-                            resultSet.getString("item_id")
-                    ));
+                    items.add(resultSet.getString("item_id"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return mItemGroups;
+
+        return items;
     }
 }

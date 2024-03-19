@@ -1,7 +1,7 @@
 package org.ardal.db.tables;
 
 import org.ardal.Ardal;
-import org.ardal.models.MPlayer;
+import org.ardal.models.MPlayers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,19 +10,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TPlayer {
+public class TPlayers {
     @Nullable
-    public void savePlayer(@NotNull MPlayer mPlayer) {
+    public void savePlayer(@NotNull MPlayers mPlayers) {
         try {
             PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
                     .prepareStatement("insert into players(uuid, name, adventure_level, quest_cooldown) values (?,?,?,?)");
 
-            statement.setString(1, mPlayer.getUuid());
-            statement.setString(2, mPlayer.getName());
-            statement.setInt(3, mPlayer.getAdventureLevel());
-            statement.setTimestamp(4, new Timestamp(mPlayer.getQuestCooldown().getTime()));
+            statement.setString(1, mPlayers.getUuid());
+            statement.setString(2, mPlayers.getName());
+            statement.setInt(3, mPlayers.getAdventureLevel());
+            statement.setTimestamp(4, new Timestamp(mPlayers.getQuestCooldown().getTime()));
 
-            statement.execute();
+            statement.executeUpdate();
             statement.close();
     } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save player in database.");
@@ -30,7 +30,7 @@ public class TPlayer {
     }
 
     @Nullable
-    public MPlayer getPlayerByUUID(@NotNull String uuid) {
+    public MPlayers getPlayerByUUID(@NotNull String uuid) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("SELECT name, adventure_level, quest_cooldown FROM players WHERE uuid = ?"))
@@ -42,7 +42,7 @@ public class TPlayer {
                     int adventureLevel = resultSet.getInt("adventure_level");
                     Timestamp questCooldownTimestamp = resultSet.getTimestamp("quest_cooldown");
                     java.util.Date questCooldownDate = new Date(questCooldownTimestamp.getTime());
-                    return new MPlayer(uuid, name, adventureLevel, questCooldownDate);
+                    return new MPlayers(uuid, name, adventureLevel, questCooldownDate);
                 }
             }
         } catch (SQLException e) {

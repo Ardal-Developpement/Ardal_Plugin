@@ -20,7 +20,7 @@ public class TQuestPlayer {
             statement.setBoolean(3, mQuestPlayer.getIsFinished());
             statement.setTimestamp(4, new Timestamp(mQuestPlayer.getStartDate().getTime()));
 
-            statement.execute();
+            statement.executeUpdate();
             statement.close();
             return true;
         } catch (SQLException e){

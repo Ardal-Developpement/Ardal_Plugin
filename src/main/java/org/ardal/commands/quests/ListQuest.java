@@ -16,7 +16,7 @@ public class ListQuest implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
-        List<QuestObj> questObjs = Ardal.getInstance().getManager(QuestManager.class).getAllQuestObj();
+        List<String> questObjs = Ardal.getInstance().getManager(QuestManager.class).getAllQuestNames();
 
         if(questObjs.isEmpty()){
             player.sendMessage("No quest found.");
@@ -26,7 +26,7 @@ public class ListQuest implements ArdalCmd {
         player.sendMessage("Found " + questObjs.size() + " quests:\n");
 
         for(int i = 0; i < questObjs.size(); i++){
-            player.sendMessage("Quest " + (i + 1) + ": " + questObjs.get(i).getQuestName());
+            player.sendMessage("Quest " + (i + 1) + ": " + questObjs.get(i));
         }
 
         return true;
