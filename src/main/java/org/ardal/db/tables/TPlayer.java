@@ -15,7 +15,7 @@ public class TPlayer {
     public void savePlayer(@NotNull MPlayer mPlayer) {
         try {
             PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into player(uuid, name, adventure_level, quest_cooldown) values (?,?,?,?)");
+                    .prepareStatement("insert into players(uuid, name, adventure_level, quest_cooldown) values (?,?,?,?)");
 
             statement.setString(1, mPlayer.getUuid());
             statement.setString(2, mPlayer.getName());
@@ -33,7 +33,7 @@ public class TPlayer {
     public MPlayer getPlayerByUUID(@NotNull String uuid) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT name, adventure_level, quest_cooldown FROM player WHERE uuid = ?"))
+                     .prepareStatement("SELECT name, adventure_level, quest_cooldown FROM players WHERE uuid = ?"))
         {
             statement.setString(1, uuid);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -55,7 +55,7 @@ public class TPlayer {
     public boolean isPlayerExistByUuid(@NotNull String uuid) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT 1 FROM player WHERE uuid = ?"))
+                     .prepareStatement("SELECT 1 FROM players WHERE uuid = ?"))
         {
             statement.setString(1, uuid);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -74,7 +74,7 @@ public class TPlayer {
 
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT uuid FROM player"))
+                     .prepareStatement("SELECT uuid FROM players"))
         {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -92,7 +92,7 @@ public class TPlayer {
 
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT name FROM player"))
+                     .prepareStatement("SELECT name FROM players"))
         {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -108,7 +108,7 @@ public class TPlayer {
     public boolean setAdventureLevel(String uuid, int adventureLevel){
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("update player set adventure_level = ? WHERE uuid = ?"))
+                     .prepareStatement("update players set adventure_level = ? WHERE uuid = ?"))
         {
             statement.setInt(1, adventureLevel);
             statement.setString(2, uuid);
@@ -123,7 +123,7 @@ public class TPlayer {
     public boolean setQuestCooldown(String uuid, Timestamp cooldown){
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("update player set quest_cooldown = ? WHERE uuid = ?"))
+                     .prepareStatement("update players set quest_cooldown = ? WHERE uuid = ?"))
         {
             if(cooldown == null){
                 statement.setNull(1, java.sql.Types.TIMESTAMP);

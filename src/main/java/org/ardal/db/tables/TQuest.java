@@ -11,7 +11,7 @@ public class TQuest {
     @Nullable
     public int saveQuest(@NotNull MQuest mQuest) throws SQLException {
         PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                .prepareStatement("insert into quest(name, book_id, request_item_id, reward_item_id, is_active, is_delete) values (?,?,?,?,?,?)",
+                .prepareStatement("insert into quests(name, book_id, request_item_id, reward_item_id, is_active, is_delete) values (?,?,?,?,?,?)",
                         Statement.RETURN_GENERATED_KEYS);
 
         statement.setString(1, mQuest.getName());
@@ -32,7 +32,7 @@ public class TQuest {
     public MQuest getQuestByName(@NotNull String name){
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT book_id, request_item_id, reward_item_id, is_active, is_delete FROM quest WHERE name = ?"))
+                     .prepareStatement("SELECT book_id, request_item_id, reward_item_id, is_active, is_delete FROM quests WHERE name = ?"))
         {
 
             statement.setString(1, name);
@@ -57,7 +57,7 @@ public class TQuest {
     public Integer getQuestIdByName(@NotNull String name){
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT id FROM quest WHERE name = ?"))
+                     .prepareStatement("SELECT id FROM quests WHERE name = ?"))
         {
 
             statement.setString(1, name);
@@ -76,7 +76,7 @@ public class TQuest {
     public MQuest getQuestById(@NotNull int id){
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT name, book_id, request_item_id, reward_item_id, is_active, is_delete FROM quest WHERE id = ?"))
+                     .prepareStatement("SELECT name, book_id, request_item_id, reward_item_id, is_active, is_delete FROM quests WHERE id = ?"))
         {
 
             statement.setInt(1, id);
