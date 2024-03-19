@@ -8,6 +8,7 @@ import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.playerinfo.add.AddPlayerInfoManager;
 import org.ardal.commands.playerinfo.list.ListPlayerInfoManager;
 import org.ardal.commands.playerinfo.remove.RemovePlayerInfoManager;
+import org.ardal.db.Database;
 import org.ardal.db.tables.TPlayer;
 import org.ardal.db.tables.TQuest;
 import org.ardal.db.tables.TQuestPlayer;
@@ -42,9 +43,11 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
         this.registerCmd(new RemovePlayerInfoManager());
         this.registerCmd(new ListPlayerInfoManager());
 
-        this.tPlayer = new TPlayer();
-        this.tQuestPlayer = new TQuestPlayer();
-        this.tQuest = new TQuest();
+        Database db = Ardal.getInstance().getDb();
+
+        this.tQuest = db.gettQuest();
+        this.tQuestPlayer = db.gettQuestPlayer();
+        this.tPlayer = db.gettPlayer();
 
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }

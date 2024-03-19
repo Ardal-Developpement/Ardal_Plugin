@@ -1,8 +1,5 @@
 package org.ardal.managers;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.MalformedJsonException;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
@@ -13,26 +10,24 @@ import org.ardal.commands.quests.edit.EditQuestManager;
 import org.ardal.commands.quests.get.GetQuestManager;
 import org.ardal.commands.quests.give.GiveQuestManager;
 import org.ardal.commands.quests.set.SetQuestManager;
-import org.ardal.db.QuestDB;
+import org.ardal.db.Database;
+import org.ardal.db.tables.TPlayer;
+import org.ardal.db.tables.TQuest;
+import org.ardal.db.tables.TQuestPlayer;
 import org.ardal.objects.QuestObj;
-import org.ardal.utils.JsonUtils;
 import org.ardal.utils.StringUtils;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalManager {
-    private final QuestDB questDB;
-
+    private final TQuest tQuest;
+    private final TQuestPlayer tQuestPlayer;
+    private final TPlayer tPlayer;
     public QuestManager() {
         super(BaseCmdAlias.BASE_QUEST_CMD_ALIAS);
 
@@ -47,7 +42,11 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         this.registerCmd(new GiveQuestManager());
         this.registerCmd(new GetQuestManager());
 
-        this.questDB = new QuestDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
+        Database db = Ardal.getInstance().getDb();
+
+        this.tQuest = db.gettQuest();
+        this.tQuestPlayer = db.gettQuestPlayer();
+        this.tPlayer = db.gettPlayer();
     }
 
     @Override
@@ -57,7 +56,6 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     public void onDisable() {
-        this.questDB.saveDB();
     }
 
     @Override
@@ -70,190 +68,85 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         return this.onSubCmd(commandSender, command, s, StringUtils.getStrListFromStrArray(strings));
     }
 
-    public QuestDB getQuestDB() {
-        return questDB;
-    }
-
-    @Nullable
-    public QuestObj getQuestObj(String questName){
-        try {
-            return this.getQuestDB().getQuestAsQuestObj(questName);
-        } catch (MalformedJsonException e) {
-            Ardal.getInstance().getLogger().severe("Malformed json quest db.");
-            return null;
-        }
-    }
 
     @Override
-    public boolean addQuest(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward) {
-        if (!(book.getType() == Material.WRITABLE_BOOK || book.getType() == Material.WRITTEN_BOOK)) {
-            return false;
-        }
-
-        if (!(book.hasItemMeta() && book.getItemMeta() instanceof BookMeta)) {
-            return false;
-        }
-
-        BookMeta bookMeta = (BookMeta) book.getItemMeta();
-        String questName = bookMeta.getDisplayName().trim();
-
-        if(questName.isEmpty()) {
-            return false;
-        }
-
-        if(this.questExist(questName)){
-            Ardal.writeToLogger("Overwriting the quest: " + questName + " .");
-        }
-
-        new QuestObj(book, itemsRequest, itemsReward, false).save();
+    public boolean addQuest(ItemStack book, List<ItemStack> itemsRequestId, List<ItemStack> itemsRewardId) {
+        //MQuest mQuest = new MQuest()
         return true;
     }
 
     @Override
     public boolean removeQuest(String questName) {
-        QuestObj questObj = this.getQuestObj(questName);
-        if(questObj == null) { return false; }
-
-        // remove item quest usage
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        customItemManager.removeItem(questObj.getBookId());
-        customItemManager.removeItems(questObj.getItemsRequestId());
-        customItemManager.removeItems(questObj.getItemsRewardId());
-
-        // Safe delete
-        this.setQuestDeleted(questName);
-        this.setQuestActivity(questName, false);
-
-        return true;
+        return false;
     }
 
     @Override
-    @Nullable
     public ItemStack getQuestBook(String questName) {
-        if(this.getQuestDeleteState(questName)) { return null; }
-        return this.getQuestObj(questName).getBook();
+        return null;
     }
 
     @Override
-    @Nullable
     public List<ItemStack> getItemsQuestRequest(String questName) {
-        if(this.getQuestDeleteState(questName)) { return null; }
-        return this.getQuestObj(questName).getItemsRequest();
+        return null;
     }
 
     @Override
-    @Nullable
     public List<ItemStack> getItemQuestReward(String questName) {
-        if(this.getQuestDeleteState(questName)) { return null; }
-        return this.getQuestObj(questName).getItemsReward();
+        return null;
     }
 
     @Override
     public List<String> getItemsQuestRequestId(String questName) {
-        if(this.getQuestDeleteState(questName)) { return null; }
-        return this.getQuestObj(questName).getItemsRequestId();
+        return null;
     }
 
     @Override
-    @Nullable
     public List<String> getItemQuestRewardId(String questName) {
-        if(this.getQuestDeleteState(questName)) { return null; }
-        return this.getQuestObj(questName).getItemsRewardId();
+        return null;
     }
 
     @Override
     public List<QuestObj> getAllQuestObj() {
-        List<QuestObj> questObjs = new ArrayList<>();
-        for(String questName : JsonUtils.getKeySet(this.getQuestDB().getDb())){
-            if(this.getQuestDeleteState(questName)) { continue; }
-            questObjs.add(this.getQuestObj(questName));
-        }
-
-        Collections.sort(questObjs);
-        return questObjs;
+        return null;
     }
 
     @Override
-    @NotNull
     public List<String> getAllQuestNames() {
-        List<QuestObj> questObjs = this.getAllQuestObj();
-        List<String> questNames = new ArrayList<>();
-
-        for(QuestObj questObj : questObjs){
-            if(!questObj.getIsDelete()) {
-                questNames.add(questObj.getQuestName());
-            }
-        }
-
-        return questNames;
+        return null;
     }
 
     @Override
-    @Nullable
-    public Boolean setQuestActivity(String questName, boolean state) {
-        if(this.getQuestDeleteState(questName)) { return null; }
-
-        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
-        if(questName == null) { return null; }
-
-        questObj.addProperty("isActive", state);
-        this.questDB.saveDB();
-        return true;
+    public @Nullable Boolean setQuestActivity(String questName, boolean state) {
+        return null;
     }
 
     @Override
-    @Nullable
-    public Boolean setQuestDeleted(String questName) {
-        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
-        if(questName == null) { return null; }
-
-        questObj.addProperty("isDelete", true);
-        this.questDB.saveDB();
-        return true;
+    public @Nullable Boolean setQuestDeleted(String questName) {
+        return null;
     }
 
     @Override
     public void setQuestSynopsis(String questName, @Nullable String synopsis) {
-        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
-        if(questName == null) { return; }
 
-        questObj.addProperty("synopsis", synopsis);
-        this.questDB.saveDB();
     }
 
     @Override
-    @Nullable
-    public Boolean getQuestActivity(String questName) {
-        if(this.getQuestDeleteState(questName)) { return null; }
-
-        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
-        if(questName == null) { return null; }
-
-        JsonElement stateObj = questObj.get("isActive");
-        if(stateObj == null) { return false; }
-
-        return stateObj.getAsBoolean();
+    public @Nullable Boolean getQuestActivity(String questName) {
+        return null;
     }
 
     @Override
     public boolean getQuestDeleteState(String questName) {
-        JsonObject questObj = this.getQuestDB().getQuestAsJsonObject(questName);
-        JsonElement stateObj = questObj.get("isDelete");
-
-        return stateObj.getAsBoolean();
+        return false;
     }
 
     @Override
     public boolean questExist(String questName) {
-        if(questName == null || this.getQuestDeleteState(questName)) { return false; }
-        return this.questDB.getQuestAsJsonObject(questName) != null;
+        return false;
     }
 
     @Override
-    @Nullable
-    public String getQuestSynopsis(String questName) {
-        if(!this.questExist(questName)) { return null; }
-
-        return this.getQuestObj(questName).getSynopsis();
+    public @Nullable String getQuestSynopsis(String questName) {
+        return null;
     }
 }

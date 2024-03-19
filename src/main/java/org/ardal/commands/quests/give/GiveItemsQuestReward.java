@@ -3,16 +3,13 @@ package org.ardal.commands.quests.give;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
-import org.ardal.objects.QuestObj;
 import org.ardal.utils.BukkitUtils;
-import org.ardal.utils.PlayerUtils;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +33,7 @@ public class GiveItemsQuestReward implements ArdalCmd {
             return true;
         }
 
-        QuestObj questObj = questManager.getQuestObj(questName);
+        /*QuestObj questObj = questManager.getQuestObj(questName);
         if(questObj == null){
             sender.sendMessage("Invalid quest name.");
             return true;
@@ -46,7 +43,7 @@ public class GiveItemsQuestReward implements ArdalCmd {
             PlayerUtils.giveItemStackToPlayer(item, offlinePlayer.getPlayer());
         }
         
-        sender.sendMessage("Success to give items reward for: " + questName + " to: " + offlinePlayer.getName());
+        sender.sendMessage("Success to give items reward for: " + questName + " to: " + offlinePlayer.getName());*/
         return true;
     }
 

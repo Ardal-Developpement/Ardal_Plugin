@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.MalformedJsonException;
 import org.ardal.Ardal;
 import org.ardal.managers.CustomItemManager;
-import org.ardal.managers.QuestManager;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.JsonUtils;
 import org.bukkit.inventory.ItemStack;
@@ -89,6 +88,7 @@ public class QuestObj implements Comparable<QuestObj> {
     }
 
     public void save(){
+        /*
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
 
         if(!questManager.getQuestDB().getKeySet().contains(this.getQuestName())) {
@@ -99,6 +99,8 @@ public class QuestObj implements Comparable<QuestObj> {
 
         questManager.getQuestDB().getDb().add(this.getQuestName(), this.toJson());
         questManager.getQuestDB().saveDB();
+
+         */
     }
 
     public String getQuestName(){

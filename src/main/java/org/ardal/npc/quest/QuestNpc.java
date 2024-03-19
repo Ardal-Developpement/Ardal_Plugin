@@ -68,9 +68,11 @@ public class QuestNpc extends CustomNPCObj {
     }
 
     @NotNull
-    public QuestNpcInfo getQuestNpcByName(String questName){
+    public QuestNpcInfo getQuestNpcByName(String questName){ /*
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         return this.getQuestNpcByObj(questManager.getQuestObj(questName));
+        */
+        return null;
     }
 
     @Override

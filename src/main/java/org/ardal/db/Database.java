@@ -1,6 +1,9 @@
 package org.ardal.db;
 
 import org.ardal.Ardal;
+import org.ardal.db.tables.TPlayer;
+import org.ardal.db.tables.TQuest;
+import org.ardal.db.tables.TQuestPlayer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +15,18 @@ public class Database {
     private static final String URL = "jdbc:mysql://localhost/ardal";
     private static final String USER = "root";
     private static final String PASSWORD = "";
+
+
+
+    private final TPlayer tPlayer;
+    private final TQuest tQuest;
+    private final TQuestPlayer tQuestPlayer;
+
+    public Database(){
+        this.tQuest = new TQuest();
+        this.tQuestPlayer = new TQuestPlayer();
+        this.tPlayer = new TPlayer();
+    }
     private Connection connection;
 
     public Connection getConnection() throws SQLException {
@@ -49,8 +64,8 @@ public class Database {
                     "id int auto_increment primary key," +
                     "name varchar(255)," +
                     "book_id int," +
-                    "request_item_id int," +
-                    "reward_item_id int," +
+                    "request_item_group_id int," +
+                    "reward_item_group_id int," +
                     "is_active bool," +
                     "is_delete bool)";
             statement.execute(sql);
@@ -87,6 +102,12 @@ public class Database {
                     "start_date datetime)";
             statement.execute(sql);
 
+            sql = "create table if not exists item_group(" +
+                    "id int primary key," +
+                    "item_group_id int," +
+                    "item_id varchar(40))";
+            statement.execute(sql);
+
             statement.close();
             this.connection.close();
             Ardal.writeToLogger("Created database tables.");
@@ -95,5 +116,17 @@ public class Database {
             Ardal.writeToLogger("Unable to create tables in the database.");
             throw new RuntimeException(e);
         }
+    }
+
+    public TPlayer gettPlayer() {
+        return tPlayer;
+    }
+
+    public TQuest gettQuest() {
+        return tQuest;
+    }
+
+    public TQuestPlayer gettQuestPlayer() {
+        return tQuestPlayer;
     }
 }

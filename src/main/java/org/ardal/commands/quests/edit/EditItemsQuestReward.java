@@ -2,17 +2,12 @@ package org.ardal.commands.quests.edit;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
-import org.ardal.callbacks.quest.edititems.EditQuestItemsRewardCallBack;
-import org.ardal.inventories.CIDropBox;
 import org.ardal.managers.QuestManager;
-import org.ardal.objects.QuestObj;
-import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -26,7 +21,7 @@ public class EditItemsQuestReward implements ArdalCmd {
         Player player = (Player) sender;
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
 
-        QuestObj questObj = questManager.getQuestObj(StringUtils.getStringFromConcatStringList(argv));
+        /*QuestObj questObj = questManager.getQuestObj(StringUtils.getStringFromConcatStringList(argv));
         if(questObj == null){
             player.sendMessage("Invalid quest name.");
             return true;
@@ -39,7 +34,7 @@ public class EditItemsQuestReward implements ArdalCmd {
             ciDropBox.addItem(item);
         }
 
-        ciDropBox.showInventory();
+        ciDropBox.showInventory();*/
         return true;
     }
 

@@ -6,7 +6,6 @@ import org.ardal.inventories.CICarousel;
 import org.ardal.managers.QuestManager;
 import org.ardal.npc.quest.QuestNpc;
 import org.ardal.npc.quest.QuestNpcInfo;
-import org.ardal.objects.QuestObj;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -78,6 +77,7 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
     }
 
     private ItemStack getQuestBook(String questName, QuestManager questManager){
+        /*
         QuestObj questObj = questManager.getQuestObj(questName);
         if(questObj == null || !questObj.getIsActive()) { return null; }
 
@@ -85,6 +85,9 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
         this.refreshBookMeta(book);
 
         return book;
+
+         */
+        return null;
     }
 
     private void refreshBookMeta(ItemStack book){
