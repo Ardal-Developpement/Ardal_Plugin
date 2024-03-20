@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestObj implements Comparable<QuestObj> {
-    private final boolean isActive;
-    private final boolean isDelete;
+    private boolean isActive;
+    private boolean isDelete;
     private String bookId;
     private String synopsis;
     private List<String> itemsRequestId;
