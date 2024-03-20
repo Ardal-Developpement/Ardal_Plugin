@@ -2,6 +2,7 @@ package org.ardal.db;
 
 import org.ardal.Ardal;
 import org.ardal.db.tables.*;
+import org.ardal.db.tables.npc.TNpc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

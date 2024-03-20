@@ -36,7 +36,7 @@ public class TQuest {
         return id;
     }
 
-    public boolean deleteQuestByName(String questName) {
+    public boolean deleteQuest(String questName) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("delete from quests WHERE name = ?"))
@@ -155,7 +155,7 @@ public class TQuest {
                              "reward_item_group_id = ?," +
                              "is_active = ?," +
                              "is_delete = ?" +
-                             " WHERE name = ?"))
+                             "where name = ?"))
         {
             statement.setString(1, quests.getName());
             statement.setString(2, quests.getBookId());
@@ -174,6 +174,4 @@ public class TQuest {
 
         return false;
     }
-
-
 }

@@ -9,7 +9,7 @@ import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.npc.CreateAndInvokeNpc;
 import org.ardal.commands.npc.give.GiveNpcManager;
 import org.ardal.inventories.npc.quest.management.NpcManagementTool;
-import org.ardal.models.npc.core.MNpc;
+import org.ardal.models.npc.MNpc;
 import org.ardal.npc.quest.QuestNpc;
 import org.ardal.objects.CustomNPCObj;
 import org.ardal.utils.StringUtils;
@@ -159,7 +159,7 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
     public boolean giveManagementToolToPlayer(Player player) {
         return this.npcManagementTool.getToolToPlayer(player);
     }
-    
+
     @EventHandler
     public void onNPCInteract(PlayerInteractEntityEvent event) {
         if (event.getRightClicked().getType() == EntityType.VILLAGER) {

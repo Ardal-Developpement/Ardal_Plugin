@@ -1,4 +1,4 @@
-package org.ardal.models.npc.core;
+package org.ardal.models.npc;
 
 import org.ardal.Ardal;
 

@@ -30,7 +30,7 @@ public class MLocation {
     @Nullable
     public int createLocation(@NotNull MLocation mLocation) throws SQLException {
         PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                .prepareStatement("insert into location(world_uuid, x, y, z, yaw, pitch) values (?,?,?,?,?,?)",
+                .prepareStatement("insert into locations(world_uuid, x, y, z, yaw, pitch) values (?,?,?,?,?,?)",
                         Statement.RETURN_GENERATED_KEYS);
 
         statement.setString(1, mLocation.world_uuid);
@@ -47,10 +47,6 @@ public class MLocation {
         return id;
     }
 
-    public MLocation findLocationById(int id) {
-        return null;
-    }
-
     public int getId() {
         return id;
     }
@@ -59,11 +55,11 @@ public class MLocation {
         this.id = id;
     }
 
-    public String getWorld_uuid() {
+    public String getWorldUuid() {
         return world_uuid;
     }
 
-    public void setWorld_uuid(String world_uuid) {
+    public void setWorldUuid(String world_uuid) {
         this.world_uuid = world_uuid;
     }
 

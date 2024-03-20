@@ -64,7 +64,7 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
 
     @Override
     public void onCIClose(InventoryCloseEvent event){
-        this.questNpc.saveNpcAdditionnalInfo();
+        this.questNpc.updateNpcAdditionnalInfo();
         this.unregisterInventory();
     }
 

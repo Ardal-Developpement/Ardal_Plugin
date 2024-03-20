@@ -1,7 +1,7 @@
-package org.ardal.db.tables;
+package org.ardal.db.tables.npc;
 
 import org.ardal.Ardal;
-import org.ardal.models.npc.core.MNpc;
+import org.ardal.models.npc.MNpc;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;

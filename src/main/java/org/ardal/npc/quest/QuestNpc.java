@@ -11,6 +11,7 @@ import org.ardal.inventories.npc.quest.management.QuestIsActiveSelectorInventory
 import org.ardal.managers.CustomNPCManager;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
+import org.ardal.models.npc.type.MQuestNpc;
 import org.ardal.objects.CustomNPCObj;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.ChatUtils;
@@ -48,8 +49,12 @@ public class QuestNpc extends CustomNPCObj {
         }
     }
 
-    public void saveNpcAdditionnalInfo(){
+    public void updateNpcAdditionnalInfo(){
 
+    }
+
+    private MQuestNpc toMQuestNpc() {
+        return new MQuestNpc(this.);
     }
 
     @NotNull

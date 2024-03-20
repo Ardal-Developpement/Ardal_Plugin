@@ -90,7 +90,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     public boolean removeQuest(String questName) {
-        return Ardal.getInstance().getDb().gettQuest().deleteQuestByName(questName);
+        return Ardal.getInstance().getDb().gettQuest().deleteQuest(questName);
     }
 
     @Override
