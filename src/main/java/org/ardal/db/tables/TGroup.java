@@ -1,7 +1,7 @@
 package org.ardal.db.tables;
 
 import org.ardal.Ardal;
-import org.ardal.models.MGroups;
+import org.ardal.models.MGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class TGroups {
+public class TGroup {
     @Nullable
     public int createGroup() {
         try {
@@ -32,12 +32,12 @@ public class TGroups {
         return -1;
     }
 
-    public boolean removeQuestPlayer(@NotNull MGroups mGroups) {
+    public boolean removeQuestPlayer(@NotNull MGroup mGroup) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("delete from `groups` WHERE id = ?"))
         {
-            statement.setInt(1, mGroups.getGroupId());
+            statement.setInt(1, mGroup.getGroupId());
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             e.printStackTrace();

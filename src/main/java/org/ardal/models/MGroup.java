@@ -1,9 +1,9 @@
 package org.ardal.models;
 
-public class MGroups {
+public class MGroup {
     private int group_id;
 
-    public MGroups(int group_id) {
+    public MGroup(int group_id) {
         this.group_id = group_id;
     }
 

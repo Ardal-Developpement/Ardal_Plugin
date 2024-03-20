@@ -16,17 +16,17 @@ public class Database {
 
 
 
-    private final TPlayers tPlayers;
-    private final TQuests tQuests;
+    private final TPlayer tPlayers;
+    private final TQuest tQuests;
     private final TQuestPlayer tQuestPlayer;
-    private final TGroups tGroups;
+    private final TGroup tGroup;
     private final TItemGroup tItemGroup;
 
     public Database(){
-        this.tQuests = new TQuests();
+        this.tQuests = new TQuest();
         this.tQuestPlayer = new TQuestPlayer();
-        this.tPlayers = new TPlayers();
-        this.tGroups = new TGroups();
+        this.tPlayers = new TPlayer();
+        this.tGroup = new TGroup();
         this.tItemGroup = new TItemGroup();
     }
     private Connection connection;
@@ -131,11 +131,11 @@ public class Database {
         }
     }
 
-    public TPlayers gettPlayer() {
+    public TPlayer gettPlayer() {
         return tPlayers;
     }
 
-    public TQuests gettQuest() {
+    public TQuest gettQuest() {
         return tQuests;
     }
 
@@ -143,8 +143,8 @@ public class Database {
         return tQuestPlayer;
     }
 
-    public TGroups gettGroups() {
-        return tGroups;
+    public TGroup gettGroups() {
+        return tGroup;
     }
 
     public TItemGroup gettItemGroup() {

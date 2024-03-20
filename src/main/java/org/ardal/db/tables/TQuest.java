@@ -1,7 +1,7 @@
 package org.ardal.db.tables;
 
 import org.ardal.Ardal;
-import org.ardal.models.MQuests;
+import org.ardal.models.MQuest;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,21 +9,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TQuests {
+public class TQuest {
     @Nullable
-    public int saveQuest(@NotNull MQuests mQuests) {
+    public int saveQuest(@NotNull MQuest mQuest) {
         int id = -1;
         try {
             PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
                     .prepareStatement("insert into quests(name, book_id, request_item_group_id, reward_item_group_id, is_active, is_delete) values (?,?,?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS);
 
-            statement.setString(1, mQuests.getName());
-            statement.setString(2, mQuests.getBookId());
-            statement.setInt(3, mQuests.getRequestItemId());
-            statement.setInt(4, mQuests.getRewardItemId());
-            statement.setBoolean(5, mQuests.getIsActive());
-            statement.setBoolean(6, mQuests.getIsDelete());
+            statement.setString(1, mQuest.getName());
+            statement.setString(2, mQuest.getBookId());
+            statement.setInt(3, mQuest.getRequestItemId());
+            statement.setInt(4, mQuest.getRewardItemId());
+            statement.setBoolean(5, mQuest.getIsActive());
+            statement.setBoolean(6, mQuest.getIsDelete());
 
             statement.executeUpdate();
             id = statement.getGeneratedKeys().getInt(1);
@@ -44,6 +44,7 @@ public class TQuests {
             statement.setString(1, questName);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to delete quest in database.");
             e.printStackTrace();
         }
 
@@ -51,7 +52,7 @@ public class TQuests {
     }
 
     @Nullable
-    public MQuests getQuestByName(@NotNull String name) {
+    public MQuest getQuestByName(@NotNull String name) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("SELECT book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ?"))
@@ -67,10 +68,11 @@ public class TQuests {
                     boolean is_active = resultSet.getBoolean("is_active");
                     boolean is_delete = resultSet.getBoolean("is_delete");
 
-                    return new MQuests(name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
+                    return new MQuest(name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to fetch quest in database.");
             e.printStackTrace();
         }
         return null;
@@ -96,7 +98,7 @@ public class TQuests {
     }
 
     @Nullable
-    public MQuests getQuestById(@NotNull int id) {
+    public MQuest getQuestById(@NotNull int id) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("SELECT name, book_id, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ?"))
@@ -113,7 +115,7 @@ public class TQuests {
                     boolean is_active = resultSet.getBoolean("is_active");
                     boolean is_delete = resultSet.getBoolean("is_delete");
 
-                    return new MQuests(name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
+                    return new MQuest(name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
                 }
             }
         } catch (SQLException e) {
@@ -142,7 +144,7 @@ public class TQuests {
         return questNames;
     }
 
-    public boolean updateQuest(MQuests quests){
+    public boolean updateQuest(MQuest quests){
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("update quests set " +

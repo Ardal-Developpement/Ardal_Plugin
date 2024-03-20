@@ -4,12 +4,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-public class MPlayers {
+public class MPlayer {
     private String uuid;
     private String name;
     private int adventure_level;
     private Date quest_cooldown;
-    public MPlayers(String uuid, String name, int adventure_level, @Nullable Date quest_cooldown) {
+    public MPlayer(String uuid, String name, int adventure_level, @Nullable Date quest_cooldown) {
         this.uuid = uuid;
         this.name = name;
         this.adventure_level = adventure_level;

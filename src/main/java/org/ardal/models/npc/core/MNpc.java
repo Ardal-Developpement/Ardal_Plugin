@@ -9,14 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MNpcs {
+public class MNpc {
     private String uuid;
     private String name;
     private boolean is_visible;
     private int location_id;
     private String type;
 
-    public MNpcs(String uuid, String name, boolean is_visible, int location_id, String type) {
+    public MNpc(String uuid, String name, boolean is_visible, int location_id, String type) {
         this.uuid = uuid;
         this.name = name;
         this.is_visible = is_visible;
@@ -25,22 +25,22 @@ public class MNpcs {
     }
 
     @Nullable
-    public void createNpc(@NotNull MNpcs mNpcs) throws SQLException {
+    public void createNpc(@NotNull MNpc mNpc) throws SQLException {
         PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
                 .prepareStatement("insert into npc(uuid, name, is_visible, location_id, type) values (?,?,?,?,?)");
 
-        statement.setString(1, mNpcs.uuid);
-        statement.setString(2, mNpcs.name);
-        statement.setBoolean(3, mNpcs.is_visible);
-        statement.setInt(4, mNpcs.location_id);
-        statement.setString(5, mNpcs.type);
+        statement.setString(1, mNpc.uuid);
+        statement.setString(2, mNpc.name);
+        statement.setBoolean(3, mNpc.is_visible);
+        statement.setInt(4, mNpc.location_id);
+        statement.setString(5, mNpc.type);
 
         statement.execute();
         statement.close();
     }
 
     @Nullable
-    public MNpcs findNpcByUuid(@NotNull String uuid){
+    public MNpc findNpcByUuid(@NotNull String uuid){
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("SELECT name, is_visible, location_id, type FROM npc WHERE uuid = ?"))
@@ -54,7 +54,7 @@ public class MNpcs {
                     int location_id = resultSet.getInt("location_id");
                     String type = resultSet.getString("type");
 
-                    return new MNpcs(uuid, name, is_visible, location_id, type);
+                    return new MNpc(uuid, name, is_visible, location_id, type);
                 }
             }
         } catch (SQLException e) {
@@ -79,7 +79,7 @@ public class MNpcs {
         this.name = name;
     }
 
-    public boolean isIs_visible() {
+    public boolean getIsVisible() {
         return is_visible;
     }
 
@@ -87,7 +87,7 @@ public class MNpcs {
         this.is_visible = is_visible;
     }
 
-    public int getLocation_id() {
+    public int getLocationId() {
         return location_id;
     }
 

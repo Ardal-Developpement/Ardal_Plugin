@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class MLocations {
+public class MLocation {
     private int id;
     private String world_uuid;
     private double x;
@@ -17,7 +17,7 @@ public class MLocations {
     private double yaw;
     private double pitch;
 
-    public MLocations(int id, String world_uuid, double x, double y, double z, double yaw, double pitch) {
+    public MLocation(int id, String world_uuid, double x, double y, double z, double yaw, double pitch) {
         this.id = id;
         this.world_uuid = world_uuid;
         this.x = x;
@@ -28,12 +28,12 @@ public class MLocations {
     }
 
     @Nullable
-    public int createLocation(@NotNull MLocations mLocations) throws SQLException {
+    public int createLocation(@NotNull MLocation mLocation) throws SQLException {
         PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
                 .prepareStatement("insert into location(world_uuid, x, y, z, yaw, pitch) values (?,?,?,?,?,?)",
                         Statement.RETURN_GENERATED_KEYS);
 
-        statement.setString(1, mLocations.world_uuid);
+        statement.setString(1, mLocation.world_uuid);
         statement.setDouble(2, x);
         statement.setDouble(3, y);
         statement.setDouble(4, z);
@@ -47,7 +47,7 @@ public class MLocations {
         return id;
     }
 
-    public MLocations findLocationById(int id) {
+    public MLocation findLocationById(int id) {
         return null;
     }
 

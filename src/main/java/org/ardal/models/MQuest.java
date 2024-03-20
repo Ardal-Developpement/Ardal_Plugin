@@ -2,7 +2,7 @@ package org.ardal.models;
 
 import org.ardal.Ardal;
 
-public class MQuests {
+public class MQuest {
     private String name;
     private String book_id;
     private String synopsis;
@@ -11,7 +11,7 @@ public class MQuests {
     private boolean is_active;
     private boolean is_delete;
 
-    public MQuests(String name, String book_id, String synopsis, int request_item_id, int reward_item_id, boolean is_active, boolean is_delete) {
+    public MQuest(String name, String book_id, String synopsis, int request_item_id, int reward_item_id, boolean is_active, boolean is_delete) {
         this.name = name;
         this.book_id = book_id;
         this.synopsis = synopsis;

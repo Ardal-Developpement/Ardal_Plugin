@@ -11,10 +11,10 @@ import org.ardal.commands.quests.get.GetQuestManager;
 import org.ardal.commands.quests.give.GiveQuestManager;
 import org.ardal.commands.quests.set.SetQuestManager;
 import org.ardal.db.Database;
-import org.ardal.db.tables.TPlayers;
+import org.ardal.db.tables.TPlayer;
 import org.ardal.db.tables.TQuestPlayer;
-import org.ardal.db.tables.TQuests;
-import org.ardal.models.MQuests;
+import org.ardal.db.tables.TQuest;
+import org.ardal.models.MQuest;
 import org.ardal.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,9 +25,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalManager {
-    private final TQuests tQuests;
+    private final TQuest tQuests;
     private final TQuestPlayer tQuestPlayer;
-    private final TPlayers tPlayers;
+    private final TPlayer tPlayers;
     public QuestManager() {
         super(BaseCmdAlias.BASE_QUEST_CMD_ALIAS);
 
@@ -50,7 +50,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Nullable
-    private MQuests getQuestByName(String questName){
+    private MQuest getQuestByName(String questName){
         return Ardal.getInstance().getDb().gettQuest().getQuestByName(questName);
     }
 
@@ -83,9 +83,9 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         String bookId = customItemManager.addItem(book);
         String questName = book.getItemMeta().getDisplayName();
 
-        MQuests mQuests = new MQuests(questName, bookId, "", itemsRequestId, itemsRewardId, true, false);
+        MQuest mQuest = new MQuest(questName, bookId, "", itemsRequestId, itemsRewardId, true, false);
 
-        return db.gettQuest().saveQuest(mQuests) != -1;
+        return db.gettQuest().saveQuest(mQuest) != -1;
     }
 
     @Override
@@ -124,23 +124,23 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
 
     @Override
     public @Nullable Boolean setQuestActivity(String questName, boolean state) {
-        MQuests mQuests = this.getQuestByName(questName);
-        mQuests.setIsActive(state);
-        return mQuests.saveQuest();
+        MQuest mQuest = this.getQuestByName(questName);
+        mQuest.setIsActive(state);
+        return mQuest.saveQuest();
     }
 
     @Override
     public @Nullable Boolean setQuestDeleted(String questName) {
-        MQuests mQuests = this.getQuestByName(questName);
-        mQuests.setIsDelete(true);
-        return mQuests.saveQuest();
+        MQuest mQuest = this.getQuestByName(questName);
+        mQuest.setIsDelete(true);
+        return mQuest.saveQuest();
     }
 
     @Override
     public boolean setQuestSynopsis(String questName, @Nullable String synopsis) {
-        MQuests mQuests = this.getQuestByName(questName);
-        mQuests.setSynopsis(synopsis);
-        return mQuests.saveQuest();
+        MQuest mQuest = this.getQuestByName(questName);
+        mQuest.setSynopsis(synopsis);
+        return mQuest.saveQuest();
     }
 
     @Override
