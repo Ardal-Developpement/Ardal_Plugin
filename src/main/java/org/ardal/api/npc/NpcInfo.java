@@ -52,14 +52,6 @@ public interface NpcInfo {
     boolean deleteNpc(UUID id);
 
     /**
-     * Get all saved id of the npc type
-     *
-     * @param type of the npc
-     * @return list of npc id
-     */
-    List<UUID> getAllNpcIdByTypeSaved(CustomNpcType type);
-
-    /**
      * Get all saved npc id
      *
      * @return list of npc id

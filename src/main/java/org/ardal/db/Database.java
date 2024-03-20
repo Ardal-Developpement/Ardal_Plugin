@@ -21,6 +21,7 @@ public class Database {
     private final TQuestPlayer tQuestPlayer;
     private final TGroup tGroup;
     private final TItemGroup tItemGroup;
+    private final TNpc tNpc;
 
     public Database(){
         this.tQuests = new TQuest();
@@ -28,6 +29,7 @@ public class Database {
         this.tPlayers = new TPlayer();
         this.tGroup = new TGroup();
         this.tItemGroup = new TItemGroup();
+        this.tNpc = new TNpc();
     }
     private Connection connection;
 
@@ -149,5 +151,9 @@ public class Database {
 
     public TItemGroup gettItemGroup() {
         return tItemGroup;
+    }
+
+    public TNpc gettNpc() {
+        return tNpc;
     }
 }

@@ -44,6 +44,24 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
 
+    @Override
+    public void onEnable() {
+    }
+
+    @Override
+    public void onDisable() {
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        if(!(commandSender instanceof Player)){
+            commandSender.sendMessage("Command can be only used by player.");
+            return true;
+        }
+
+        return this.onSubCmd(commandSender, command, s, StringUtils.getStrListFromStrArray(strings));
+    }
+
     public void registerNpc(CustomNPCObj npc){
         if(!this.invokedNpc.contains(npc)){
             this.invokedNpc.add(npc);
@@ -82,36 +100,27 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
         return false;
     }
 
+    @Nullable
     public MNpc getNpcByUuid(UUID uuid) {
-        return Ardal.getInstance().getDb().get
+        return Ardal.getInstance().getDb().gettNpc().getNpcByUuid(uuid.toString());
     }
 
     @Override
     public boolean setVisibleNpc(UUID id, boolean state) {
-        return false;
+        MNpc mNpc = this.getNpcByUuid(id);
+        if(mNpc == null) { return false; }
+
+        mNpc.setIsVisible(state);
+        return mNpc.updateNpc();
     }
 
     @Override
     public boolean setNpcName(UUID id, String newName) {
-        return false;
-    }
+        MNpc mNpc = this.getNpcByUuid(id);
+        if(mNpc == null) { return false; }
 
-    @Override
-    public void onEnable() {
-    }
-
-    @Override
-    public void onDisable() {
-    }
-
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if(!(commandSender instanceof Player)){
-            commandSender.sendMessage("Command can be only used by player.");
-            return true;
-        }
-
-        return this.onSubCmd(commandSender, command, s, StringUtils.getStrListFromStrArray(strings));
+        mNpc.setName(newName);
+        return mNpc.updateNpc();
     }
 
     @Override
@@ -125,18 +134,14 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
                 return false;
         }
 
+        // TODO
         // this.npcDB.saveNPC(customNPCObj);
         return true;
     }
 
     @Override
     public boolean deleteNpc(UUID id) {
-        return false;
-    }
-
-    @Override
-    public List<UUID> getAllNpcIdByTypeSaved(CustomNpcType type) {
-        return null;
+        return Ardal.getInstance().getDb().gettNpc().deleteNpc(id.toString());
     }
 
     @Override
@@ -146,7 +151,7 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
 
     @Override
     public boolean isNpcExist(UUID id) {
-        return false;
+        return Ardal.getInstance().getDb().gettNpc().npcExist(id.toString());
     }
 
 
@@ -154,9 +159,7 @@ public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalM
     public boolean giveManagementToolToPlayer(Player player) {
         return this.npcManagementTool.getToolToPlayer(player);
     }
-
-
-
+    
     @EventHandler
     public void onNPCInteract(PlayerInteractEntityEvent event) {
         if (event.getRightClicked().getType() == EntityType.VILLAGER) {

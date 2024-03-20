@@ -2,12 +2,15 @@ package org.ardal.db.tables;
 
 import org.ardal.Ardal;
 import org.ardal.models.npc.core.MNpc;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TNpc {
+
+    @Nullable
     public String createNpc(MNpc mNpc) {
         String npcUuid = null;
         try {
@@ -30,6 +33,8 @@ public class TNpc {
 
         return npcUuid;
     }
+
+    @Nullable
     public MNpc getNpcByUuid(String uuid) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
@@ -90,6 +95,7 @@ public class TNpc {
         return false;
     }
 
+    @Nullable
     public String getNpcName(String uuid) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
@@ -107,6 +113,25 @@ public class TNpc {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean npcExist(String uuid) {
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("SELECT name FROM npcs WHERE uuid = ?"))
+        {
+
+            statement.setString(1, uuid);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to fetch npc in database.");
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public List<String> getAllNpcUuids() {

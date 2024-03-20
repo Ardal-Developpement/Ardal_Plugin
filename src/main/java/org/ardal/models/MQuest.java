@@ -21,7 +21,7 @@ public class MQuest {
         this.is_delete = is_delete;
     }
 
-    public boolean saveQuest(){
+    public boolean updateQuest(){
         return Ardal.getInstance().getDb().gettQuest().updateQuest(this);
     }
 

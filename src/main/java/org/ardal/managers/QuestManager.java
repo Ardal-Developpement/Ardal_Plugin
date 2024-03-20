@@ -126,21 +126,21 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     public @Nullable Boolean setQuestActivity(String questName, boolean state) {
         MQuest mQuest = this.getQuestByName(questName);
         mQuest.setIsActive(state);
-        return mQuest.saveQuest();
+        return mQuest.updateQuest();
     }
 
     @Override
     public @Nullable Boolean setQuestDeleted(String questName) {
         MQuest mQuest = this.getQuestByName(questName);
         mQuest.setIsDelete(true);
-        return mQuest.saveQuest();
+        return mQuest.updateQuest();
     }
 
     @Override
     public boolean setQuestSynopsis(String questName, @Nullable String synopsis) {
         MQuest mQuest = this.getQuestByName(questName);
         mQuest.setSynopsis(synopsis);
-        return mQuest.saveQuest();
+        return mQuest.updateQuest();
     }
 
     @Override

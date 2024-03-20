@@ -49,9 +49,7 @@ public class QuestNpc extends CustomNPCObj {
     }
 
     public void saveNpcAdditionnalInfo(){
-        CustomNPCManager customNPCManager = Ardal.getInstance().getManager(CustomNPCManager.class);
-         customNPCManager.getNpcDB().getDb().get(this.getId().toString()).getAsJsonObject().add("additionalProperties", this.additionalProperties());
-         customNPCManager.getNpcDB().saveDB();
+
     }
 
     @NotNull
