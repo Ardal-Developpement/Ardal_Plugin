@@ -3,7 +3,7 @@ package org.ardal.managers;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
-import org.ardal.api.quests.QuestInfo;
+import org.ardal.api.quests.QuestManagerInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.quests.*;
 import org.ardal.commands.quests.edit.EditQuestManager;
@@ -11,10 +11,8 @@ import org.ardal.commands.quests.get.GetQuestManager;
 import org.ardal.commands.quests.give.GiveQuestManager;
 import org.ardal.commands.quests.set.SetQuestManager;
 import org.ardal.db.Database;
-import org.ardal.db.tables.TPlayer;
-import org.ardal.db.tables.TQuestPlayer;
-import org.ardal.db.tables.TQuest;
 import org.ardal.models.MQuest;
+import org.ardal.objects.QuestObj2;
 import org.ardal.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,10 +22,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalManager {
-    private final TQuest tQuests;
-    private final TQuestPlayer tQuestPlayer;
-    private final TPlayer tPlayers;
+public class QuestManager extends ArdalCmdManager implements QuestManagerInfo, ArdalManager {
+
     public QuestManager() {
         super(BaseCmdAlias.BASE_QUEST_CMD_ALIAS);
 
@@ -41,17 +37,6 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
         this.registerCmd(new EditQuestManager());
         this.registerCmd(new GiveQuestManager());
         this.registerCmd(new GetQuestManager());
-
-        Database db = Ardal.getInstance().getDb();
-
-        this.tQuests = db.gettQuest();
-        this.tQuestPlayer = db.gettQuestPlayer();
-        this.tPlayers = db.gettPlayer();
-    }
-
-    @Nullable
-    private MQuest getQuestByName(String questName){
-        return Ardal.getInstance().getDb().gettQuest().getQuestByName(questName);
     }
 
     @Override
@@ -74,7 +59,7 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Override
-    public boolean addQuest(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward) {
+    public boolean createNewQuest(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward){
         Database db = Ardal.getInstance().getDb();
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
 
@@ -89,77 +74,22 @@ public class QuestManager extends ArdalCmdManager implements QuestInfo, ArdalMan
     }
 
     @Override
-    public boolean removeQuest(String questName) {
-        return Ardal.getInstance().getDb().gettQuest().deleteQuest(questName);
+    public List<String> getAllQuestNames(boolean includeDelete) {
+        return Ardal.getInstance().getDb().gettQuest().getAllQuestNames(includeDelete);
     }
 
     @Override
-    public ItemStack getQuestBook(String questName) {
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return customItemManager.getItem(this.getQuestByName(questName).getBookId());
+    public boolean getIsQuestExist(String questName, boolean includeDeleted) {
+        return this.getQuestObj(questName, includeDeleted) != null;
     }
 
     @Override
-    public List<ItemStack> getItemsQuestRequest(String questName) {
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        List<String>  itemIds = Ardal.getInstance().getDb().gettItemGroup().getItemsByGroupId(
-                this.getQuestByName(questName).getRequestItemId());
-
-        return customItemManager.getItems(itemIds);
+    public @Nullable QuestObj2 getQuestObj(String questName, boolean includeDeleted) {
+        return new QuestObj2(Ardal.getInstance().getDb().gettQuest().getQuestByName(questName, includeDeleted));
     }
 
     @Override
-    public List<ItemStack> getItemQuestReward(String questName) {
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        List<String>  itemIds = Ardal.getInstance().getDb().gettItemGroup().getItemsByGroupId(
-                this.getQuestByName(questName).getRewardItemId());
-
-        return customItemManager.getItems(itemIds);
-    }
-
-    @Override
-    public List<String> getAllQuestNames() {
-        return Ardal.getInstance().getDb().gettQuest().getAllQuestNames();
-    }
-
-    @Override
-    public @Nullable Boolean setQuestActivity(String questName, boolean state) {
-        MQuest mQuest = this.getQuestByName(questName);
-        mQuest.setIsActive(state);
-        return mQuest.updateQuest();
-    }
-
-    @Override
-    public @Nullable Boolean setQuestDeleted(String questName) {
-        MQuest mQuest = this.getQuestByName(questName);
-        mQuest.setIsDelete(true);
-        return mQuest.updateQuest();
-    }
-
-    @Override
-    public boolean setQuestSynopsis(String questName, @Nullable String synopsis) {
-        MQuest mQuest = this.getQuestByName(questName);
-        mQuest.setSynopsis(synopsis);
-        return mQuest.updateQuest();
-    }
-
-    @Override
-    public @Nullable Boolean getQuestActivity(String questName) {
-        return this.getQuestByName(questName).getIsActive();
-    }
-
-    @Override
-    public boolean getQuestDeleteState(String questName) {
-        return this.getQuestByName(questName).getIsDelete();
-    }
-
-    @Override
-    public boolean questExist(String questName) {
-        return this.getQuestByName(questName) != null;
-    }
-
-    @Override
-    public @Nullable String getQuestSynopsis(String questName) {
-        return this.getQuestByName(questName).getSynopsis();
+    public @Nullable QuestObj2 getQuestObj(String questName) {
+        return this.getQuestObj(questName, false);
     }
 }

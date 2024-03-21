@@ -6,17 +6,17 @@ public class MQuest {
     private String name;
     private String book_id;
     private String synopsis;
-    private int request_item_id;
-    private int reward_item_id;
+    private int request_item_group_id;
+    private int reward_item_group_id;
     private boolean is_active;
     private boolean is_delete;
 
-    public MQuest(String name, String book_id, String synopsis, int request_item_id, int reward_item_id, boolean is_active, boolean is_delete) {
+    public MQuest(String name, String book_id, String synopsis, int request_item_group_id, int reward_item_group_id, boolean is_active, boolean is_delete) {
         this.name = name;
         this.book_id = book_id;
         this.synopsis = synopsis;
-        this.request_item_id = request_item_id;
-        this.reward_item_id = reward_item_id;
+        this.request_item_group_id = request_item_group_id;
+        this.reward_item_group_id = reward_item_group_id;
         this.is_active = is_active;
         this.is_delete = is_delete;
     }
@@ -41,20 +41,20 @@ public class MQuest {
         this.book_id = book_id;
     }
 
-    public int getRequestItemId() {
-        return request_item_id;
+    public int getRequestItemGroupId() {
+        return request_item_group_id;
     }
 
-    public void setRequest_item_id(int request_item_id) {
-        this.request_item_id = request_item_id;
+    public void setRequest_item_group_id(int request_item_group_id) {
+        this.request_item_group_id = request_item_group_id;
     }
 
-    public int getRewardItemId() {
-        return reward_item_id;
+    public int getRewardItemGroupId() {
+        return reward_item_group_id;
     }
 
-    public void setReward_item_id(int reward_item_id) {
-        this.reward_item_id = reward_item_id;
+    public void setReward_item_group_id(int reward_item_group_id) {
+        this.reward_item_group_id = reward_item_group_id;
     }
 
     public boolean getIsActive() {

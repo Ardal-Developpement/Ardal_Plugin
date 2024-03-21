@@ -20,8 +20,8 @@ public class TQuest {
 
             statement.setString(1, mQuest.getName());
             statement.setString(2, mQuest.getBookId());
-            statement.setInt(3, mQuest.getRequestItemId());
-            statement.setInt(4, mQuest.getRewardItemId());
+            statement.setInt(3, mQuest.getRequestItemGroupId());
+            statement.setInt(4, mQuest.getRewardItemGroupId());
             statement.setBoolean(5, mQuest.getIsActive());
             statement.setBoolean(6, mQuest.getIsDelete());
 
@@ -52,11 +52,15 @@ public class TQuest {
     }
 
     @Nullable
-    public MQuest getQuestByName(@NotNull String name) {
-        try (Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement = connection
-                     .prepareStatement("SELECT book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ?"))
-        {
+    public MQuest getQuestByName(@NotNull String name, boolean includeDelete) {
+        try {
+            Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement;
+             if(includeDelete) {
+                 statement = connection.prepareStatement("SELECT book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ?");
+             } else {
+                 statement = connection.prepareStatement("SELECT book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ? and is_delete = false");
+             }
 
             statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -79,11 +83,16 @@ public class TQuest {
     }
 
     @Nullable
-    public Integer getQuestIdByName(@NotNull String name) {
-        try (Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement = connection
-                     .prepareStatement("SELECT id FROM quests WHERE name = ?"))
-        {
+    public Integer getQuestIdByName(@NotNull String name, boolean includeDeleted) {
+        try {
+            Connection connection = Ardal.getInstance().getDb().getConnection();
+            PreparedStatement statement;
+
+            if(includeDeleted) {
+                statement = connection.prepareStatement("SELECT id FROM quests WHERE name = ?");
+            } else {
+                statement = connection.prepareStatement("SELECT id FROM quests WHERE name = ? and is_delete = true");
+            }
 
             statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -124,14 +133,20 @@ public class TQuest {
         return null;
     }
 
-    public List<String> getAllQuestNames() {
+    public List<String> getAllQuestNames(boolean includeDeleted) {
         List<String> questNames = new ArrayList<>();
 
-        try (Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement = connection
-                     .prepareStatement("SELECT name FROM quests"))
-        {
-            try (ResultSet resultSet = statement.executeQuery()) {
+        try {
+            Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement;
+
+             if(includeDeleted) {
+                 statement = connection.prepareStatement("select name from quests");
+             } else {
+                 statement = connection.prepareStatement("select name from quests where is_delete = false");
+             }
+
+             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     questNames.add(resultSet.getString("name"));
                 }
@@ -160,8 +175,8 @@ public class TQuest {
             statement.setString(1, quests.getName());
             statement.setString(2, quests.getBookId());
             statement.setString(3, quests.getSynopsis());
-            statement.setInt(4, quests.getRequestItemId());
-            statement.setInt(5, quests.getRewardItemId());
+            statement.setInt(4, quests.getRequestItemGroupId());
+            statement.setInt(5, quests.getRewardItemGroupId());
             statement.setBoolean(6, quests.getIsActive());
             statement.setBoolean(7, quests.getIsDelete());
             statement.setString(8, quests.getName());

@@ -118,7 +118,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
     }
 
     private boolean addPlayerQuest(OfflinePlayer player, String questName, boolean isFinished) {
-        Integer questId = this.tQuests.getQuestIdByName(questName);
+        Integer questId = this.tQuests.getQuestIdByName(questName, false);
         if(questId == null || player.getName() == null) {
             return false;
         }
@@ -148,7 +148,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, Ar
 
     @Override
     public boolean removePlayerQuest(OfflinePlayer player, String questName) {
-        Integer questId = this.tQuests.getQuestIdByName(questName);
+        Integer questId = this.tQuests.getQuestIdByName(questName, true);
         if(questId == null || player.getName() == null) {
             return false;
         }
