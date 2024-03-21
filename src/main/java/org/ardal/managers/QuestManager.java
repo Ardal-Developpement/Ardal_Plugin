@@ -12,7 +12,7 @@ import org.ardal.commands.quests.give.GiveQuestManager;
 import org.ardal.commands.quests.set.SetQuestManager;
 import org.ardal.db.Database;
 import org.ardal.models.MQuest;
-import org.ardal.objects.QuestObj2;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -84,12 +84,12 @@ public class QuestManager extends ArdalCmdManager implements QuestManagerInfo, A
     }
 
     @Override
-    public @Nullable QuestObj2 getQuestObj(String questName, boolean includeDeleted) {
-        return new QuestObj2(Ardal.getInstance().getDb().gettQuest().getQuestByName(questName, includeDeleted));
+    public @Nullable QuestObj getQuestObj(String questName, boolean includeDeleted) {
+        return new QuestObj(Ardal.getInstance().getDb().gettQuest().getQuestByName(questName, includeDeleted));
     }
 
     @Override
-    public @Nullable QuestObj2 getQuestObj(String questName) {
+    public @Nullable QuestObj getQuestObj(String questName) {
         return this.getQuestObj(questName, false);
     }
 }

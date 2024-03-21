@@ -11,6 +11,12 @@ public interface QuestInfo {
      */
 
 
+    /**
+     * Get the quest name
+     *
+     * @return quest name
+     */
+    String getQuestName();
 
     /**
      * Get quest book from the quest db

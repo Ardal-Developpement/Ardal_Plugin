@@ -1,6 +1,6 @@
 package org.ardal.api.quests;
 
-import org.ardal.objects.QuestObj2;
+import org.ardal.objects.QuestObj;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +41,7 @@ public interface QuestManagerInfo {
      * @return quest obj (null if quest not found)
      */
     @Nullable
-    QuestObj2 getQuestObj(String questName, boolean includeDeleted);
+    QuestObj getQuestObj(String questName, boolean includeDeleted);
 
     /**
      * Get the quest by name (not include deleted quests)
@@ -50,5 +50,5 @@ public interface QuestManagerInfo {
      * @return quest obj (null if quest not found)
      */
     @Nullable
-    QuestObj2 getQuestObj(String questName);
+    QuestObj getQuestObj(String questName);
 }

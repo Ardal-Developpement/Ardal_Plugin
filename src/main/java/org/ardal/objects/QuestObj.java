@@ -1,211 +1,95 @@
 package org.ardal.objects;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.MalformedJsonException;
 import org.ardal.Ardal;
+import org.ardal.api.quests.QuestInfo;
 import org.ardal.managers.CustomItemManager;
-import org.ardal.utils.BukkitUtils;
-import org.ardal.utils.JsonUtils;
+import org.ardal.models.MQuest;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class QuestObj implements Comparable<QuestObj> {
-    private boolean isActive;
-    private boolean isDelete;
-    private String bookId;
-    private String synopsis;
-    private List<String> itemsRequestId;
-    private List<String>itemsRewardId;
-
-    public QuestObj(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward, boolean isActive) {
-        this.bookId = "";
-        this.isActive = isActive;
-        this.isDelete = false;
-        this.itemsRequestId = new ArrayList<>();
-        this.itemsRewardId = new ArrayList<>();
-
-        BukkitUtils.removeEnchant(book);
-
-        this.setBook(book);
-        this.setItemsRequest(itemsRequest);
-        this.setItemsReward(itemsReward);
+public class QuestObj implements QuestInfo, Comparable<QuestObj> {
+    private final MQuest mQuest;
+    public QuestObj(MQuest mQuest) {
+        this.mQuest = mQuest;
     }
 
-    public QuestObj(JsonObject questObj) throws MalformedJsonException {
-        JsonElement bookElem = questObj.get("bookId");
-        JsonElement isActiveElem = questObj.get("isActive");
-        JsonElement isDeleteElem = questObj.get("isDelete");
-        JsonElement itemsRequestElem = questObj.get("itemsRequestId");
-        JsonElement itemsRewardElem = questObj.get("itemsRewardId");
-
-        JsonElement synopsisElem = questObj.get("synopsis");
-
-        if(bookElem == null
-            || isActiveElem == null
-            || isDeleteElem == null
-            || itemsRequestElem == null
-            || itemsRewardElem == null)
-        {
-            throw new MalformedJsonException("Quest obj is malformed.");
-        }
-
-        this.bookId = bookElem.getAsString();
-        this.isActive = isActiveElem.getAsBoolean();
-        this.isDelete = isDeleteElem.getAsBoolean();
-        this.itemsRequestId = JsonUtils.jsonArrayToStrList(itemsRequestElem);
-        this.itemsRewardId = JsonUtils.jsonArrayToStrList(itemsRewardElem);
-
-        if(synopsisElem != null) { this.synopsis = synopsisElem.getAsString(); }
+    @Override
+    public String getQuestName() {
+        return this.mQuest.getName();
     }
 
-    public JsonObject toJson(){
-        JsonObject questObj = new JsonObject();
-        JsonArray itemRequestArray = new JsonArray();
-        JsonArray itemRewardArray = new JsonArray();
-
-        questObj.addProperty("bookId", this.bookId);
-        questObj.addProperty("isActive", this.isActive);
-        questObj.addProperty("isDelete", this.isDelete);
-
-        if(this.synopsis != null) { questObj.addProperty("synopsis", this.synopsis); }
-
-        for(String itemId : this.getItemsRequestId()){
-            itemRequestArray.add(itemId);
-        }
-        for(String itemId : this.getItemsRewardId()){
-            itemRewardArray.add(itemId);
-        }
-
-        questObj.add("itemsRequestId", itemRequestArray);
-        questObj.add("itemsRewardId", itemRewardArray);
-
-        return questObj;
-    }
-
-    public void save(){
-        /*
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-
-        if(!questManager.getQuestDB().getKeySet().contains(this.getQuestName())) {
-            Ardal.writeToLogger("Adding quest: " + this.getQuestName());
-        }else{
-            Ardal.writeToLogger("Saving quest: " + this.getQuestName());
-        }
-
-        questManager.getQuestDB().getDb().add(this.getQuestName(), this.toJson());
-        questManager.getQuestDB().saveDB();
-
-         */
-    }
-
-    public String getQuestName(){
-        if(this.getBook().getItemMeta() == null){
-            return "Invalid name.";
-        }
-
-        return this.getBook().getItemMeta().getDisplayName();
-    }
-
-    public String getBookId() {
-        return this.bookId;
-    }
-
-    public ItemStack getBook(){
+    @Override
+    public ItemStack getQuestBook() {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return customItemManager.getItem(this.bookId);
+        return customItemManager.getItem(this.mQuest.getBookId());
     }
 
-    public List<ItemStack> getItemsRequest() {
+    @Override
+    public @Nullable String getQuestSynopsis() {
+        return this.mQuest.getSynopsis();
+    }
+
+    @Override
+    public List<ItemStack> getItemsQuestRequest() {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return customItemManager.getItems(this.itemsRequestId);
+        List<String>  itemIds = Ardal.getInstance().getDb().gettItemGroup().getItemsByGroupId(
+                this.mQuest.getRequestItemGroupId());
+
+        return customItemManager.getItems(itemIds);
     }
 
-    public List<ItemStack> getItemsReward() {
+    @Override
+    public List<ItemStack> getItemQuestReward() {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return customItemManager.getItems(this.itemsRewardId);
+        List<String>  itemIds = Ardal.getInstance().getDb().gettItemGroup().getItemsByGroupId(
+                this.mQuest.getRewardItemGroupId());
+
+        return customItemManager.getItems(itemIds);
     }
 
-    public boolean getIsActive() {
-        return this.isActive;
+    @Override
+    public boolean getQuestActivity() {
+        return this.mQuest.getIsActive();
     }
 
-    public boolean getIsDelete() {
-        return isDelete;
+    @Override
+    public boolean setQuestActivity(boolean state) {
+        this.mQuest.setIsActive(state);
+        return this.mQuest.updateQuest();
     }
 
-    public String getSynopsis() {
-        return this.synopsis == null ? "" : this.synopsis;
+    @Override
+    public boolean getQuestIsDeleted() {
+        return this.mQuest.getIsDelete();
     }
 
-    public List<String> getItemsRequestId() {
-        return itemsRequestId;
+    @Override
+    public boolean setQuestBook(ItemStack questBook) {
+        return false;
     }
 
-    public List<String> getItemsRewardId() {
-        return itemsRewardId;
+    @Override
+    public boolean setQuestSynopsis(@Nullable String synopsis) {
+        this.mQuest.setSynopsis(synopsis);
+        return this.mQuest.updateQuest();
     }
 
-    public boolean addItemRewardId(String itemRewardId) {
-        return this.itemsRewardId.add(itemRewardId);
+    @Override
+    public boolean setItemsQuestRequest(List<ItemStack> items) {
+        return false;
     }
 
-    public boolean addItemRequestId(String itemRequestId){
-        return this.itemsRequestId.add(itemRequestId);
+    @Override
+    public boolean setItemsQuestReward(List<ItemStack> items) {
+        return false;
     }
 
-    public void setItemsRequestId(List<String> itemsRequestId){
-        this.itemsRequestId = itemsRequestId;
-    }
-
-    public void setItemsRewardId(List<String> itemsRewardId) {
-        this.itemsRewardId = itemsRewardId;
-    }
-
-    public boolean addItemRequest(ItemStack item){
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return this.itemsRequestId.add(customItemManager.addItem(item).toString());
-    }
-
-    public boolean addItemReward(ItemStack item){
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return this.itemsRewardId.add(customItemManager.addItem(item).toString());
-    }
-
-    public void setSynopsis(@Nullable String synopsis){
-        this.synopsis = synopsis;
-    }
-
-    public boolean setItemsRequest(List<ItemStack> items){
-        //TODO remove items from custom items
-        this.itemsRequestId = new ArrayList<>();
-        for(ItemStack item : items){
-            if(!this.addItemRequest(item)){
-                return false;
-            }
-        }
-
-        return true;
-    }
-    public boolean setItemsReward(List<ItemStack> items){
-        //TODO remove items from custom items
-        this.itemsRewardId = new ArrayList<>();
-        for(ItemStack item : items){
-            if(!this.addItemReward(item)){
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public void setBook(ItemStack item){
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        this.bookId = customItemManager.addItem(item).toString();
+    @Override
+    public boolean setQuestDeleted() {
+        this.mQuest.setIsDelete(true);
+        return this.mQuest.updateQuest();
     }
 
     @Override
