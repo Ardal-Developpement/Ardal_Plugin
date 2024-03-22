@@ -4,6 +4,7 @@ import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.players.PlayerInfo;
+import org.ardal.api.players.PlayerManagerInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.playerinfo.add.AddPlayerInfoManager;
 import org.ardal.commands.playerinfo.list.ListPlayerInfoManager;
@@ -31,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class PlayerInfoManager extends ArdalCmdManager implements PlayerInfo, ArdalManager, Listener {
+public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerInfo, ArdalManager, Listener {
     private TPlayer tPlayers;
     private TQuestPlayer tQuestPlayer;
     private TQuest tQuests;

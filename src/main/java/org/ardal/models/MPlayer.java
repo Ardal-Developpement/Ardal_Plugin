@@ -1,5 +1,6 @@
 package org.ardal.models;
 
+import org.ardal.Ardal;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
@@ -14,6 +15,10 @@ public class MPlayer {
         this.name = name;
         this.adventure_level = adventure_level;
         this.quest_cooldown = quest_cooldown;
+    }
+
+    public boolean updatePlayer(){
+        return Ardal.getInstance().getDb().gettPlayer().updatePlayer(this);
     }
 
     public String getUuid() {

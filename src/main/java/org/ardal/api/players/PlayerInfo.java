@@ -1,97 +1,108 @@
 package org.ardal.api.players;
 
-import org.bukkit.OfflinePlayer;
-
 import java.util.List;
 
 public interface PlayerInfo {
-    /**
-     * Add the adventure level of a player
-     *
-     * @param player to get adventure level
-     * @param level to add to the player
+    /*
+            GETTER
      */
-    boolean addAdventureLevel(OfflinePlayer player, int level);
+
+
 
     /**
-     * Get the adventure level of a player
+     * Get the player uuid
      *
-     * @param player to get adventure level
+     * @return player uuid
+     */
+    String getUuid();
+
+    /**
+     * Get the player name
+     *
+     * @return player name
+     */
+    String getName();
+
+    /**
+     * Get the adventure level of the player
+     *
      * @return adventure level
      */
-    int getAdventureLevel(OfflinePlayer player);
-
-    /**
-     * Get the player's active quests
-     *
-     * @param player to get active quests
-     * @return list of quest names
-     */
-    List<String> getPlayerActiveQuests(OfflinePlayer player);
-
-    /**
-     * Get the player's finished quests
-     *
-     * @param player to get finished quests
-     * @return list of quest names
-     */
-    List<String> getPlayerFinishedQuests(OfflinePlayer player);
-
-    /**
-     * Add an active quest for a player
-     *
-     * @param player to add the active quest
-     * @param questName of the quest
-     * @return true in success to add active quest
-     */
-    boolean addPlayerActiveQuest(OfflinePlayer player, String questName);
-
-    /**
-     * Add an finished quest for a player
-     *
-     * @param player to add the finished quest
-     * @param questName of the quest
-     * @return true in success to add finished quest
-     */
-    boolean addPlayerFinishedQuest(OfflinePlayer player, String questName);
-
-    /**
-     * Remove quest for a player
-     *
-     * @param player to remove the finished quest
-     * @param questName of the quest
-     * @return true in success to remove quest
-     */
-    boolean removePlayerQuest(OfflinePlayer player, String questName);
-
-    /**
-     * Get if a player info is saved in the db
-     *
-     * @param player to check
-     * @return true in player register in the db, else false
-     */
-    boolean isPlayerRegistered(OfflinePlayer player);
-
-    /**
-     * Set quest cooldown to a player
-     *
-     * @param player to set quest cooldown
-     * @param minutes of the cooldown (from now)
-     */
-    void setQuestCooldown(OfflinePlayer player, int minutes);
-
-    /**
-     * Clear the quest cooldown of a player
-     *
-     * @param player to clear quest cooldown
-     */
-    void clearQuestCooldown(OfflinePlayer player);
+    int getAdventureLevel();
 
     /**
      * get player quest cooldown
      *
-     * @param player to get quest cooldown
      * @return the cooldown of the player
      */
-    int getQuestCooldown(OfflinePlayer player);
+    int getQuestCooldown();
+
+    /**
+     * Get the player's active quests
+     *
+     * @return list of quest names
+     */
+    List<String> getPlayerActiveQuests();
+
+    /**
+     * Get the player's finished quests
+     *
+     * @return list of quest names
+     */
+    List<String> getPlayerFinishedQuests();
+
+
+
+    /*
+            SETTER
+     */
+
+
+
+    /**
+     * Set the adventure level of a player
+     *
+     * @param level to set
+     * @return true on success
+     */
+    boolean setAdventureLevel(int level);
+
+    /**
+     * Set quest cooldown to a player
+     *
+     * @param minutes of the cooldown (from now)
+     * @return true on success
+     */
+    boolean setQuestCooldown(int minutes);
+
+    /**
+     * Clear the quest cooldown of a player
+     *
+     * @return true on success
+     */
+    boolean clearQuestCooldown();
+
+    /**
+     * Add an active quest for a player
+     *
+     * @param questName of the quest
+     * @return true in success to add active quest
+     */
+    boolean addPlayerActiveQuest(String questName);
+
+    /**
+     * Add a finished quest for a player
+     *
+     * @param questName of the quest
+     * @return true in success to add finished quest
+     */
+    boolean addPlayerFinishedQuest(String questName);
+
+    /**
+     * Remove quest for a player
+     *
+     * @param questName of the quest
+     * @return true in success to remove quest
+     */
+    boolean removeQuest(String questName);
 }

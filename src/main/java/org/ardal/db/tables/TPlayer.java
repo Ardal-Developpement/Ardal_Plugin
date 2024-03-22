@@ -141,4 +141,27 @@ public class TPlayer {
 
         return false;
     }
+
+    public boolean updatePlayer(MPlayer mPlayer){
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("update players set " +
+                             "name = ?," +
+                             "adventure_level = ?," +
+                             "quest_cooldown = ?" +
+                             "where uuid = ?"))
+        {
+            statement.setString(1, mPlayer.getName());
+            statement.setInt(2, mPlayer.getAdventureLevel());
+            statement.setTimestamp(3, new Timestamp(mPlayer.getQuestCooldown().getTime()));
+            statement.setString(4, mPlayer.getUuid());
+
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to update player in database.");
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
