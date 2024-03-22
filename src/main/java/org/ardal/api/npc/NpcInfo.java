@@ -1,76 +1,84 @@
 package org.ardal.api.npc;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
 public interface NpcInfo {
-
-    /**
-     * Remove a npc (if exist)
-     *
-     * @param id of the npc
-     * @return true on success
+    /*
+            GETTER
      */
-    boolean destroyNpc(UUID id);
+
 
     /**
-     * If false, npc can be access only with perm.
+     * Get npc uuid
      *
-     * @param id of the npc
-     * @param state of npc visibility
-     * @return true on success
+     * @return npc uuid
      */
-    boolean setVisibleNpc(UUID id, boolean state);
+    String getUuid();
 
     /**
-     * Rename a npc
+     * Get npc name
      *
-     * @param id of the npc
+     * @return npc name
+     */
+    String getName();
+
+    /**
+     * Get npc visible state
+     *
+     * @return npc visible state
+     */
+    boolean getIsVisible();
+
+    /**
+     * Get npc location
+     *
+     * @return npc location
+     */
+    Location getLocation();
+
+    /**
+     * Get npc type
+     *
+     * @return npc type
+     */
+    CustomNpcType getNpcType();
+
+
+
+    /*
+            SETTER
+     */
+
+
+    /**
+     * Set the npc name
+     *
      * @param newName of the npc
      * @return true on success
      */
-    boolean setNpcName(UUID id, String newName);
+    boolean setName(@NotNull String newName);
 
     /**
-     * Create a new npc template, which can then be invoked
+     * Set the visible state of the npc
      *
-     * @param name of the npc
-     * @param type of the npc
+     * @param visibleState of the npc
      * @return true on success
      */
-    boolean createNewNpc(String name, CustomNpcType type, Location location);
+    boolean setIsVisible(boolean visibleState);
 
     /**
-     * Delete a npc template
+     * Set the npc location
      *
-     * @param id of the npc
+     * @param newLocation of the npc
      * @return true on success
      */
-    boolean deleteNpc(UUID id);
+    boolean setLocation(@NotNull Location newLocation);
 
     /**
-     * Get all saved npc id
+     * Delete the npc
      *
-     * @return list of npc id
-     */
-    List<UUID> getAllNpcIdSaved();
-
-    /**
-     * Check if a npc id exist in db.
-     *
-     * @param id of the npc
-     * @return true if exist
-     */
-    boolean isNpcExist(UUID id);
-
-    /**
-     * Give to the player, the npc management tool.
-     *
-     * @param player to give item
      * @return true on success
      */
-    boolean giveManagementToolToPlayer(Player player);
+    boolean deleteNpc();
 }

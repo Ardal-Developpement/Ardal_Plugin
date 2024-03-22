@@ -107,7 +107,7 @@ public class TQuest {
     }
 
     @Nullable
-    public MQuest getQuestById(@NotNull int id) {
+    public MQuest getQuestById(int id) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("SELECT name, book_id, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ?"))

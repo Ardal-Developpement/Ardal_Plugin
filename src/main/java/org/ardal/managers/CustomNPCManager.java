@@ -5,6 +5,7 @@ import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.npc.CustomNpcType;
 import org.ardal.api.npc.NpcInfo;
+import org.ardal.api.npc.NpcManagerInfo;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.npc.CreateAndInvokeNpc;
 import org.ardal.commands.npc.give.GiveNpcManager;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CustomNPCManager extends ArdalCmdManager implements NpcInfo, ArdalManager, Listener {
+public class CustomNPCManager extends ArdalCmdManager implements NpcManagerInfo, ArdalManager, Listener {
     private final NpcManagementTool npcManagementTool;
     private List<CustomNPCObj> invokedNpc;
 

@@ -23,6 +23,7 @@ public class Database {
     private final TGroup tGroup;
     private final TItemGroup tItemGroup;
     private final TNpc tNpc;
+    private final TLocation tLocation;
 
     public Database(){
         this.tQuests = new TQuest();
@@ -31,6 +32,7 @@ public class Database {
         this.tGroup = new TGroup();
         this.tItemGroup = new TItemGroup();
         this.tNpc = new TNpc();
+        this.tLocation = new TLocation();
     }
     private Connection connection;
 
@@ -100,8 +102,8 @@ public class Database {
                     "x double," +
                     "y double," +
                     "z double," +
-                    "yaw double," +
-                    "pitch double)";
+                    "yaw float," +
+                    "pitch float)";
             statement.execute(sql);
 
             sql = "create table if not exists quest_player(" +
@@ -156,5 +158,9 @@ public class Database {
 
     public TNpc gettNpc() {
         return tNpc;
+    }
+
+    public TLocation gettLocation() {
+        return tLocation;
     }
 }
