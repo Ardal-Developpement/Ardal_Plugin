@@ -11,23 +11,23 @@ import java.util.Date;
 import java.util.List;
 
 public class TPlayer {
-    @Nullable
-    public void savePlayer(@NotNull MPlayer mPlayer) {
-        try {
-            PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into players(uuid, name, adventure_level, quest_cooldown) values (?,?,?,?)");
-
+    public boolean createPlayer(@NotNull MPlayer mPlayer) {
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection.prepareStatement("insert into players(uuid, name, adventure_level, quest_cooldown) values (?,?,?,?)"))
+        {
             statement.setString(1, mPlayer.getUuid());
             statement.setString(2, mPlayer.getName());
             statement.setInt(3, mPlayer.getAdventureLevel());
             statement.setTimestamp(4, new Timestamp(mPlayer.getQuestCooldown().getTime()));
 
-            statement.executeUpdate();
-            statement.close();
-    } catch (SQLException e) {
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save player in database.");
         }
+
+        return true;
     }
+
 
     @Nullable
     public MPlayer getPlayerByUUID(@NotNull String uuid) {

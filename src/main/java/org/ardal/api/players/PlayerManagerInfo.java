@@ -1,7 +1,7 @@
 package org.ardal.api.players;
 
 import org.ardal.objects.PlayerObj;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -15,19 +15,19 @@ public interface PlayerManagerInfo {
     /**
      * Get player object by name
      *
-     * @param playerName of the player
+     * @param player of the player
      * @return player object if found
      */
     @Nullable
-    PlayerObj getPlayerObj(String playerName);
+    PlayerObj getPlayerObj(OfflinePlayer player);
 
     /**
      * Check if a player exist in the db
      *
-     * @param playerName of the player
+     * @param player of the player
      * @return true if the player exist in db
      */
-    boolean getIsPlayerExist(String playerName);
+    boolean getIsPlayerExist(OfflinePlayer player);
 
     /**
      * Get all player names save in the db
@@ -49,5 +49,5 @@ public interface PlayerManagerInfo {
      * @param player to save
      * @return true on success
      */
-    boolean saveNewPlayer(Player player);
+    boolean saveNewPlayer(OfflinePlayer player);
 }
