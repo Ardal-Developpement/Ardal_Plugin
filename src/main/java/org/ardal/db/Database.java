@@ -3,6 +3,7 @@ package org.ardal.db;
 import org.ardal.Ardal;
 import org.ardal.db.tables.*;
 import org.ardal.db.tables.npc.TNpc;
+import org.ardal.db.tables.npc.type.TQuestNpc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +25,7 @@ public class Database {
     private final TItemGroup tItemGroup;
     private final TNpc tNpc;
     private final TLocation tLocation;
+    private final TQuestNpc tQuestNpc;
 
     public Database(){
         this.tQuests = new TQuest();
@@ -33,6 +35,7 @@ public class Database {
         this.tItemGroup = new TItemGroup();
         this.tNpc = new TNpc();
         this.tLocation = new TLocation();
+        this.tQuestNpc = new TQuestNpc();
     }
     private Connection connection;
 
@@ -92,7 +95,7 @@ public class Database {
                     "quest_id int," +
                     "quest_coef int," +
                     "is_show bool," +
-                    "foreign key (uuid) references npcs(uuid) on delete cascade," +
+                    "foreign key (uuid) references npcs(uuid) on delete cascade on update cascade," +
                     "foreign key (quest_id) references quests(id) on delete cascade)";
             statement.execute(sql);
 
@@ -162,5 +165,9 @@ public class Database {
 
     public TLocation gettLocation() {
         return tLocation;
+    }
+
+    public TQuestNpc gettQuestNpc() {
+        return tQuestNpc;
     }
 }

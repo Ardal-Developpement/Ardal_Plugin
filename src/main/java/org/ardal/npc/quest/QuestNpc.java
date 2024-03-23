@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.ardal.Ardal;
-import org.ardal.api.npc.CustomNpcType;
+import org.ardal.api.npc.NpcType;
 import org.ardal.inventories.npc.quest.NpcMenuSelectorInventory;
 import org.ardal.inventories.npc.quest.NpcQuestSelectorInventory;
 import org.ardal.inventories.npc.quest.management.QuestIsActiveSelectorInventory;
@@ -13,6 +13,7 @@ import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
 import org.ardal.models.npc.type.MQuestNpc;
 import org.ardal.objects.CustomNPCObj;
+import org.ardal.objects.NpcObj;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.ChatUtils;
 import org.bukkit.Location;
@@ -23,38 +24,25 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class QuestNpc extends CustomNPCObj {
+public class QuestNpc extends NpcObj {
+    private final MQuestNpc mQuestNpc;
     public List<QuestNpcInfo> questInfoList;
 
-    public QuestNpc(String npcName, Location location){
-        super(npcName, location);
+    public QuestNpc(String npcName, Location location, NpcType npcType){
+        super(npcName, location, npcType);
+        this.mQuestNpc = Ardal.getInstance().getDb().gettQuestNpc().getQuestNpcByUuid(this.getUuid().toString());
         this.questInfoList = new ArrayList<>();
     }
 
-    public QuestNpc(JsonObject npcObj, UUID id){
-        super(npcObj, id);
+    public QuestNpc(String npcUuid) throws SQLException {
+        super(npcUuid);
+        this.mQuestNpc = Ardal.getInstance().getDb().gettQuestNpc().getQuestNpcByUuid(this.getUuid().toString());
         this.questInfoList = new ArrayList<>();
-        JsonElement jsonElement = npcObj.get("additionalProperties");
-
-        if(jsonElement == null) {
-            throw new RuntimeException("Invalid npc quest obj.");
-        }
-
-        for(JsonElement elem : jsonElement.getAsJsonArray()){
-            this.questInfoList.add(new QuestNpcInfo(elem.getAsJsonObject()));
-        }
-    }
-
-    public void updateNpcAdditionnalInfo(){
-
-    }
-
-    private MQuestNpc toMQuestNpc() {
-        return new MQuestNpc(this.);
     }
 
     @NotNull
@@ -95,8 +83,8 @@ public class QuestNpc extends CustomNPCObj {
     }
 
     @Override
-    public CustomNpcType getNpcType() {
-        return CustomNpcType.QUEST_NPC;
+    public NpcType getNpcType() {
+        return NpcType.QUEST_NPC;
     }
 
     @Override

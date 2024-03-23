@@ -42,7 +42,7 @@ public interface NpcInfo {
      *
      * @return npc type
      */
-    CustomNpcType getNpcType();
+    NpcType getType();
 
 
 
@@ -50,6 +50,15 @@ public interface NpcInfo {
             SETTER
      */
 
+
+
+    /**
+     * Set the npc uuid
+     *
+     * @param newUuid of the npc
+     * @return true on success
+     */
+    boolean setUuid(@NotNull String newUuid);
 
     /**
      * Set the npc name

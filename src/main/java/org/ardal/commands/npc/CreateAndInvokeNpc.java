@@ -2,7 +2,7 @@ package org.ardal.commands.npc;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
-import org.ardal.api.npc.CustomNpcType;
+import org.ardal.api.npc.NpcType;
 import org.ardal.managers.CustomNPCManager;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
@@ -23,7 +23,7 @@ public class CreateAndInvokeNpc implements ArdalCmd {
 
         Player player = (Player) sender;
 
-        CustomNpcType type = CustomNpcType.getNpcTypeByName(argv.get(0));
+        NpcType type = NpcType.getNpcTypeByName(argv.get(0));
         if(type == null) {
             sender.sendMessage("Invalid npc type");
             return true;
@@ -48,7 +48,7 @@ public class CreateAndInvokeNpc implements ArdalCmd {
         }
 
         List<String> npcTypes = new ArrayList<>();
-        for(CustomNpcType type : CustomNpcType.values()){
+        for(NpcType type : NpcType.values()){
             npcTypes.add(type.toString());
         }
 

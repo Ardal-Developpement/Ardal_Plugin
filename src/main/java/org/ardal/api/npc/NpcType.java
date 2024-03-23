@@ -2,12 +2,12 @@ package org.ardal.api.npc;
 
 import org.jetbrains.annotations.Nullable;
 
-public enum CustomNpcType {
+public enum NpcType {
     QUEST_NPC;
 
     @Nullable
-    public static CustomNpcType getNpcTypeByName(String typeName){
-        for(CustomNpcType type : CustomNpcType.values()){
+    public static NpcType getNpcTypeByName(String typeName){
+        for(NpcType type : NpcType.values()){
             if(type.toString().equals(typeName)){
                 return type;
             }

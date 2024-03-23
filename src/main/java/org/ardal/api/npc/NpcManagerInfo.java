@@ -1,7 +1,8 @@
 package org.ardal.api.npc;
 
-import org.bukkit.Location;
+import org.ardal.objects.NpcObj;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -11,13 +12,21 @@ public interface NpcManagerInfo {
      */
 
 
+    /**
+     * Get the npc object
+     *
+     * @param npcUuid of the npc
+     * @return npc object (null if not registered)
+     */
+    @Nullable
+    NpcObj getRegisteredNpcByUuid(String npcUuid);
 
     /**
      * Get all saved npc id
      *
      * @return list of npc id
      */
-    List<String> getAllNpcIdSaved();
+    List<String> getAllNpcUuids();
 
     /**
      * Check if a npc id exist in db.
@@ -29,20 +38,13 @@ public interface NpcManagerInfo {
 
 
 
+
+
     /*
             SETTER
      */
 
 
-
-    /**
-     * Create a new npc template, which can then be invoked
-     *
-     * @param name of the npc
-     * @param type of the npc
-     * @return true on success
-     */
-    boolean createNewNpc(String name, CustomNpcType type, Location location);
 
     /**
      * Give to the player, the npc management tool.

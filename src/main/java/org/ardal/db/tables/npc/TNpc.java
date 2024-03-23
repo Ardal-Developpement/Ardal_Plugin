@@ -1,6 +1,7 @@
 package org.ardal.db.tables.npc;
 
 import org.ardal.Ardal;
+import org.ardal.api.npc.NpcType;
 import org.ardal.models.npc.MNpc;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +22,7 @@ public class TNpc {
             statement.setString(2, mNpc.getName());
             statement.setBoolean(3, mNpc.getIsVisible());
             statement.setInt(4, mNpc.getLocationId());
-            statement.setString(5, mNpc.getType());
+            statement.setString(5, mNpc.getType().toString());
 
             statement.executeUpdate();
             npcUuid = statement.getGeneratedKeys().getString(1);
@@ -47,7 +48,7 @@ public class TNpc {
                             resultSet.getString("name"),
                             resultSet.getBoolean("is_visible"),
                             resultSet.getInt("location_id"),
-                            resultSet.getString("type"));
+                            NpcType.getNpcTypeByName(resultSet.getString("type")));
                 }
             }
         } catch (SQLException e) {
@@ -60,16 +61,18 @@ public class TNpc {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("update npcs set " +
+                             "uuid = ?," +
                              "name = ?," +
                              "is_visible = ?," +
                              "location_id = ?," +
                              "type = ?" +
                              " WHERE uuid = ?"))
         {
-            statement.setString(1, mNpc.getName());
-            statement.setBoolean(2, mNpc.getIsVisible());
-            statement.setInt(3, mNpc.getLocationId());
-            statement.setString(4, mNpc.getType());
+            statement.setString(1, mNpc.getUuid());
+            statement.setString(2, mNpc.getName());
+            statement.setBoolean(3, mNpc.getIsVisible());
+            statement.setInt(4, mNpc.getLocationId());
+            statement.setString(5, mNpc.getType().toString());
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
