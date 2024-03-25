@@ -1,21 +1,39 @@
 package org.ardal.inventories.npc.quest.management;
 
-/*
-public class QuestIsActiveSelectorInventory extends CICarousel {
+
+import org.ardal.Ardal;
+import org.ardal.api.inventories.CICell;
+import org.ardal.inventories.CICarousel;
+import org.ardal.managers.QuestManager;
+import org.ardal.models.npc.type.MQuestNpc;
+import org.ardal.npc.quest.QuestNpc;
+import org.ardal.objects.QuestObj;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class QuestIsShowSelectorInventory extends CICarousel {
     private final QuestNpc questNpc;
     private final List<ItemStack> questBooks;
 
-    public QuestIsActiveSelectorInventory(QuestNpc npc, Player player){
-        super(npc.getNpcName() + " properties:", 54, player);
+    public QuestIsShowSelectorInventory(QuestNpc npc, Player player){
+        super(npc.getName() + " properties:", 54, player);
 
         this.questNpc = npc;
         this.questBooks = new ArrayList<>();
 
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        List<String> questNames = questManager.getAllQuestNames();
+        List<String> questNames = questManager.getAllQuestNames(false);
 
         for(String questName : questNames){
-            questBooks.add(this.getQuestBook(questName, questManager));
+            questBooks.add(this.getFormattedQuestBook(questName));
         }
 
         this.buildCarousel(this.questBooks, new CICell(null,
@@ -40,44 +58,30 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
             }
         } else if (event.isLeftClick()){
             if(event.getCurrentItem().getType() == Material.WRITABLE_BOOK){
-                this.changeActivityOfQuest(event.getCurrentItem());
+                this.changeShowStateOfQuest(event.getCurrentItem());
             }
         }
     }
 
-    @Override
-    public void onCIClose(InventoryCloseEvent event){
-        this.questNpc.updateNpcAdditionnalInfo();
-        this.unregisterInventory();
-    }
-
-    private void changeActivityOfQuest(ItemStack book) {
-        ItemMeta meta = book.getItemMeta();
-        QuestNpcInfo questNpcInfo = this.questNpc.getQuestNpcByName(meta.getDisplayName());
-        questNpcInfo.setIsShow(!questNpcInfo.getIsShow());
+    private void changeShowStateOfQuest(ItemStack book) {
+        MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(book.getItemMeta().getDisplayName());
+        mQuestNpc.setIsShow(!mQuestNpc.getIsShow());
+        mQuestNpc.updateQuestNpc();
 
         this.refreshBookMeta(book);
     }
 
-    private ItemStack getQuestBook(String questName, QuestManager questManager){
-
-        QuestObj questObj = questManager.getQuestObj(questName);
-        if(questObj == null || !questObj.getIsActive()) { return null; }
-
-        ItemStack book = questObj.getBook();
+    private ItemStack getFormattedQuestBook(String questName) {
+        ItemStack book = new QuestObj(questName).getQuestBook();
         this.refreshBookMeta(book);
-
         return book;
-
-
-        return null;
     }
 
     private void refreshBookMeta(ItemStack book){
         ItemMeta meta = book.getItemMeta();
-        QuestNpcInfo questNpcInfo = this.questNpc.getQuestNpcByName(meta.getDisplayName());
+        MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(meta.getDisplayName());
 
-        if(questNpcInfo.getIsShow()){
+        if(mQuestNpc.getIsShow()){
             meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
 
         } else {
@@ -93,9 +97,8 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
             lore.remove(0);
         }
 
-        lore.add(0, ChatColor.RED + "Coef: " + questNpcInfo.getQuestCoef());
+        lore.add(0, ChatColor.RED + "Coef: " + mQuestNpc.getQuestCoef());
         meta.setLore(lore);
-
 
         book.setItemMeta(meta);
     }
@@ -104,15 +107,15 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
         ItemStack book = event.getCurrentItem();
         if(book == null) { return; }
         String questName = book.getItemMeta().getDisplayName();
-        QuestNpcInfo questNpcInfo = this.questNpc.getQuestNpcByName(questName);
+        MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(book.getItemMeta().getDisplayName());
 
         if(up){
-            questNpcInfo.setQuestCoef(questNpcInfo.getQuestCoef() + 1);
-        } else if(questNpcInfo.getQuestCoef() > 1) {
-            questNpcInfo.setQuestCoef(questNpcInfo.getQuestCoef() - 1);
+            mQuestNpc.setQuestCoef(mQuestNpc.getQuestCoef() + 1);
+        } else if(mQuestNpc.getQuestCoef() > 1) {
+            mQuestNpc.setQuestCoef(mQuestNpc.getQuestCoef() - 1);
         }
 
         this.refreshBookMeta(book);
     }
 }
-*/
+

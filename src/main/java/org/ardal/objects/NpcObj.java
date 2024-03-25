@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +55,7 @@ public abstract class NpcObj implements NpcInfo, EventListener {
     }
 
     public abstract void onNPCInteract(PlayerInteractEntityEvent event);
-    public abstract void onNpcManageToolInteract(PlayerInteractEntityEvent event);
+    public abstract void onNpcManagentEvent(InventoryClickEvent event);
 
     private void setNpcProperties(){
         npc.setCustomName(this.getName());

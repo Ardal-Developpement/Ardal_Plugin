@@ -1,12 +1,21 @@
 package org.ardal.inventories.npc;
 
-/*
+import org.ardal.api.inventories.CICell;
+import org.ardal.api.inventories.CustomInventory;
+import org.ardal.api.inventories.callback.CellCallBack;
+import org.ardal.objects.NpcObj;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class NpcManagementInventory extends CustomInventory implements CellCallBack {
 
-    private final CustomNPCObj npc;
-    public NpcManagementInventory(CustomNPCObj npc, Player player){
-        super(npc.getNpcName() + " management:", 27, player);
+    private final NpcObj npc;
+    public NpcManagementInventory(NpcObj npc, Player player){
+        super(npc.getName() + " management:", 27, player);
         this.npc = npc;
 
         this.setCell(new CICell(
@@ -26,9 +35,7 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
                 this,
                 null)
         );
-
     }
-
 
     private ItemStack deleteItem = null;
 
@@ -62,7 +69,8 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
     private void deleteNpc(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
 
-        if(Ardal.getInstance().getManager(CustomNPCManager.class).deleteNpc(this.npc.getId())){
+        if(this.npc.deleteNpc()){
+
             player.sendMessage("Success to delete npc.");
         } else {
             player.sendMessage("Failed to delete npc.");
@@ -87,15 +95,11 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
 
         switch (item.getType()){
             case WOODEN_PICKAXE:
-                this.npc.onNpcManagmentClickEvent(event);
+                this.npc.onNpcManagentEvent(event);
                 break;
             case COBWEB:
                 this.deleteNpc(event);
                 break;
         }
     }
-
-
 }
-
-   */

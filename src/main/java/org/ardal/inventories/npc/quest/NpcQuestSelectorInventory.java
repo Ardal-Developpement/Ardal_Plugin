@@ -7,6 +7,7 @@ import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
 import org.ardal.npc.quest.QuestNpc;
+import org.ardal.objects.PlayerObj;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.ChatUtils;
 import org.ardal.utils.PlayerUtils;
@@ -29,8 +30,8 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         this.nbRandomQuest = nbRandomQuest;
 
         int i = 0;
-        for(String questName : this.getRandomQuest()){
-            this.setCell(new CICell(this.getFormattedQuestBook(questName),
+        for(QuestObj questObj : this.getRandomQuest()){
+            this.setCell(new CICell(questObj.getQuestBook(),
                     i++,
                     null,
                     null,
@@ -40,14 +41,6 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         }
     }
 
-    private ItemStack getFormattedQuestBook(String questName){
-        QuestObj questObj = new QuestObj(questName);
-        ItemStack book = questObj.getQuestBook();
-        QuestNpc.addSynopsisToQuestBook(book, questObj.getQuestSynopsis());
-
-        return book;
-    }
-
     @Override
     public void onCIClick(InventoryClickEvent event){
         event.setCancelled(true);
@@ -55,20 +48,19 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         if(cell != null){
             cell.onCellClick(event);
         }
-
     }
 
-    private List<String> getRandomQuest(){
-        List<String> rdQuest = new ArrayList<>();
-        List<String> allQuest = this.questNpc.getAllActiveQuestIdWithCoef();
+    private List<QuestObj> getRandomQuest(){
+        List<QuestObj> rdQuest = new ArrayList<>();
+        List<QuestObj> allQuestObjs = this.questNpc.getAllActiveQuestIdWithCoef();
         Random random = new Random();
         for(int i = 0; i < this.nbRandomQuest; i++){
-            if(allQuest.isEmpty()){
+            if(allQuestObjs.isEmpty()){
                 break;
             }
-            String questName = allQuest.get(random.nextInt(allQuest.size()));
-            allQuest.remove(questName);
-            rdQuest.add(questName);
+            QuestObj questObj = allQuestObjs.get(random.nextInt(allQuestObjs.size()));
+            allQuestObjs.remove(questObj);
+            rdQuest.add(questObj);
         }
 
         return rdQuest;
@@ -82,13 +74,11 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         Player player = (Player) event.getWhoClicked();
         String questName = item.getItemMeta().getDisplayName();
 
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        playerInfoManager.addPlayerActiveQuest(player, questName);
+        new PlayerObj(player).addPlayerActiveQuest(questName);
 
         String msg = "You select a new quest: " + questName + "\nGood luck!";
-        player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(), msg));
-        PlayerUtils.giveItemStackToPlayer(questManager.getQuestBook(questName), player);
+        player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getName(), msg));
+        PlayerUtils.giveItemStackToPlayer(new QuestObj(questName).getQuestBook(), player);
 
         this.closeInventory();
     }

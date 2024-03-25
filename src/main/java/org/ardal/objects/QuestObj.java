@@ -5,8 +5,10 @@ import org.ardal.api.quests.QuestInfo;
 import org.ardal.managers.CustomItemManager;
 import org.ardal.models.MQuest;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestObj implements QuestInfo, Comparable<QuestObj> {
@@ -41,7 +43,28 @@ public class QuestObj implements QuestInfo, Comparable<QuestObj> {
     @Override
     public ItemStack getQuestBook() {
         CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        return customItemManager.getItem(this.mQuest.getBookId());
+        ItemStack book = customItemManager.getItem(this.mQuest.getBookId());
+        String synopsis = this.getQuestSynopsis();
+
+        if(synopsis != null) {
+            ItemMeta meta = book.getItemMeta();
+
+            List<String> lore = meta.getLore();
+            if (lore == null) {
+                lore = new ArrayList<>();
+            }
+
+            String[] lines = synopsis.split("\n");
+
+            for (int i = lines.length - 1; i >= 0; i--) {
+                lore.add(0, lines[i]);
+            }
+
+            meta.setLore(lore);
+            book.setItemMeta(meta);
+        }
+
+        return book;
     }
 
     @Override

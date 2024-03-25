@@ -8,9 +8,11 @@ import org.ardal.api.npc.NpcType;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.npc.give.GiveNpcManager;
 import org.ardal.db.tables.npc.TNpc;
+import org.ardal.inventories.npc.NpcManagementInventory;
 import org.ardal.inventories.npc.quest.management.NpcManagementTool;
 import org.ardal.models.npc.MNpc;
 import org.ardal.objects.NpcObj;
+import org.ardal.objects.PlayerObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -119,10 +121,12 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
             NpcObj npc = this.getRegisteredNpcByUuid(event.getRightClicked().getUniqueId().toString());
             if(npc == null) { return; }
 
+            Player player = event.getPlayer();
+
             event.setCancelled(true);
 
-            if (event.getPlayer().getInventory().getItemInMainHand().isSimilar(this.npcManagementTool.getTool())) {
-                npc.onNpcManageToolInteract(event);
+            if (player.getInventory().getItemInMainHand().isSimilar(this.npcManagementTool.getTool())) {
+                player.openInventory(new NpcManagementInventory(npc, player).getInventory());
                 return;
             }
 

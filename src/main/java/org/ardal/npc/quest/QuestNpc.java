@@ -4,6 +4,8 @@ import org.ardal.Ardal;
 import org.ardal.api.npc.NpcType;
 
 import org.ardal.inventories.npc.quest.NpcMenuSelectorInventory;
+import org.ardal.inventories.npc.quest.NpcQuestSelectorInventory;
+import org.ardal.inventories.npc.quest.management.QuestIsShowSelectorInventory;
 import org.ardal.managers.NPCManager;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
@@ -14,6 +16,7 @@ import org.ardal.objects.QuestObj;
 import org.ardal.utils.ChatUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -38,7 +41,19 @@ public class QuestNpc extends NpcObj {
         this.mQuestNpcList = Ardal.getInstance().getDb().gettQuestNpc().getAllQuestNpcsByUuid(this.getUuid());
     }
 
+    @Nullable
+    public MQuestNpc getQuestNpcByName(String questName) {
+        Integer questId = Ardal.getInstance().getDb().gettQuest().getQuestIdByName(questName, false);
+        if(questId == null) { return null; }
 
+        for(MQuestNpc mQuestNpc : this.mQuestNpcList) {
+            if(mQuestNpc.getQuestId() == questId) {
+                return mQuestNpc;
+            }
+        }
+
+        return null;
+    }
 
     @Override
     public void onNPCInteract(PlayerInteractEntityEvent event) {
@@ -83,11 +98,8 @@ public class QuestNpc extends NpcObj {
     }
 
     @Override
-    public void onNpcManageToolInteract(PlayerInteractEntityEvent event) {
-        Player player = event.getPlayer();
-
-        NPCManager customNPCManager = Ardal.getInstance().getManager(NPCManager.class);
-        customNPCManager.getNpcManagementTool().openNpcManagementInventory(this, player);
+    public void onNpcManagentEvent(InventoryClickEvent event) {
+        new QuestIsShowSelectorInventory(this, (Player) event.getWhoClicked()).showInventory();
     }
 
     public List<QuestObj> getAllActiveQuestIdWithCoef(){
@@ -112,24 +124,6 @@ public class QuestNpc extends NpcObj {
         }
 
         return false;
-    }
-
-    public static void addSynopsisToQuestBook(@NotNull ItemStack book, String synopsis){
-        ItemMeta meta = book.getItemMeta();
-
-        List<String> lore = meta.getLore();
-        if (lore == null) {
-            lore = new ArrayList<>();
-        }
-
-        String[] lines = synopsis.split("\n");
-
-        for(int i = lines.length - 1; i >= 0; i--){
-            lore.add(0, lines[i]);
-        }
-
-        meta.setLore(lore);
-        book.setItemMeta(meta);
     }
 }
 
