@@ -29,6 +29,10 @@ public class PlayerObj implements PlayerInfo {
         this.mPlayer = Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(player.getUniqueId().toString());
     }
 
+    public PlayerObj(OfflinePlayer player) {
+        this.mPlayer = Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(player.getUniqueId().toString());
+    }
+
     @Override
     public String getUuid() {
         return this.mPlayer.getUuid();

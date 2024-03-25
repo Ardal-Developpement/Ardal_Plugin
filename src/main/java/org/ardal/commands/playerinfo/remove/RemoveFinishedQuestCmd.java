@@ -4,6 +4,8 @@ import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.PlayerObj;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
@@ -14,7 +16,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
-/*
+
 public class RemoveFinishedQuestCmd implements ArdalCmd {
 
     @Override
@@ -29,21 +31,21 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
             return true;
         }
 
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-        if(!questManager.questExist(questName)){
+        QuestObj questObj = new QuestObj(questName);
+        PlayerObj playerObj = new PlayerObj(player);
+
+        if(!questObj.isQuestExist()){
             sender.sendMessage("Invalid quest name.");
             return true;
         }
 
-        if(!playerInfoManager.getPlayerFinishedQuests(player).contains(questName)){
+        if(!playerObj.getPlayerActiveQuestNames().contains(questName)){
             sender.sendMessage("Player don't have this active quest.");
             return true;
         }
 
-        playerInfoManager.removePlayerQuest(player, questName);
+        playerObj.removeQuest(questName);
         return true;
     }
 
@@ -60,12 +62,9 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
         OfflinePlayer player = BukkitUtils.getOfflinePlayerFromName(argv.get(0));
         if(player == null) { return new ArrayList<>(); }
 
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-
         return TabCompleteUtils.getTabCompleteFromStrList(
-                playerInfoManager.getPlayerFinishedQuests(player),
-                StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()))
-        );
+                new PlayerObj(player).getPlayerFinishedQuestNames(),
+                StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size())));
     }
 
     @Override
@@ -80,4 +79,4 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
     public String getCmdName() {
         return "finishedQuest";
     }
-}*/
+}

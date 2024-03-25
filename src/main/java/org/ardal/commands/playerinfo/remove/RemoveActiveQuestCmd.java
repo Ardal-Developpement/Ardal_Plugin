@@ -4,6 +4,8 @@ import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.PlayerObj;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
@@ -27,22 +29,23 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
             sender.sendMessage("Invalid player name.");
             return true;
         }
-/*
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
 
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-        if(!questManager.questExist(questName)){
+        QuestObj questObj = new QuestObj(questName);
+        PlayerObj playerObj = new PlayerObj(player);
+
+
+        if(!questObj.isQuestExist()){
             sender.sendMessage("Invalid quest name.");
             return true;
         }
 
-        if(!playerInfoManager.getPlayerActiveQuests(player).contains(questName)){
+        if(!playerObj.getPlayerActiveQuestNames().contains(questName)){
             sender.sendMessage("Player don't have this active quest.");
             return true;
         }
 
-        playerInfoManager.removePlayerQuest(player, questName);*/
+        playerObj.removeQuest(questName);
         return true;
     }
 
@@ -59,13 +62,11 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
         OfflinePlayer player = BukkitUtils.getOfflinePlayerFromName(argv.get(0));
         if(player == null) { return new ArrayList<>(); }
 
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-/*
+
         return TabCompleteUtils.getTabCompleteFromStrList(
-                playerInfoManager.getPlayerActiveQuests(player),
+                new PlayerObj(player).getPlayerActiveQuestNames(),
                 StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()))
-        );*/
-        return new ArrayList<>();
+        );
     }
 
     @Override

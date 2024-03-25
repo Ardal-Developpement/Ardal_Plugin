@@ -3,6 +3,7 @@ package org.ardal.commands.playerinfo.list;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.PlayerInfoManager;
+import org.ardal.objects.PlayerObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
@@ -26,15 +27,14 @@ public class ListPlayerActiveQuest implements ArdalCmd {
                 return true;
             }
         }
-/*
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        List<String> activeQuests = playerInfoManager.getPlayerActiveQuests(player);
+
+        List<String> activeQuests = new PlayerObj(player).getPlayerActiveQuestNames();
         sender.sendMessage("Found " + activeQuests.size() + " active quests:");
 
         int i = 1;
         for(String questName : activeQuests){
             sender.sendMessage(i++ + ": " + questName);
-        }*/
+        }
 
         return true;
     }

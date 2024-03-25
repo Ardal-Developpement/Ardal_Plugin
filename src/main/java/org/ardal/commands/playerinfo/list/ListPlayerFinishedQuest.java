@@ -3,6 +3,7 @@ package org.ardal.commands.playerinfo.list;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.PlayerInfoManager;
+import org.ardal.objects.PlayerObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
@@ -27,14 +28,14 @@ public class ListPlayerFinishedQuest implements ArdalCmd {
             }
         }
 
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        /*List<String> finishedQuests = playerInfoManager.getPlayerFinishedQuests(player);
+        PlayerObj playerObj = new PlayerObj(player);
+        List<String> finishedQuests = playerObj.getPlayerFinishedQuestNames();
         sender.sendMessage("Found " + finishedQuests.size() + " finished quests:");
 
         int i = 1;
         for(String questName : finishedQuests){
             sender.sendMessage(i++ + ": " + questName);
-        }*/
+        }
 
         return true;
     }

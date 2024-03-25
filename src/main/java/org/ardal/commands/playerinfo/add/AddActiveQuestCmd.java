@@ -4,6 +4,8 @@ import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.PlayerObj;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
@@ -26,17 +28,18 @@ public class AddActiveQuestCmd implements ArdalCmd {
         if(player == null) {
             sender.sendMessage("Invalid player name.");
             return true;
-        }/*
+        }
 
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-        if(!questManager.questExist(questName)){
+        QuestObj questObj = new QuestObj(questName);
+
+        if(!questObj.isQuestExist()){
             sender.sendMessage("Invalid quest name.");
             return true;
         }
 
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        playerInfoManager.addPlayerActiveQuest(player, questName);*/
+        PlayerObj playerObj = new PlayerObj(player);
+        playerObj.addPlayerActiveQuest(questName);
         return true;
     }
 
