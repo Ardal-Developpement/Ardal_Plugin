@@ -6,6 +6,9 @@ import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
+import org.ardal.npc.quest.QuestNpc;
+import org.ardal.objects.PlayerObj;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.ChatUtils;
 import org.ardal.utils.PlayerUtils;
@@ -18,12 +21,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.List;
-/*
+
 public class NpcMenuSelectorInventory extends CustomInventory implements CellCallBack {
     private final QuestNpc questNpc;
     private final String questName;
     public NpcMenuSelectorInventory(QuestNpc questNpc, Player player, String questName) {
-        super(questNpc.getNpcName() + ":", 27, player);
+        super(questNpc.getName() + ":", 27, player);
 
         this.questNpc = questNpc;
         this.questName = questName;
@@ -47,16 +50,16 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
         );
     }
 
-    private void onQuestCanceledEvent(InventoryClickEvent event){
+    private void onQuestCanceledEvent(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
+        PlayerObj playerObj = new PlayerObj(player);
+        playerObj.removeQuest(this.questName);
 
-        playerInfoManager.removePlayerQuest(player, this.questName);
-        player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(),
+        player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getName(),
         "Hey, I remove your quest: " + this.questName + "."));
 
         // Add quest cooldown
-        playerInfoManager.setQuestCooldown(player, 3);
+        playerObj.setQuestCooldown(3);
 
         this.closeInventory();
     }
@@ -66,10 +69,10 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
 
         if(this.isPlayerValidQuest(player, questName)){
             String msg = "Well done!\nYou successfully complete the quest: " + questName + "\nGood job!";
-            player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(), msg));
+            player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getName(), msg));
         } else {
             String msg = "You're missing some quest items, come back to me when you've got them all.";
-            player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(), msg));
+            player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getName(), msg));
         }
 
         this.closeInventory();
@@ -91,15 +94,16 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
     }
 
     private boolean isPlayerValidQuest(Player player, String questName){
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        List<ItemStack> itemsRequest = questManager.getItemsQuestRequest(questName);
+        QuestObj questObj = new QuestObj(questName);
+        List<ItemStack> itemsRequest = questObj.getItemsQuestRequest();
+
         if(BukkitUtils.itemListContainItems(
                 Arrays.asList(player.getInventory().getContents()), itemsRequest))
         {
             PlayerUtils.removeItemsToPlayer(itemsRequest, player);
 
-            PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-            playerInfoManager.addPlayerFinishedQuest(player, questName);
+            PlayerObj playerObj = new PlayerObj(player);
+            playerObj.addPlayerFinishedQuest(questName);
 
             this.giveRewardItemToPlayer(questName, player);
 
@@ -110,10 +114,9 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
     }
 
     private void giveRewardItemToPlayer(String questName, Player player) {
-        player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getNpcName(), " Here's your reward for this quest."));
-
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        for (ItemStack item : questManager.getItemQuestReward(questName)){
+        player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getName(), " Here's your reward for this quest."));
+        QuestObj questObj = new QuestObj(questName);
+        for (ItemStack item : questObj.getItemQuestReward()){
             PlayerUtils.giveItemStackToPlayer(item, player);
         }
     }
@@ -146,4 +149,4 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
         this.cancelQuestItem.setItemMeta(meta);
         return this.cancelQuestItem;
     }
-}*/
+}

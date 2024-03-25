@@ -68,7 +68,7 @@ public class QuestManager extends ArdalCmdManager implements QuestManagerInfo, A
         String bookId = customItemManager.addItem(book);
         String questName = book.getItemMeta().getDisplayName();
 
-        MQuest mQuest = new MQuest(questName, bookId, "", itemsRequestId, itemsRewardId, true, false);
+        MQuest mQuest = new MQuest(-1, questName, bookId, "", itemsRequestId, itemsRewardId, true, false);
 
         return db.gettQuest().saveQuest(mQuest) != -1;
     }
@@ -76,20 +76,5 @@ public class QuestManager extends ArdalCmdManager implements QuestManagerInfo, A
     @Override
     public List<String> getAllQuestNames(boolean includeDelete) {
         return Ardal.getInstance().getDb().gettQuest().getAllQuestNames(includeDelete);
-    }
-
-    @Override
-    public boolean getIsQuestExist(String questName, boolean includeDeleted) {
-        return this.getQuestObj(questName, includeDeleted) != null;
-    }
-
-    @Override
-    public @Nullable QuestObj getQuestObj(String questName, boolean includeDeleted) {
-        return new QuestObj(Ardal.getInstance().getDb().gettQuest().getQuestByName(questName, includeDeleted));
-    }
-
-    @Override
-    public @Nullable QuestObj getQuestObj(String questName) {
-        return this.getQuestObj(questName, false);
     }
 }

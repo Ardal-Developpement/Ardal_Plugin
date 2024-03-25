@@ -6,13 +6,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TQuestNpc {
     @Nullable
     public boolean createQuestNpc(@NotNull MQuestNpc mQuestNpc) throws SQLException {
         try {
             PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into quest_npc(uuid, quest_id, quest_coef, is_show) values (?,?,?,?)");
+                    .prepareStatement("insert into quest_npc(npc_uuid, quest_id, quest_coef, is_show) values (?,?,?,?)");
 
             statement.setString(1, mQuestNpc.getNpcUuid());
             statement.setInt(2, mQuestNpc.getQuestId());
@@ -53,8 +55,8 @@ public class TQuestNpc {
         return false;
     }
 
-    @Nullable
-    public MQuestNpc getQuestNpcByUuid(@NotNull String npc_uuid){
+    public List<MQuestNpc> getAllQuestNpcsByUuid(@NotNull String npc_uuid){
+        List<MQuestNpc> mQuestNpcList = new ArrayList<>();
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("SELECT npc_uuid, quest_id, quest_coef, is_show FROM quest_npc WHERE npc_uuid = ?"))
@@ -62,18 +64,20 @@ public class TQuestNpc {
 
             statement.setString(1, npc_uuid);
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
+                while (resultSet.next()) {
+
                     int quest_id = resultSet.getInt("quest_id");
                     int quest_coef = resultSet.getInt("quest_coef");
                     boolean is_show = resultSet.getBoolean("is_show");
 
-                    return new MQuestNpc(npc_uuid, quest_id, quest_coef, is_show);
+                    mQuestNpcList.add(new MQuestNpc(npc_uuid, quest_id, quest_coef, is_show));
                 }
             }
         } catch (SQLException e) {
-            Ardal.writeToLogger("Failed to fetch npc quest in database.");
+            Ardal.writeToLogger("Failed to fetch npc quest list in database.");
             e.printStackTrace();
         }
-        return null;
+
+        return mQuestNpcList;
     }
 }

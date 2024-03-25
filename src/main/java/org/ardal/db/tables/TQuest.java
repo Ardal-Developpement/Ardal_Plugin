@@ -57,14 +57,15 @@ public class TQuest {
             Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement;
              if(includeDelete) {
-                 statement = connection.prepareStatement("SELECT book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ?");
+                 statement = connection.prepareStatement("SELECT id, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ?");
              } else {
-                 statement = connection.prepareStatement("SELECT book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ? and is_delete = false");
+                 statement = connection.prepareStatement("SELECT id, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ? and is_delete = false");
              }
 
             statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
                     String book_id = resultSet.getString("book_id");
                     String synopsis = resultSet.getString("synopsis");
                     int request_item_id = resultSet.getInt("request_item_id");
@@ -72,7 +73,39 @@ public class TQuest {
                     boolean is_active = resultSet.getBoolean("is_active");
                     boolean is_delete = resultSet.getBoolean("is_delete");
 
-                    return new MQuest(name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
+                    return new MQuest(id, name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
+                }
+            }
+        } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to fetch quest in database.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Nullable
+    public MQuest getQuestById(int questId, boolean includeDelete) {
+        try {
+            Connection connection = Ardal.getInstance().getDb().getConnection();
+            PreparedStatement statement;
+            if(includeDelete) {
+                statement = connection.prepareStatement("SELECT name, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ?");
+            } else {
+                statement = connection.prepareStatement("SELECT name, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ? and is_delete = false");
+            }
+
+            statement.setInt(1, questId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String name = resultSet.getString("name");
+                    String book_id = resultSet.getString("book_id");
+                    String synopsis = resultSet.getString("synopsis");
+                    int request_item_id = resultSet.getInt("request_item_id");
+                    int reward_item_id = resultSet.getInt("reward_item_id");
+                    boolean is_active = resultSet.getBoolean("is_active");
+                    boolean is_delete = resultSet.getBoolean("is_delete");
+
+                    return new MQuest(questId, name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
                 }
             }
         } catch (SQLException e) {
@@ -98,33 +131,6 @@ public class TQuest {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getInt("id");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Nullable
-    public MQuest getQuestById(int id) {
-        try (Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement = connection
-                     .prepareStatement("SELECT name, book_id, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ?"))
-        {
-
-            statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String name = resultSet.getString("name");
-                    String book_id = resultSet.getString("book_id");
-                    String synopsis = resultSet.getString("synopsis");
-                    int request_item_id = resultSet.getInt("request_item_id");
-                    int reward_item_id = resultSet.getInt("reward_item_id");
-                    boolean is_active = resultSet.getBoolean("is_active");
-                    boolean is_delete = resultSet.getBoolean("is_delete");
-
-                    return new MQuest(name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
                 }
             }
         } catch (SQLException e) {

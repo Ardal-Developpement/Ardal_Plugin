@@ -69,12 +69,6 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
         return Ardal.getInstance().getDb().gettPlayer().isPlayerExistByUuid(player.getUniqueId().toString());
     }
 
-
-    @Override
-    public @Nullable PlayerObj getPlayerObj(OfflinePlayer player) {
-        return new PlayerObj(Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(player.getUniqueId().toString()));
-    }
-
     @Override
     public boolean getIsPlayerExist(OfflinePlayer player) {
         return player.getName() != null

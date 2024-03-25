@@ -1,6 +1,7 @@
 package org.ardal.inventories.npc.quest.management;
 
 import org.ardal.Ardal;
+import org.ardal.objects.NpcObj;
 import org.ardal.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
-/*
+
 public class NpcManagementTool implements Listener {
     private static final String toolName = "Npc Management Tool";
     private static final Material itemMaterial = Material.SPECTRAL_ARROW;
@@ -37,12 +38,11 @@ public class NpcManagementTool implements Listener {
         return false;
     }
 
-    public void openNpcManagementInventory(CustomNPCObj npc, Player player){
-        player.openInventory(new NpcManagementInventory(npc, player).getInventory());
+    public void openNpcManagementInventory(NpcObj npc, Player player){
+        //player.openInventory(new NpcManagementInventory(npc, player).getInventory());
     }
 
     public ItemStack getTool() {
         return tool;
     }
 }
-*/

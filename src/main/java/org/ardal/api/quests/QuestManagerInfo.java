@@ -14,39 +14,12 @@ public interface QuestManagerInfo {
 
 
     /**
-     * Get the quest by name
-     *
-     * @param questName of the quest
-     * @param includeDeleted quests
-     * @return quest obj (null if quest not found)
-     */
-    @Nullable
-    QuestObj getQuestObj(String questName, boolean includeDeleted);
-
-    /**
-     * Get the quest by name (not include deleted quests)
-     *
-     * @param questName of the quest
-     * @return quest obj (null if quest not found)
-     */
-    @Nullable
-    QuestObj getQuestObj(String questName);
-
-    /**
      * Get all quest names (sorted by names)
      *
      * @param includeDeleted quests
      * @return list of quest names
      */
     List<String> getAllQuestNames(boolean includeDeleted);
-
-    /**
-     * Return if the quest exist
-     *
-     * @param questName of the quest
-     * @return true if the quest exist
-     */
-    boolean getIsQuestExist(String questName, boolean includeDeleted);
 
 
 

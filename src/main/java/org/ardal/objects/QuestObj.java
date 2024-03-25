@@ -11,9 +11,27 @@ import java.util.List;
 
 public class QuestObj implements QuestInfo, Comparable<QuestObj> {
     private final MQuest mQuest;
+
     public QuestObj(MQuest mQuest) {
         this.mQuest = mQuest;
     }
+    public QuestObj(String questName, boolean includeDeleted) {
+        this.mQuest = Ardal.getInstance().getDb().gettQuest().getQuestByName(questName, includeDeleted);
+    }
+
+    public QuestObj(String questName) {
+        this.mQuest = Ardal.getInstance().getDb().gettQuest().getQuestByName(questName, false);
+    }
+
+    public QuestObj(int questId, boolean includeDeleted) {
+        this.mQuest = Ardal.getInstance().getDb().gettQuest().getQuestById(questId, includeDeleted);
+    }
+
+    public QuestObj(int questId) {
+        this.mQuest = Ardal.getInstance().getDb().gettQuest().getQuestById(questId, false);
+    }
+
+
 
     @Override
     public String getQuestName() {

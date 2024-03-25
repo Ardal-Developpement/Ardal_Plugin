@@ -5,6 +5,7 @@ import org.ardal.api.npc.NpcInfo;
 import org.ardal.api.npc.NpcType;
 import org.ardal.db.Database;
 import org.ardal.db.tables.TLocation;
+import org.ardal.managers.NPCManager;
 import org.ardal.models.npc.MNpc;
 import org.ardal.utils.BukkitUtils;
 import org.bukkit.Bukkit;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.SQLException;
 import java.util.EventListener;
 import java.util.UUID;
-/*
+
 public abstract class NpcObj implements NpcInfo, EventListener {
     private MNpc mNpc;
     private Villager npc;
@@ -148,4 +149,4 @@ public abstract class NpcObj implements NpcInfo, EventListener {
 
         return false;
     }
-}*/
+}

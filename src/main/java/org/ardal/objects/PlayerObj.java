@@ -8,18 +8,25 @@ import org.ardal.models.MPlayer;
 import org.ardal.models.MQuest;
 import org.ardal.models.pivot.MQuestPlayer;
 import org.ardal.utils.DateUtils;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class PlayerObj implements PlayerInfo {
     private final MPlayer mPlayer;
 
     public PlayerObj(MPlayer mPlayer) {
         this.mPlayer = mPlayer;
+    }
+
+    public PlayerObj(String playerUuid) {
+        this.mPlayer = Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(playerUuid);
+    }
+
+    public PlayerObj(Player player) {
+        this.mPlayer = Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(player.getUniqueId().toString());
     }
 
     @Override
@@ -46,28 +53,58 @@ public class PlayerObj implements PlayerInfo {
         return DateUtils.getMinutesDiff(new Date(), this.mPlayer.getQuestCooldown());
     }
 
-    public List<String> getPlayerQuests(boolean isFinished) {
+    public List<MQuest> getPlayerQuestObj(boolean isFinished) {
         Database db = Ardal.getInstance().getDb();
         List<Integer> questIds = db.gettQuestPlayer().getQuestsIdByPlayerUuid(this.getUuid(), isFinished);
-        List<String> questNames = new ArrayList<>();
+        List<MQuest> questObjs = new ArrayList<>();
         for(Integer id : questIds) {
-            MQuest mQuest = db.gettQuest().getQuestById(id);
+            MQuest mQuest = db.gettQuest().getQuestById(id, false);
             if(mQuest != null) {
-                questNames.add(mQuest.getName());
+                questObjs.add(mQuest);
             }
+        }
+
+        return questObjs;
+    }
+
+    @Override
+    public List<String> getPlayerActiveQuestNames() {
+        List<String> questNames = new ArrayList<>();
+        for(MQuest mQuest : this.getPlayerQuestObj(false)){
+            questNames.add(mQuest.getName());
         }
 
         return questNames;
     }
 
     @Override
-    public List<String> getPlayerActiveQuests() {
-        return this.getPlayerQuests(false);
+    public List<Integer> getPlayerFinishedQuestIds() {
+        List<Integer> questIds = new ArrayList<>();
+        for(MQuest mQuest : this.getPlayerQuestObj(true)){
+            questIds.add(mQuest.getId());
+        }
+
+        return questIds;
     }
 
     @Override
-    public List<String> getPlayerFinishedQuests() {
-        return this.getPlayerQuests(true);
+    public List<Integer> getPlayerActiveQuestIds() {
+        List<Integer> questIds = new ArrayList<>();
+        for(MQuest mQuest : this.getPlayerQuestObj(false)){
+            questIds.add(mQuest.getId());
+        }
+
+        return questIds;
+    }
+
+    @Override
+    public List<String> getPlayerFinishedQuestNames() {
+        List<String> questNames = new ArrayList<>();
+        for(MQuest mQuest : this.getPlayerQuestObj(true)){
+            questNames.add(mQuest.getName());
+        }
+
+        return questNames;
     }
 
     @Override

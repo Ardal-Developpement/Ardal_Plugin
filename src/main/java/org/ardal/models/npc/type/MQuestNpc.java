@@ -1,6 +1,8 @@
 package org.ardal.models.npc.type;
 
 import org.ardal.Ardal;
+import org.ardal.models.MQuest;
+import org.ardal.objects.QuestObj;
 
 public class MQuestNpc {
     private String npc_uuid;
@@ -17,6 +19,18 @@ public class MQuestNpc {
 
     public boolean updateQuestNpc(){
         return Ardal.getInstance().getDb().gettQuestNpc().updateQuestNpc(this);
+    }
+
+    public String getQuestName() {
+        return Ardal.getInstance().getDb().gettQuest().getQuestById(this.quest_id, false).getName();
+    }
+
+    public boolean getQuestIsActive() {
+        return Ardal.getInstance().getDb().gettQuest().getQuestById(this.quest_id, false).getIsActive();
+    }
+
+    public QuestObj getQuestObj() {
+        return new QuestObj(Ardal.getInstance().getDb().gettQuest().getQuestById(this.quest_id, false));
     }
 
     public String getNpcUuid() {

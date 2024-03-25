@@ -12,14 +12,6 @@ public interface PlayerManagerInfo {
      */
 
 
-    /**
-     * Get player object by name
-     *
-     * @param player of the player
-     * @return player object if found
-     */
-    @Nullable
-    PlayerObj getPlayerObj(OfflinePlayer player);
 
     /**
      * Check if a player exist in the db

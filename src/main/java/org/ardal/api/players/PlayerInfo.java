@@ -42,14 +42,28 @@ public interface PlayerInfo {
      *
      * @return list of quest names
      */
-    List<String> getPlayerActiveQuests();
+    List<String> getPlayerActiveQuestNames();
+
+    /**
+     * Get the player's finished quests
+     *
+     * @return list of quest ids
+     */
+    List<Integer> getPlayerFinishedQuestIds();
+
+    /**
+     * Get the player's active quests
+     *
+     * @return list of quest ids
+     */
+    List<Integer> getPlayerActiveQuestIds();
 
     /**
      * Get the player's finished quests
      *
      * @return list of quest names
      */
-    List<String> getPlayerFinishedQuests();
+    List<String> getPlayerFinishedQuestNames();
 
 
 

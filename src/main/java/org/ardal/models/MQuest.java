@@ -3,6 +3,7 @@ package org.ardal.models;
 import org.ardal.Ardal;
 
 public class MQuest {
+    private int id;
     private String name;
     private String book_id;
     private String synopsis;
@@ -11,7 +12,10 @@ public class MQuest {
     private boolean is_active;
     private boolean is_delete;
 
-    public MQuest(String name, String book_id, String synopsis, int request_item_group_id, int reward_item_group_id, boolean is_active, boolean is_delete) {
+
+
+    public MQuest(int id, String name, String book_id, String synopsis, int request_item_group_id, int reward_item_group_id, boolean is_active, boolean is_delete) {
+        this.id = id;
         this.name = name;
         this.book_id = book_id;
         this.synopsis = synopsis;
@@ -23,6 +27,10 @@ public class MQuest {
 
     public boolean updateQuest(){
         return Ardal.getInstance().getDb().gettQuest().updateQuest(this);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
