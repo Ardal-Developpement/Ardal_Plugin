@@ -14,8 +14,9 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class RemoveFinishedQuestCmd implements ArdalCmd {
+
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.size() < 2){
@@ -79,4 +80,4 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
     public String getCmdName() {
         return "finishedQuest";
     }
-}
+}*/

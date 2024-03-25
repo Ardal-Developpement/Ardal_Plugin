@@ -91,11 +91,12 @@ public class Database {
             statement.execute(sql);
 
             sql = "create table if not exists quest_npc(" +
-                    "uuid varchar(36) primary key," +
+                    "id int primary key auto_increment," +
+                    "npc_uuid varchar(36)," +
                     "quest_id int," +
                     "quest_coef int," +
                     "is_show bool," +
-                    "foreign key (uuid) references npcs(uuid) on delete cascade on update cascade," +
+                    "foreign key (npc_uuid) references npcs(uuid) on delete cascade on update cascade," +
                     "foreign key (quest_id) references quests(id) on delete cascade)";
             statement.execute(sql);
 

@@ -1,19 +1,9 @@
 package org.ardal.inventories.npc;
 
-import org.ardal.Ardal;
-import org.ardal.api.inventories.CICell;
-import org.ardal.api.inventories.CustomInventory;
-import org.ardal.api.inventories.callback.CellCallBack;
-import org.ardal.managers.CustomNPCManager;
-import org.ardal.objects.CustomNPCObj;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+/*
 
 public class NpcManagementInventory extends CustomInventory implements CellCallBack {
+
     private final CustomNPCObj npc;
     public NpcManagementInventory(CustomNPCObj npc, Player player){
         super(npc.getNpcName() + " management:", 27, player);
@@ -104,4 +94,8 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
                 break;
         }
     }
+
+
 }
+
+   */

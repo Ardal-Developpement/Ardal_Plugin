@@ -28,13 +28,13 @@ public class ListPlayerFinishedQuest implements ArdalCmd {
         }
 
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        List<String> finishedQuests = playerInfoManager.getPlayerFinishedQuests(player);
+        /*List<String> finishedQuests = playerInfoManager.getPlayerFinishedQuests(player);
         sender.sendMessage("Found " + finishedQuests.size() + " finished quests:");
 
         int i = 1;
         for(String questName : finishedQuests){
             sender.sendMessage(i++ + ": " + questName);
-        }
+        }*/
 
         return true;
     }

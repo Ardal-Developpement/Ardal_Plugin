@@ -26,7 +26,7 @@ public class GiveQuestBook implements ArdalCmd {
         Player player = (Player) sender;
 
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-
+    /*
         ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(questName);
         if(book == null) {
             player.sendMessage("Invalid quest name.");
@@ -43,7 +43,7 @@ public class GiveQuestBook implements ArdalCmd {
         }
 
         PlayerUtils.giveItemStackToPlayer(book, offlinePlayer.getPlayer());
-        player.sendMessage("Success to give quest book for: " + questName + " to: " + offlinePlayer.getName());
+        player.sendMessage("Success to give quest book for: " + questName + " to: " + offlinePlayer.getName());*/
         return true;
     }
 

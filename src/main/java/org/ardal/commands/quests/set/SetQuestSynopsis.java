@@ -46,11 +46,11 @@ public class SetQuestSynopsis implements ArdalCmd {
 
             synopsis = sb.toString();
         }
-
+/*
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         questManager.setQuestSynopsis(questName, synopsis);
 
-        sender.sendMessage("Synopsis of '" + questName + "': " + synopsis);
+        sender.sendMessage("Synopsis of '" + questName + "': " + synopsis);*/
         return true;
     }
 
@@ -58,7 +58,7 @@ public class SetQuestSynopsis implements ArdalCmd {
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.size() < 2) {
             QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-            return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(), StringUtils.getStringFromConcatStringList(argv));
+            return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(false), StringUtils.getStringFromConcatStringList(argv));
         }
 
         return new ArrayList<>();

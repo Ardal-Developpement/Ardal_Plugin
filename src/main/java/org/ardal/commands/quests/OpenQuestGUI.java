@@ -18,7 +18,7 @@ public class OpenQuestGUI implements ArdalCmd {
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        List<String> questNames = questManager.getAllQuestNames();
+        List<String> questNames = questManager.getAllQuestNames(false);
 
 
         int inventorySize = questNames.size() / 9;
@@ -29,7 +29,7 @@ public class OpenQuestGUI implements ArdalCmd {
 
         Inventory inventory = Bukkit.createInventory(player, inventorySize, ChatColor.GOLD + "Quest:");
         for(String questName : questNames){
-            inventory.addItem(questManager.getQuestBook(questName));
+            //inventory.addItem(questManager.getQuestBook(questName));
         }
 
         player.openInventory(inventory);

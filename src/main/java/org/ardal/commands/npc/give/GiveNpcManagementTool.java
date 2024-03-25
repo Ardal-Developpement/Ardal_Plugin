@@ -2,7 +2,6 @@ package org.ardal.commands.npc.give;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
-import org.ardal.managers.CustomNPCManager;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
@@ -11,7 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.List;/*
 
 public class GiveNpcManagementTool implements ArdalCmd {
     @Override
@@ -54,4 +53,4 @@ public class GiveNpcManagementTool implements ArdalCmd {
     public String getCmdName() {
         return "managementTool";
     }
-}
+}*/

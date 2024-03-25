@@ -26,7 +26,7 @@ public class ListPlayerActiveQuest implements ArdalCmd {
                 return true;
             }
         }
-
+/*
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
         List<String> activeQuests = playerInfoManager.getPlayerActiveQuests(player);
         sender.sendMessage("Found " + activeQuests.size() + " active quests:");
@@ -34,7 +34,7 @@ public class ListPlayerActiveQuest implements ArdalCmd {
         int i = 1;
         for(String questName : activeQuests){
             sender.sendMessage(i++ + ": " + questName);
-        }
+        }*/
 
         return true;
     }

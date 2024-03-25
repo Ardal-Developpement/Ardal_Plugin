@@ -27,7 +27,7 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
             sender.sendMessage("Invalid player name.");
             return true;
         }
-
+/*
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
 
@@ -42,7 +42,7 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
             return true;
         }
 
-        playerInfoManager.removePlayerQuest(player, questName);
+        playerInfoManager.removePlayerQuest(player, questName);*/
         return true;
     }
 
@@ -60,11 +60,12 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
         if(player == null) { return new ArrayList<>(); }
 
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-
+/*
         return TabCompleteUtils.getTabCompleteFromStrList(
                 playerInfoManager.getPlayerActiveQuests(player),
                 StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()))
-        );
+        );*/
+        return new ArrayList<>();
     }
 
     @Override

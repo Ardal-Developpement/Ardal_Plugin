@@ -27,6 +27,7 @@ public class AddFinishedQuestCmd implements ArdalCmd {
             sender.sendMessage("Invalid player name.");
             return true;
         }
+        /*
 
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
@@ -36,7 +37,7 @@ public class AddFinishedQuestCmd implements ArdalCmd {
         }
 
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        playerInfoManager.addPlayerFinishedQuest(player, questName);
+        playerInfoManager.addPlayerFinishedQuest(player, questName);*/
         return true;
     }
 
@@ -53,7 +54,7 @@ public class AddFinishedQuestCmd implements ArdalCmd {
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
 
         return TabCompleteUtils.getTabCompleteFromStrList(
-                questManager.getAllQuestNames(),
+                questManager.getAllQuestNames(false),
                 StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()))
         );
     }

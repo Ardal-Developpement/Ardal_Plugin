@@ -43,7 +43,7 @@ public class EditItemsQuestRequest implements ArdalCmd {
     @Override
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(), argv.get(0));
+        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(false), argv.get(0));
     }
 
     @Override

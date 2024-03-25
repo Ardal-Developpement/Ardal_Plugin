@@ -14,7 +14,7 @@ public class TQuestNpc {
             PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
                     .prepareStatement("insert into quest_npc(uuid, quest_id, quest_coef, is_show) values (?,?,?,?)");
 
-            statement.setString(1, mQuestNpc.getUuid());
+            statement.setString(1, mQuestNpc.getNpcUuid());
             statement.setInt(2, mQuestNpc.getQuestId());
             statement.setInt(3, mQuestNpc.getQuestCoef());
             statement.setBoolean(4, mQuestNpc.getIsShow());
@@ -30,19 +30,19 @@ public class TQuestNpc {
         return false;
     }
 
-    public boolean updateNpc(MQuestNpc mQuestNpc) {
+    public boolean updateQuestNpc(MQuestNpc mQuestNpc) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("update quest_npc set " +
                              "quest_id = ?," +
                              "quest_coef = ?," +
                              "is_show = ?" +
-                             "where uuid = ?"))
+                             "where npc_uuid = ?"))
         {
             statement.setInt(1, mQuestNpc.getQuestId());
             statement.setInt(2, mQuestNpc.getQuestCoef());
             statement.setBoolean(3, mQuestNpc.getIsShow());
-            statement.setString(4, mQuestNpc.getUuid());
+            statement.setString(4, mQuestNpc.getNpcUuid());
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
@@ -54,20 +54,20 @@ public class TQuestNpc {
     }
 
     @Nullable
-    public MQuestNpc getQuestNpcByUuid(@NotNull String uuid){
+    public MQuestNpc getQuestNpcByUuid(@NotNull String npc_uuid){
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT uuid, quest_id, quest_coef, is_show FROM quest_npc WHERE uuid = ?"))
+                     .prepareStatement("SELECT npc_uuid, quest_id, quest_coef, is_show FROM quest_npc WHERE npc_uuid = ?"))
         {
 
-            statement.setString(1, uuid);
+            statement.setString(1, npc_uuid);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     int quest_id = resultSet.getInt("quest_id");
                     int quest_coef = resultSet.getInt("quest_coef");
                     boolean is_show = resultSet.getBoolean("is_show");
 
-                    return new MQuestNpc(uuid, quest_id, quest_coef, is_show);
+                    return new MQuestNpc(npc_uuid, quest_id, quest_coef, is_show);
                 }
             }
         } catch (SQLException e) {

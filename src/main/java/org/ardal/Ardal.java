@@ -22,7 +22,6 @@ public final class Ardal extends JavaPlugin {
         this.db = new Database();
         db.initDb();
 
-        this.registerManager(new CustomNPCManager());
         this.registerManager(new PlayerInfoManager());
         this.registerManager(new QuestManager());
         this.registerManager(new CustomItemManager());

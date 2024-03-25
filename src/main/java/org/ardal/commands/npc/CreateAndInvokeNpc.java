@@ -3,7 +3,6 @@ package org.ardal.commands.npc;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.api.npc.NpcType;
-import org.ardal.managers.CustomNPCManager;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
@@ -13,7 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class CreateAndInvokeNpc implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
@@ -67,3 +66,4 @@ public class CreateAndInvokeNpc implements ArdalCmd {
         return "create";
     }
 }
+*/

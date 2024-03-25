@@ -22,7 +22,7 @@ public class SetIsActiveQuest implements ArdalCmd {
         Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-
+/*
         boolean state = argv.get(0).toLowerCase().trim().equals("true");
         Boolean requestState = questManager.setQuestActivity(questName, state);
 
@@ -31,7 +31,7 @@ public class SetIsActiveQuest implements ArdalCmd {
         } else {
             player.sendMessage("Set quest " + questName + " visibility to " + state);
         }
-
+*/
         return true;
     }
 
@@ -42,7 +42,7 @@ public class SetIsActiveQuest implements ArdalCmd {
         }
 
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(), argv.subList(1, argv.size()));
+        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(false), argv.subList(1, argv.size()));
     }
 
     public String getHelp() {

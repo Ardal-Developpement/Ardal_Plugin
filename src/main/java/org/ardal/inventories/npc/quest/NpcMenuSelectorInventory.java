@@ -6,7 +6,6 @@ import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
-import org.ardal.npc.quest.QuestNpc;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.ChatUtils;
 import org.ardal.utils.PlayerUtils;
@@ -19,7 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.List;
-
+/*
 public class NpcMenuSelectorInventory extends CustomInventory implements CellCallBack {
     private final QuestNpc questNpc;
     private final String questName;
@@ -147,4 +146,4 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
         this.cancelQuestItem.setItemMeta(meta);
         return this.cancelQuestItem;
     }
-}
+}*/

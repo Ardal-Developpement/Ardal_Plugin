@@ -6,7 +6,6 @@ import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
-import org.ardal.npc.quest.QuestNpc;
 import org.ardal.utils.ChatUtils;
 import org.ardal.utils.PlayerUtils;
 import org.bukkit.entity.Player;
@@ -16,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+/*
 public class NpcQuestSelectorInventory extends CustomInventory implements CellCallBack {
     private static final int UI_SIZE = 27;
     private final QuestNpc questNpc;
@@ -91,4 +90,4 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
 
         this.closeInventory();
     }
-}
+}*/

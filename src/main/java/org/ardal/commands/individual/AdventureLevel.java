@@ -31,7 +31,7 @@ public class AdventureLevel implements ArdalCmd {
         }
 
         PlayerInfoManager pIM = Ardal.getInstance().getManager(PlayerInfoManager.class);
-        player.sendMessage("Your current adventure level is: " + pIM.getAdventureLevel(player));
+        //player.sendMessage("Your current adventure level is: " + pIM.getAdventureLevel(player));
         return true;
     }
 

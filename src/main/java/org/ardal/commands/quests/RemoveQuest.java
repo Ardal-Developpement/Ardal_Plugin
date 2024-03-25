@@ -20,7 +20,7 @@ public class RemoveQuest implements ArdalCmd {
         }
 
         Player player = (Player) sender;
-        String questName = StringUtils.getStringFromConcatStringList(argv);
+        String questName = StringUtils.getStringFromConcatStringList(argv);/*
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
 
         if(!questManager.questExist(questName)){
@@ -33,14 +33,14 @@ public class RemoveQuest implements ArdalCmd {
         } else {
             player.sendMessage("Failed to remove quest: " + questName);
         }
-
+*/
         return true;
     }
 
     @Override
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(), argv);
+        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(false), argv);
     }
 
     public String getHelp() {

@@ -1,23 +1,6 @@
 package org.ardal.inventories.npc.quest.management;
 
-import org.ardal.Ardal;
-import org.ardal.api.inventories.CICell;
-import org.ardal.inventories.CICarousel;
-import org.ardal.managers.QuestManager;
-import org.ardal.npc.quest.QuestNpc;
-import org.ardal.npc.quest.QuestNpcInfo;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
-
+/*
 public class QuestIsActiveSelectorInventory extends CICarousel {
     private final QuestNpc questNpc;
     private final List<ItemStack> questBooks;
@@ -77,7 +60,7 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
     }
 
     private ItemStack getQuestBook(String questName, QuestManager questManager){
-        /*
+
         QuestObj questObj = questManager.getQuestObj(questName);
         if(questObj == null || !questObj.getIsActive()) { return null; }
 
@@ -86,7 +69,7 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
 
         return book;
 
-         */
+
         return null;
     }
 
@@ -132,3 +115,4 @@ public class QuestIsActiveSelectorInventory extends CICarousel {
         this.refreshBookMeta(book);
     }
 }
+*/

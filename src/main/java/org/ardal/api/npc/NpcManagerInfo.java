@@ -1,6 +1,5 @@
 package org.ardal.api.npc;
 
-import org.ardal.objects.NpcObj;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,8 +17,8 @@ public interface NpcManagerInfo {
      * @param npcUuid of the npc
      * @return npc object (null if not registered)
      */
-    @Nullable
-    NpcObj getRegisteredNpcByUuid(String npcUuid);
+    //@Nullable
+    //NpcObj getRegisteredNpcByUuid(String npcUuid);
 
     /**
      * Get all saved npc id

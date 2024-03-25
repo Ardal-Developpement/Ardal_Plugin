@@ -24,9 +24,9 @@ public class AddQuest implements ArdalCmd {
             player.sendMessage("Please take a written book in your main hand.");
             return true;
         }
-
+/*
         new QuestObj(item, new ArrayList<>(), new ArrayList<>(), true).save();
-        player.sendMessage("Success to add quest.");
+        player.sendMessage("Success to add quest.");*/
         return true;
     }
 

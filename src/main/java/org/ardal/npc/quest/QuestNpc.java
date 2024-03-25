@@ -5,15 +5,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcType;
-import org.ardal.inventories.npc.quest.NpcMenuSelectorInventory;
-import org.ardal.inventories.npc.quest.NpcQuestSelectorInventory;
-import org.ardal.inventories.npc.quest.management.QuestIsActiveSelectorInventory;
-import org.ardal.managers.CustomNPCManager;
+
 import org.ardal.managers.PlayerInfoManager;
 import org.ardal.managers.QuestManager;
 import org.ardal.models.npc.type.MQuestNpc;
-import org.ardal.objects.CustomNPCObj;
-import org.ardal.objects.NpcObj;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.ChatUtils;
 import org.bukkit.Location;
@@ -27,16 +22,17 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.UUID;/*
 
 public class QuestNpc extends NpcObj {
+
     private final MQuestNpc mQuestNpc;
-    public List<QuestNpcInfo> questInfoList;
+    public List<MQuestNpc> mQuestNpcList;
 
     public QuestNpc(String npcName, Location location, NpcType npcType){
         super(npcName, location, npcType);
         this.mQuestNpc = Ardal.getInstance().getDb().gettQuestNpc().getQuestNpcByUuid(this.getUuid().toString());
-        this.questInfoList = new ArrayList<>();
+        this.questInfoList = Ardal.getInstance().getDb().gettQuestNpc().
     }
 
     public QuestNpc(String npcUuid) throws SQLException {
@@ -59,32 +55,16 @@ public class QuestNpc extends NpcObj {
     }
 
     @NotNull
-    public QuestNpcInfo getQuestNpcByName(String questName){ /*
+    public QuestNpcInfo getQuestNpcByName(String questName){
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         return this.getQuestNpcByObj(questManager.getQuestObj(questName));
-        */
+
         return null;
     }
 
     @Override
     public void onNpcManagmentClickEvent(InventoryClickEvent event) {
         new QuestIsActiveSelectorInventory(this, (Player) event.getWhoClicked()).showInventory();
-    }
-
-    @Override
-    public JsonArray additionalProperties() {
-        JsonArray jsonArray = new JsonArray();
-
-        for(QuestNpcInfo obj : this.questInfoList){
-            jsonArray.add(obj.toJson());
-        }
-
-        return jsonArray;
-    }
-
-    @Override
-    public NpcType getNpcType() {
-        return NpcType.QUEST_NPC;
     }
 
     @Override
@@ -115,9 +95,6 @@ public class QuestNpc extends NpcObj {
         }
     }
 
-    /**
-     * @return questName if player don't have an active quest that the npc have
-     */
     private String playerHasNpcActiveQuest(Player player){
         PlayerInfoManager playerInfoManager = Ardal.getInstance().getManager(PlayerInfoManager.class);
         List<String> playerQuestList = playerInfoManager.getPlayerActiveQuests(player);
@@ -196,3 +173,4 @@ public class QuestNpc extends NpcObj {
         book.setItemMeta(meta);
     }
 }
+*/

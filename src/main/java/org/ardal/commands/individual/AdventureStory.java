@@ -13,8 +13,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+/*
 
 public class AdventureStory implements ArdalCmd {
+
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
@@ -48,4 +50,4 @@ public class AdventureStory implements ArdalCmd {
     public String getCmdName() {
         return "story";
     }
-}
+}*/

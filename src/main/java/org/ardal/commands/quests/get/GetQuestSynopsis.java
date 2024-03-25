@@ -20,21 +20,21 @@ public class GetQuestSynopsis implements ArdalCmd {
 
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         String questName = StringUtils.getStringFromConcatStringList(argv);
-
+    /*
         String synopsis  = questManager.getQuestSynopsis(questName);
         if(synopsis == null) {
             sender.sendMessage("Invalid quest name.");
             return true;
         }
 
-        sender.sendMessage("Synopsis of '" + questName + "': " + synopsis);
+        sender.sendMessage("Synopsis of '" + questName + "': " + synopsis);*/
         return true;
     }
 
     @Override
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(), StringUtils.getStringFromConcatStringList(argv));
+        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(false), StringUtils.getStringFromConcatStringList(argv));
     }
 
     public String getHelp() {

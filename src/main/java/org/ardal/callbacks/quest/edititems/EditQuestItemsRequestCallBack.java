@@ -13,10 +13,11 @@ public class EditQuestItemsRequestCallBack implements CICallBack {
 
     @Override
     public void executeCICallBack(CustomInventory customInventory) {
+        /*
         if(this.questObj.getItemsReward() != customInventory.getAllItemStack()){
             this.questObj.setItemsRequest(customInventory.getAllItemStack());
             this.questObj.save();
             customInventory.getPlayer().sendMessage("Success to save item request for: " + this.questObj.getQuestName());
-        }
+        }*/
     }
 }

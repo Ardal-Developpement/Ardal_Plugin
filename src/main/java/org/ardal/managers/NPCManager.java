@@ -6,12 +6,9 @@ import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.npc.NpcManagerInfo;
 import org.ardal.api.npc.NpcType;
 import org.ardal.commands.BaseCmdAlias;
-import org.ardal.commands.npc.CreateAndInvokeNpc;
 import org.ardal.commands.npc.give.GiveNpcManager;
 import org.ardal.db.tables.npc.TNpc;
-import org.ardal.inventories.npc.quest.management.NpcManagementTool;
 import org.ardal.models.npc.MNpc;
-import org.ardal.objects.NpcObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, ArdalManager, Listener {
     private final NpcManagementTool npcManagementTool;
     private final List<NpcObj> npcs;
@@ -130,4 +127,4 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
             npc.onNPCInteract(event);
         }
     }
-}
+}*/
