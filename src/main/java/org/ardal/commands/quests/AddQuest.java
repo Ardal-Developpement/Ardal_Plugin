@@ -1,6 +1,8 @@
 package org.ardal.commands.quests;
 
+import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
+import org.ardal.managers.QuestManager;
 import org.ardal.objects.QuestObj;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,9 +26,10 @@ public class AddQuest implements ArdalCmd {
             player.sendMessage("Please take a written book in your main hand.");
             return true;
         }
-/*
-        new QuestObj(item, new ArrayList<>(), new ArrayList<>(), true).save();
-        player.sendMessage("Success to add quest.");*/
+
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        questManager.createNewQuest(item, new ArrayList<>(), new ArrayList<>());
+
         return true;
     }
 

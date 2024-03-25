@@ -12,6 +12,13 @@ public interface QuestInfo {
 
 
     /**
+     * Get if the quest exist
+     *
+     * @return true if exist
+     */
+    boolean isQuestExist();
+
+    /**
      * Get the quest name
      *
      * @return quest name
@@ -111,7 +118,8 @@ public interface QuestInfo {
     /**
      * Set quest deleted (for safe delete)
      *
+     * @param state to set
      * @return true on success
      */
-    boolean setQuestDeleted();
+    boolean setQuestDeleted(boolean state);
 }

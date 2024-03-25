@@ -3,6 +3,7 @@ package org.ardal.commands.quests.get;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
@@ -18,16 +19,15 @@ public class GetQuestSynopsis implements ArdalCmd {
             return false;
         }
 
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         String questName = StringUtils.getStringFromConcatStringList(argv);
-    /*
-        String synopsis  = questManager.getQuestSynopsis(questName);
-        if(synopsis == null) {
+        QuestObj questObj = new QuestObj(questName);
+
+        if(!questObj.isQuestExist()) {
             sender.sendMessage("Invalid quest name.");
             return true;
         }
 
-        sender.sendMessage("Synopsis of '" + questName + "': " + synopsis);*/
+        sender.sendMessage("Synopsis of '" + questName + "': " + questObj.getQuestSynopsis());
         return true;
     }
 

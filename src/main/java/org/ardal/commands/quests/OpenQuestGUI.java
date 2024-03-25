@@ -3,6 +3,7 @@ package org.ardal.commands.quests;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.QuestObj;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -20,7 +21,6 @@ public class OpenQuestGUI implements ArdalCmd {
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
         List<String> questNames = questManager.getAllQuestNames(false);
 
-
         int inventorySize = questNames.size() / 9;
         if(questNames.size() % 9 > 0){
             inventorySize++;
@@ -28,8 +28,8 @@ public class OpenQuestGUI implements ArdalCmd {
         inventorySize *= 9;
 
         Inventory inventory = Bukkit.createInventory(player, inventorySize, ChatColor.GOLD + "Quest:");
-        for(String questName : questNames){
-            //inventory.addItem(questManager.getQuestBook(questName));
+        for(String questName : questNames) {
+            inventory.addItem(new QuestObj(questName).getQuestBook());
         }
 
         player.openInventory(inventory);

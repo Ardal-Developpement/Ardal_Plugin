@@ -3,6 +3,7 @@ package org.ardal.commands.quests.give;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.PlayerUtils;
 import org.ardal.utils.StringUtils;
@@ -26,9 +27,9 @@ public class GiveQuestBook implements ArdalCmd {
         Player player = (Player) sender;
 
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-    /*
-        ItemStack book = Ardal.getInstance().getManager(QuestManager.class).getQuestBook(questName);
-        if(book == null) {
+        QuestObj questObj = new QuestObj(questName);
+
+        if(!questObj.isQuestExist()) {
             player.sendMessage("Invalid quest name.");
             return true;
         }
@@ -42,8 +43,8 @@ public class GiveQuestBook implements ArdalCmd {
             return true;
         }
 
-        PlayerUtils.giveItemStackToPlayer(book, offlinePlayer.getPlayer());
-        player.sendMessage("Success to give quest book for: " + questName + " to: " + offlinePlayer.getName());*/
+        PlayerUtils.giveItemStackToPlayer(questObj.getQuestBook(), offlinePlayer.getPlayer());
+        player.sendMessage("Success to give quest book for: " + questName + " to: " + offlinePlayer.getName());
         return true;
     }
 
@@ -57,8 +58,7 @@ public class GiveQuestBook implements ArdalCmd {
             return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv.get(0));
         }
 
-        //return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getQuestDB().getKeySet(), argv.subList(1, argv.size()));
-        return null;
+        return TabCompleteUtils.getTabCompleteFromStrList(Ardal.getInstance().getManager(QuestManager.class).getAllQuestNames(false), argv.subList(1, argv.size()));
     }
 
     public String getHelp() {

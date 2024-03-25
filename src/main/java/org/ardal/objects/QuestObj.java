@@ -34,6 +34,10 @@ public class QuestObj implements QuestInfo, Comparable<QuestObj> {
     }
 
 
+    @Override
+    public boolean isQuestExist() {
+        return this.mQuest != null;
+    }
 
     @Override
     public String getQuestName() {
@@ -128,7 +132,7 @@ public class QuestObj implements QuestInfo, Comparable<QuestObj> {
     }
 
     @Override
-    public boolean setQuestDeleted() {
+    public boolean setQuestDeleted(boolean state) {
         this.mQuest.setIsDelete(true);
         return this.mQuest.updateQuest();
     }

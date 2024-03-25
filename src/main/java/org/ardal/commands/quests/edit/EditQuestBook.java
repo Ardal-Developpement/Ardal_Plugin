@@ -3,6 +3,7 @@ package org.ardal.commands.quests.edit;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.QuestObj;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -30,16 +31,15 @@ public class EditQuestBook implements ArdalCmd {
         }
 
         String questName = item.getItemMeta().getDisplayName();
-        /*QuestObj questObj = questManager.getQuestObj(questName);
+        QuestObj questObj = new QuestObj(questName);
 
-        if(questObj == null){
+        if(!questObj.isQuestExist()){
             sender.sendMessage("Invalid quest name.");
             return true;
         }
 
-        questObj.setBook(item);
-        questObj.save();
-        player.sendMessage("Success to set new quest book.");*/
+        questObj.setQuestBook(item);
+        player.sendMessage("Success to set new quest book.");
         return true;
     }
 

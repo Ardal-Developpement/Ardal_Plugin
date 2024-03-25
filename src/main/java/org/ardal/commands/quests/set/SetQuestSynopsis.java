@@ -3,6 +3,7 @@ package org.ardal.commands.quests.set;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
@@ -33,9 +34,8 @@ public class SetQuestSynopsis implements ArdalCmd {
             return true;
         }
 
-        BookMeta bookMeta = (BookMeta) book.getItemMeta();
-        String questName = bookMeta.getDisplayName().trim();
-        List<String> pages = bookMeta.getPages();
+        BookMeta meta = (BookMeta) book.getItemMeta();
+        List<String> pages = meta.getPages();
         String synopsis = "";
 
         if(!pages.isEmpty()) {
@@ -46,11 +46,17 @@ public class SetQuestSynopsis implements ArdalCmd {
 
             synopsis = sb.toString();
         }
-/*
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-        questManager.setQuestSynopsis(questName, synopsis);
 
-        sender.sendMessage("Synopsis of '" + questName + "': " + synopsis);*/
+        String questName = meta.getDisplayName();
+        QuestObj questObj = new QuestObj(questName);
+        if(!questObj.isQuestExist()) {
+            player.sendMessage("Invalid quest name.");
+            return true;
+        }
+
+        questObj.setQuestSynopsis(synopsis);
+        sender.sendMessage("Synopsis of '" + questName + "': " + synopsis);
+
         return true;
     }
 

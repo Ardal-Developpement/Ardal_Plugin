@@ -3,6 +3,7 @@ package org.ardal.commands.quests.set;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.QuestManager;
+import org.ardal.objects.QuestObj;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
@@ -19,19 +20,17 @@ public class SetIsActiveQuest implements ArdalCmd {
             return false;
         }
 
-        Player player = (Player) sender;
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-/*
         boolean state = argv.get(0).toLowerCase().trim().equals("true");
-        Boolean requestState = questManager.setQuestActivity(questName, state);
+        QuestObj questObj = new QuestObj(questName);
 
-        if(requestState == null) {
-            player.sendMessage("Unknown quest name.");
+        if(questObj.isQuestExist()) {
+            questObj.setQuestActivity(state);
+            sender.sendMessage("Set quest " + questName + " visibility to " + state);
         } else {
-            player.sendMessage("Set quest " + questName + " visibility to " + state);
+            sender.sendMessage("Unknown quest name.");
         }
-*/
+
         return true;
     }
 
