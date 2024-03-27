@@ -36,7 +36,7 @@ public class QuestNpc extends NpcObj {
         this.mQuestNpcList = Ardal.getInstance().getDb().gettQuestNpc().getAllQuestNpcsByUuid(this.getUuid());
     }
 
-    public QuestNpc(String npcUuid) throws SQLException {
+    public QuestNpc(String npcUuid) {
         super(npcUuid);
         this.mQuestNpcList = Ardal.getInstance().getDb().gettQuestNpc().getAllQuestNpcsByUuid(this.getUuid());
     }

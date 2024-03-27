@@ -25,7 +25,6 @@ public class GiveItemsQuestReward implements ArdalCmd {
         }
 
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
-        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
 
         OfflinePlayer offlinePlayer = BukkitUtils.getOfflinePlayerFromName(argv.get(0));
         if(offlinePlayer == null 

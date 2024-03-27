@@ -11,9 +11,11 @@ import org.ardal.db.tables.npc.TNpc;
 import org.ardal.inventories.npc.NpcManagementInventory;
 import org.ardal.inventories.npc.quest.management.NpcManagementTool;
 import org.ardal.models.npc.MNpc;
+import org.ardal.npc.quest.QuestNpc;
 import org.ardal.objects.NpcObj;
 import org.ardal.objects.PlayerObj;
 import org.ardal.utils.StringUtils;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -44,6 +46,7 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
 
     @Override
     public void onEnable() {
+        this.loadNpcs();
     }
 
     @Override
@@ -75,18 +78,25 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
         TNpc tNpc = Ardal.getInstance().getDb().gettNpc();
         for(String npcUuid : npcUuids) {
             MNpc mNpc = tNpc.getNpcByUuid(npcUuid);
-            NpcType npcType = mNpc.getType();
-            if(npcType == null) {
-                Ardal.writeToLogger("Unknown Npc type found: " + mNpc.getType());
-                continue;
-            }
 
-            switch (npcType){
+            switch (mNpc.getType()) {
                 case QUEST_NPC:
-
+                    new QuestNpc(npcUuid);
                     break;
             }
         }
+    }
+
+    @Nullable
+    public NpcObj createAndInvokeNpc(String npcName, Location location, NpcType type) {
+        NpcObj npc = null;
+        switch (type){
+            case QUEST_NPC:
+                npc = new QuestNpc(npcName, location, type);
+                break;
+        }
+
+        return npc;
     }
 
     @Override

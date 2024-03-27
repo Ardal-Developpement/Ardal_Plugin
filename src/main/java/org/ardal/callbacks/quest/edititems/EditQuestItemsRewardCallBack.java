@@ -12,11 +12,10 @@ public class EditQuestItemsRewardCallBack implements CICallBack {
     }
 
     @Override
-    public void executeCICallBack(CustomInventory customInventory) {/*
-        if(this.questObj.getItemsReward() != customInventory.getAllItemStack()) {
-            this.questObj.setItemsReward(customInventory.getAllItemStack());
-            this.questObj.save();
+    public void executeCICallBack(CustomInventory customInventory) {
+        if(this.questObj.getItemQuestReward() != customInventory.getAllItemStack()) {
+            this.questObj.setItemsQuestReward(customInventory.getAllItemStack());
             customInventory.getPlayer().sendMessage("Success to save item reward for: " + this.questObj.getQuestName());
-        }*/
+        }
     }
 }

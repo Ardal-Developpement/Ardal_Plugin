@@ -38,8 +38,6 @@ public interface NpcManagerInfo {
 
 
 
-
-
     /*
             SETTER
      */

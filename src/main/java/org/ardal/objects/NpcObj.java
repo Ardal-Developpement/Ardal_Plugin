@@ -35,11 +35,8 @@ public abstract class NpcObj implements NpcInfo, EventListener {
         Ardal.getInstance().getManager(NPCManager.class).registerNpc(this);
     }
 
-    public NpcObj(String npcUuid) throws SQLException {
+    public NpcObj(String npcUuid) {
         this.mNpc = Ardal.getInstance().getDb().gettNpc().getNpcByUuid(npcUuid);
-        if(this.mNpc == null) {
-            throw new SQLException("Npc uuid does not exist in database.");
-        }
 
         UUID uuid = UUID.fromString(this.mNpc.getUuid());
         this.npc = (Villager) BukkitUtils.getEntityFromId(uuid, this.getLocation().getWorld().getUID());

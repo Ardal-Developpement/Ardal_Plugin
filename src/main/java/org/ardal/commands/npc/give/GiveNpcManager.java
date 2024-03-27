@@ -12,7 +12,7 @@ public class GiveNpcManager extends ArdalCmdNode implements ArdalCmd {
 
     public GiveNpcManager(){
         super(CMD_NAME);
-        //this.registerCmd(new GiveNpcManagementTool());
+        this.registerCmd(new GiveNpcManagementTool());
     }
 
     @Override

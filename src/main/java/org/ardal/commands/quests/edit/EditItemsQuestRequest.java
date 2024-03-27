@@ -18,7 +18,6 @@ import java.util.List;
 
 public class EditItemsQuestRequest implements ArdalCmd {
 
-
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         if(argv.size() < 2){
