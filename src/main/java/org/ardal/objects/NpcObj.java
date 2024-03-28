@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.EventListener;
 import java.util.UUID;
 
-public abstract class NpcObj implements NpcInfo, EventListener {
+public abstract class NpcObj implements NpcInfo {
     private MNpc mNpc;
     private Villager npc;
 

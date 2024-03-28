@@ -18,7 +18,12 @@ public class TPlayer {
             statement.setString(1, mPlayer.getUuid());
             statement.setString(2, mPlayer.getName());
             statement.setInt(3, mPlayer.getAdventureLevel());
-            statement.setTimestamp(4, new Timestamp(mPlayer.getQuestCooldown().getTime()));
+
+            if(mPlayer.getQuestCooldown() == null) {
+                statement.setNull(4, Types.TIMESTAMP);
+            } else {
+                statement.setTimestamp(4, new Timestamp(mPlayer.getQuestCooldown().getTime()));
+            }
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {

@@ -141,14 +141,13 @@ public class TNpc {
         List<String> npcNames = new ArrayList<>();
 
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement = connection
-                     .prepareStatement("SELECT name FROM npcs"))
-        {
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    npcNames.add(resultSet.getString("name"));
-                }
+             PreparedStatement statement = connection.prepareStatement("SELECT name FROM npcs");
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                npcNames.add(resultSet.getString("name"));
             }
+
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to fetch npc names in database.");
             e.printStackTrace();

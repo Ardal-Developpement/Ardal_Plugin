@@ -7,6 +7,7 @@ import org.ardal.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public final class Ardal extends JavaPlugin {
     @Override
     public void onDisable() {
         disableManagers();
+        this.db.closeDataSource();
     }
 
     private void enableManagers(){

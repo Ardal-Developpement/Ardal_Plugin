@@ -1,22 +1,23 @@
 package org.ardal.db;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.ardal.Ardal;
 import org.ardal.db.tables.*;
 import org.ardal.db.tables.npc.TNpc;
 import org.ardal.db.tables.npc.type.TQuestNpc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Database {
 
-    private static final String URL = "jdbc:mysql://localhost/ardal";
+    private static final String URL = "jdbc:mysql://localhost/ardal?useSSL=false";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
-
+    private final HikariDataSource dataSource;
 
     private final TPlayer tPlayers;
     private final TQuest tQuests;
@@ -28,6 +29,12 @@ public class Database {
     private final TQuestNpc tQuestNpc;
 
     public Database(){
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(URL);
+        config.setUsername(USER);
+        config.setPassword(PASSWORD);
+        dataSource = new HikariDataSource(config);
+
         this.tQuests = new TQuest();
         this.tQuestPlayer = new TQuestPlayer();
         this.tPlayers = new TPlayer();
@@ -37,19 +44,11 @@ public class Database {
         this.tLocation = new TLocation();
         this.tQuestNpc = new TQuestNpc();
     }
-    private Connection connection;
 
     public Connection getConnection() throws SQLException {
-        if(this.connection != null){
-            return this.connection;
-        }
-
-        this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
-
-        Ardal.writeToLogger("Success to establish connexion with database.");
-
-        return this.connection;
+        return dataSource.getConnection();
     }
+
 
     public void initDb(){
         try {
@@ -60,9 +59,9 @@ public class Database {
             return;
         }
 
-        try {
-            Statement statement = this.connection.createStatement();
-
+        try (Connection connection = this.getConnection();
+             Statement statement = connection.createStatement();)
+        {
             String sql = "create table if not exists players(" +
                     "uuid varchar(36) primary key,  " +
                     "name varchar(255), " +
@@ -129,14 +128,16 @@ public class Database {
                     "item_id varchar(40)," +
                     "foreign key (group_id) references `groups`(id) on delete cascade)";
             statement.execute(sql);
-
-            statement.close();
-            this.connection.close();
             Ardal.writeToLogger("Created database tables.");
-
         } catch (SQLException e) {
             Ardal.writeToLogger("Unable to create tables in the database.");
             throw new RuntimeException(e);
+        }
+    }
+
+    public void closeDataSource() {
+        if(this.dataSource != null) {
+            this.dataSource.close();
         }
     }
 

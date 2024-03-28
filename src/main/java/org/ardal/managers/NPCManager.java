@@ -6,6 +6,7 @@ import org.ardal.api.managers.ArdalManager;
 import org.ardal.api.npc.NpcManagerInfo;
 import org.ardal.api.npc.NpcType;
 import org.ardal.commands.BaseCmdAlias;
+import org.ardal.commands.npc.CreateAndInvokeNpc;
 import org.ardal.commands.npc.give.GiveNpcManager;
 import org.ardal.db.tables.npc.TNpc;
 import org.ardal.inventories.npc.NpcManagementInventory;
@@ -35,8 +36,8 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
     public NPCManager() {
         super(BaseCmdAlias.BASE_NPC_CMD_ALIAS);
 
-        //.registerCmd(new CreateAndInvokeNpc());
-        //this.registerCmd(new GiveNpcManager());
+        this.registerCmd(new CreateAndInvokeNpc());
+        this.registerCmd(new GiveNpcManager());
 
         this.npcs = new ArrayList<>();
 
@@ -112,7 +113,7 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
 
     @Override
     public List<String> getAllNpcUuids() {
-        return null;
+        return Ardal.getInstance().getDb().gettNpc().getAllNpcUuids();
     }
 
     @Override

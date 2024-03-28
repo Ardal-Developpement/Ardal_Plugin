@@ -45,6 +45,7 @@ public class MPlayer {
         this.adventure_level = adventure_level;
     }
 
+    @Nullable
     public Date getQuestCooldown() {
         return quest_cooldown;
     }

@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EventListener;
 import java.util.List;
 
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerInfo, ArdalManager, Listener {
