@@ -25,12 +25,11 @@ public abstract class NpcObj implements NpcInfo {
     private Villager npc;
 
     public NpcObj(String npcName, Location location, NpcType npcType) {
-        this.npc = (Villager) Bukkit.getWorld("world").spawnEntity(location, EntityType.VILLAGER);
-        this.setNpcProperties();
-
         Database db = Ardal.getInstance().getDb();
         int locationId = db.gettLocation().saveLocation(location);
+        this.npc = (Villager) Bukkit.getWorld("world").spawnEntity(location, EntityType.VILLAGER);
         this.mNpc = new MNpc(this.npc.getUniqueId().toString(), npcName, true, locationId, npcType);
+        this.setNpcProperties();
         db.gettNpc().createNpc(this.mNpc);
         Ardal.getInstance().getManager(NPCManager.class).registerNpc(this);
     }
