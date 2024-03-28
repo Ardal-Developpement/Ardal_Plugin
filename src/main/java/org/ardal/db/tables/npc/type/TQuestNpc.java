@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TQuestNpc {
     @Nullable
-    public boolean createQuestNpc(@NotNull MQuestNpc mQuestNpc) throws SQLException {
+    public boolean createQuestNpc(@NotNull MQuestNpc mQuestNpc) {
         try {
             PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
                     .prepareStatement("insert into quest_npc(npc_uuid, quest_id, quest_coef, is_show) values (?,?,?,?)");
@@ -55,11 +55,11 @@ public class TQuestNpc {
         return false;
     }
 
-    public List<MQuestNpc> getAllQuestNpcsByUuid(@NotNull String npc_uuid){
+    public List<MQuestNpc> getAllQuestNpcsByUuid(@NotNull String npc_uuid) {
         List<MQuestNpc> mQuestNpcList = new ArrayList<>();
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT npc_uuid, quest_id, quest_coef, is_show FROM quest_npc WHERE npc_uuid = ?"))
+                     .prepareStatement("SELECT quest_id, quest_coef, is_show FROM quest_npc WHERE npc_uuid = ?"))
         {
 
             statement.setString(1, npc_uuid);

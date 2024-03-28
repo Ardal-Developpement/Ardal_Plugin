@@ -26,7 +26,12 @@ public class TQuest {
             statement.setBoolean(6, mQuest.getIsDelete());
 
             statement.executeUpdate();
-            id = statement.getGeneratedKeys().getInt(1);
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                id = generatedKeys.getInt(1);
+            }
+
             statement.close();
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save quest in database.");
@@ -68,16 +73,16 @@ public class TQuest {
                     int id = resultSet.getInt("id");
                     String book_id = resultSet.getString("book_id");
                     String synopsis = resultSet.getString("synopsis");
-                    int request_item_id = resultSet.getInt("request_item_id");
-                    int reward_item_id = resultSet.getInt("reward_item_id");
+                    int request_item_group_id = resultSet.getInt("request_item_group_id");
+                    int reward_item_group_id = resultSet.getInt("reward_item_group_id");
                     boolean is_active = resultSet.getBoolean("is_active");
                     boolean is_delete = resultSet.getBoolean("is_delete");
 
-                    return new MQuest(id, name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
+                    return new MQuest(id, name, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete);
                 }
             }
         } catch (SQLException e) {
-            Ardal.writeToLogger("Failed to fetch quest in database.");
+            Ardal.writeToLogger("Failed to fetch quest by name in database.");
             e.printStackTrace();
         }
         return null;
@@ -100,16 +105,16 @@ public class TQuest {
                     String name = resultSet.getString("name");
                     String book_id = resultSet.getString("book_id");
                     String synopsis = resultSet.getString("synopsis");
-                    int request_item_id = resultSet.getInt("request_item_id");
-                    int reward_item_id = resultSet.getInt("reward_item_id");
+                    int request_item_group_id = resultSet.getInt("request_item_group_id");
+                    int reward_item_group_id = resultSet.getInt("reward_item_group_id");
                     boolean is_active = resultSet.getBoolean("is_active");
                     boolean is_delete = resultSet.getBoolean("is_delete");
 
-                    return new MQuest(questId, name, book_id, synopsis, request_item_id, reward_item_id, is_active, is_delete);
+                    return new MQuest(questId, name, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete);
                 }
             }
         } catch (SQLException e) {
-            Ardal.writeToLogger("Failed to fetch quest in database.");
+            Ardal.writeToLogger("Failed to fetch quest by id in database.");
             e.printStackTrace();
         }
         return null;
@@ -124,7 +129,7 @@ public class TQuest {
             if(includeDeleted) {
                 statement = connection.prepareStatement("SELECT id FROM quests WHERE name = ?");
             } else {
-                statement = connection.prepareStatement("SELECT id FROM quests WHERE name = ? and is_delete = true");
+                statement = connection.prepareStatement("SELECT id FROM quests WHERE name = ? and is_delete = false");
             }
 
             statement.setString(1, name);

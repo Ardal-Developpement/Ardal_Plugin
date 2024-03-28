@@ -3,21 +3,24 @@ package org.ardal.db.tables;
 import org.ardal.Ardal;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class TGroup {
     @Nullable
     public int createGroup() {
+        int id = -1;
         try {
             PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
                     .prepareStatement("insert into `groups` (id) values (null)",
                             Statement.RETURN_GENERATED_KEYS);
 
             statement.executeUpdate();
-            int id = statement.getGeneratedKeys().getInt(1);
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                id = generatedKeys.getInt(1);
+            }
+
             statement.close();
 
             return id;
@@ -27,7 +30,7 @@ public class TGroup {
             e.printStackTrace();
         }
 
-        return -1;
+        return id;
     }
 
     public boolean deleteGroup(int groupId) {

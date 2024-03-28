@@ -29,30 +29,37 @@ import java.util.List;
 
 public class QuestNpc extends NpcObj {
 
-    public List<MQuestNpc> mQuestNpcList;
-
     public QuestNpc(String npcName, Location location, NpcType npcType){
         super(npcName, location, npcType);
-        this.mQuestNpcList = Ardal.getInstance().getDb().gettQuestNpc().getAllQuestNpcsByUuid(this.getUuid());
     }
 
     public QuestNpc(String npcUuid) {
         super(npcUuid);
-        this.mQuestNpcList = Ardal.getInstance().getDb().gettQuestNpc().getAllQuestNpcsByUuid(this.getUuid());
+    }
+
+    private List<MQuestNpc> getQuestNpcList() {
+        return Ardal.getInstance().getDb().gettQuestNpc().getAllQuestNpcsByUuid(this.getUuid());
     }
 
     @Nullable
     public MQuestNpc getQuestNpcByName(String questName) {
         Integer questId = Ardal.getInstance().getDb().gettQuest().getQuestIdByName(questName, false);
+        System.out.println("Test quest id : " + questId + " | name: " + questName);
         if(questId == null) { return null; }
 
-        for(MQuestNpc mQuestNpc : this.mQuestNpcList) {
+        for(MQuestNpc mQuestNpc : this.getQuestNpcList()) {
             if(mQuestNpc.getQuestId() == questId) {
                 return mQuestNpc;
             }
         }
+        
+        return this.addQuestNpc(questId);
+    }
 
-        return null;
+    public MQuestNpc addQuestNpc(int questId) {
+        MQuestNpc mQuestNpc = new MQuestNpc(this.getUuid(), questId, 1, false);
+        Ardal.getInstance().getDb().gettQuestNpc().createQuestNpc(mQuestNpc);
+        return mQuestNpc;
     }
 
     @Override
@@ -88,7 +95,7 @@ public class QuestNpc extends NpcObj {
         PlayerObj playerObj = new PlayerObj(player);
         List<String> playerActiveQuests = playerObj.getPlayerActiveQuestNames();
 
-        for(MQuestNpc mQuestNpc : this.mQuestNpcList) {
+        for(MQuestNpc mQuestNpc : this.getQuestNpcList()) {
             if(playerActiveQuests.contains(mQuestNpc.getQuestName())){
                 return mQuestNpc.getQuestName();
             }
@@ -105,7 +112,7 @@ public class QuestNpc extends NpcObj {
     public List<QuestObj> getAllActiveQuestIdWithCoef(){
         List<QuestObj> questObjs = new ArrayList<>();
 
-        for(MQuestNpc mQuestNpc : this.mQuestNpcList){
+        for(MQuestNpc mQuestNpc : this.getQuestNpcList()){
             if(mQuestNpc.getIsShow() && mQuestNpc.getQuestIsActive()) {
                 for(int i = 0; i < mQuestNpc.getQuestCoef(); i++) {
                     questObjs.add(mQuestNpc.getQuestObj());
@@ -117,7 +124,7 @@ public class QuestNpc extends NpcObj {
     }
 
     private boolean hasOneQuestShowed() {
-        for(MQuestNpc mQuestNpc : this.mQuestNpcList) {
+        for(MQuestNpc mQuestNpc : this.getQuestNpcList()) {
             if(mQuestNpc.getQuestIsActive() && mQuestNpc.getIsShow()) {
                 return true;
             }

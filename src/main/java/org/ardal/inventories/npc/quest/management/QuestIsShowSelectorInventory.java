@@ -81,9 +81,8 @@ public class QuestIsShowSelectorInventory extends CICarousel {
         ItemMeta meta = book.getItemMeta();
         MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(meta.getDisplayName());
 
-        if(mQuestNpc.getIsShow()){
+        if(mQuestNpc.getIsShow()) {
             meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-
         } else {
             meta.removeEnchant(Enchantment.ARROW_INFINITE);
         }

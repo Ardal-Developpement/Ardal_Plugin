@@ -19,13 +19,19 @@ public class TNpc {
                     .prepareStatement("insert into npcs(uuid, name, is_visible, location_id, type) values (?,?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS);
 
+            statement.setString(1, mNpc.getUuid());
             statement.setString(2, mNpc.getName());
             statement.setBoolean(3, mNpc.getIsVisible());
             statement.setInt(4, mNpc.getLocationId());
             statement.setString(5, mNpc.getType().toString());
 
             statement.executeUpdate();
-            npcUuid = statement.getGeneratedKeys().getString(1);
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                npcUuid = generatedKeys.getString(1);
+            }
+
             statement.close();
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save npc in database.");
@@ -61,18 +67,17 @@ public class TNpc {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("update npcs set " +
-                             "uuid = ?," +
                              "name = ?," +
                              "is_visible = ?," +
                              "location_id = ?," +
                              "type = ?" +
                              " WHERE uuid = ?"))
         {
-            statement.setString(1, mNpc.getUuid());
-            statement.setString(2, mNpc.getName());
-            statement.setBoolean(3, mNpc.getIsVisible());
-            statement.setInt(4, mNpc.getLocationId());
-            statement.setString(5, mNpc.getType().toString());
+            statement.setString(1, mNpc.getName());
+            statement.setBoolean(2, mNpc.getIsVisible());
+            statement.setInt(3, mNpc.getLocationId());
+            statement.setString(4, mNpc.getType().toString());
+            statement.setString(5, mNpc.getUuid());
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
@@ -141,15 +146,15 @@ public class TNpc {
         List<String> npcNames = new ArrayList<>();
 
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT name FROM npcs");
+             PreparedStatement statement = connection.prepareStatement("SELECT uuid FROM npcs");
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                npcNames.add(resultSet.getString("name"));
+                npcNames.add(resultSet.getString("uuid"));
             }
 
         } catch (SQLException e) {
-            Ardal.writeToLogger("Failed to fetch npc names in database.");
+            Ardal.writeToLogger("Failed to fetch npc uuids in database.");
             e.printStackTrace();
         }
         return npcNames;

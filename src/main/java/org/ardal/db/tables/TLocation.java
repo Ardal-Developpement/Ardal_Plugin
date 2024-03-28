@@ -26,11 +26,12 @@ public class TLocation {
             statement.setFloat(6, location.getPitch());
 
             statement.executeUpdate();
-            System.out.println("test1");
+
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 id = generatedKeys.getInt(1);
             }
+
             statement.close();
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save location in database.");
