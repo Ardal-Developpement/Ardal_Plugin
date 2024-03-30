@@ -12,9 +12,11 @@ import java.util.List;
 public class TQuestNpc {
     @Nullable
     public boolean createQuestNpc(@NotNull MQuestNpc mQuestNpc) {
-        try {
-            PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into quest_npc(npc_uuid, quest_id, quest_coef, is_show) values (?,?,?,?)");
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection
+                 .prepareStatement("insert into quest_npc(npc_uuid, quest_id, quest_coef, is_show) values (?,?,?,?)"))
+        {
+
 
             statement.setString(1, mQuestNpc.getNpcUuid());
             statement.setInt(2, mQuestNpc.getQuestId());

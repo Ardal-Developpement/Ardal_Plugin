@@ -36,12 +36,13 @@ public class TPlayer {
 
     @Nullable
     public MPlayer getPlayerByUUID(@NotNull String uuid) {
+        MPlayer mPlayer = null;
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("SELECT name, adventure_level, quest_cooldown FROM players WHERE uuid = ?"))
         {
             statement.setString(1, uuid);
-            try (ResultSet resultSet = statement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery();) {
                 if (resultSet.next()) {
                     String name = resultSet.getString("name");
                     int adventureLevel = resultSet.getInt("adventure_level");
@@ -54,13 +55,14 @@ public class TPlayer {
                         questCooldownDate = new Date(questCooldownTimestamp.getTime());
                     }
 
-                    return new MPlayer(uuid, name, adventureLevel, questCooldownDate);
+                    mPlayer = new MPlayer(uuid, name, adventureLevel, questCooldownDate);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return mPlayer;
     }
 
     @Nullable

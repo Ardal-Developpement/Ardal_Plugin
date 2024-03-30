@@ -13,11 +13,11 @@ public class TQuest {
     @Nullable
     public int saveQuest(@NotNull MQuest mQuest) {
         int id = -1;
-        try {
-            PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into quests(name, book_id, request_item_group_id, reward_item_group_id, is_active, is_delete) values (?,?,?,?,?,?)",
-                            Statement.RETURN_GENERATED_KEYS);
-
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection
+                 .prepareStatement("insert into quests(name, book_id, request_item_group_id, reward_item_group_id, is_active, is_delete) values (?,?,?,?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS))
+        {
             statement.setString(1, mQuest.getName());
             statement.setString(2, mQuest.getBookId());
             statement.setInt(3, mQuest.getRequestItemGroupId());
@@ -32,7 +32,6 @@ public class TQuest {
                 id = generatedKeys.getInt(1);
             }
 
-            statement.close();
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save quest in database.");
             e.printStackTrace();
@@ -57,16 +56,17 @@ public class TQuest {
     }
 
     @Nullable
-    public MQuest getQuestByName(@NotNull String name, boolean includeDelete) {
-        try {
-            Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement;
-             if(includeDelete) {
-                 statement = connection.prepareStatement("SELECT * FROM quests WHERE name = ?");
-             } else {
-                 statement = connection.prepareStatement("SELECT * FROM quests WHERE name = ? and is_delete = false");
-             }
+    public MQuest getQuestByName(@NotNull String name, boolean includeDeleted) {
+        String request;
+        if(includeDeleted) {
+            request = "SELECT * FROM quests WHERE name = ?";
+        } else {
+            request = "SELECT * FROM quests WHERE name = ? and is_delete = false";
+        }
 
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+                PreparedStatement statement = connection.prepareStatement(request))
+        {
             statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -89,16 +89,17 @@ public class TQuest {
     }
 
     @Nullable
-    public MQuest getQuestById(int questId, boolean includeDelete) {
-        try {
-            Connection connection = Ardal.getInstance().getDb().getConnection();
-            PreparedStatement statement;
-            if(includeDelete) {
-                statement = connection.prepareStatement("SELECT name, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ?");
-            } else {
-                statement = connection.prepareStatement("SELECT name, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ? and is_delete = false");
-            }
+    public MQuest getQuestById(int questId, boolean includeDeleted) {
+        String request;
+        if(includeDeleted) {
+            request = "SELECT name, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ?";
+        } else {
+            request = "SELECT name, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE id = ? and is_delete = false";
+        }
 
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+                PreparedStatement statement = connection.prepareStatement(request))
+        {
             statement.setInt(1, questId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -120,18 +121,19 @@ public class TQuest {
         return null;
     }
 
+
     @Nullable
     public Integer getQuestIdByName(@NotNull String name, boolean includeDeleted) {
-        try {
-            Connection connection = Ardal.getInstance().getDb().getConnection();
-            PreparedStatement statement;
+        String request;
+        if(includeDeleted) {
+            request = "SELECT id FROM quests WHERE name = ?";
+        } else {
+            request = "SELECT id FROM quests WHERE name = ? and is_delete = false";
+        }
 
-            if(includeDeleted) {
-                statement = connection.prepareStatement("SELECT id FROM quests WHERE name = ?");
-            } else {
-                statement = connection.prepareStatement("SELECT id FROM quests WHERE name = ? and is_delete = false");
-            }
-
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection.prepareStatement(request))
+        {
             statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -146,17 +148,16 @@ public class TQuest {
 
     public List<String> getAllQuestNames(boolean includeDeleted) {
         List<String> questNames = new ArrayList<>();
+        String request;
+        if(includeDeleted) {
+            request = "select name from quests";
+        } else {
+            request = "select name from quests where is_delete = false";
+        }
 
-        try {
-            Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement;
-
-             if(includeDeleted) {
-                 statement = connection.prepareStatement("select name from quests");
-             } else {
-                 statement = connection.prepareStatement("select name from quests where is_delete = false");
-             }
-
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection.prepareStatement(request))
+        {
              try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     questNames.add(resultSet.getString("name"));

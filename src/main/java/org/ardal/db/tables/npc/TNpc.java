@@ -14,10 +14,9 @@ public class TNpc {
     @Nullable
     public String createNpc(MNpc mNpc) {
         String npcUuid = null;
-        try {
-            PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into npcs(uuid, name, is_visible, location_id, type) values (?,?,?,?,?)",
-                            Statement.RETURN_GENERATED_KEYS);
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+                PreparedStatement statement = connection.prepareStatement("insert into npcs(uuid, name, is_visible, location_id, type) values (?,?,?,?,?)",
+                        Statement.RETURN_GENERATED_KEYS)){
 
             statement.setString(1, mNpc.getUuid());
             statement.setString(2, mNpc.getName());
@@ -32,7 +31,6 @@ public class TNpc {
                 npcUuid = generatedKeys.getString(1);
             }
 
-            statement.close();
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save npc in database.");
             e.printStackTrace();

@@ -45,7 +45,12 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
             return true;
         }
 
-        playerObj.removeQuest(questName);
+        if(playerObj.removeQuest(questName)) {
+            sender.sendMessage("Success to remove " + questName + ".");
+        } else {
+            sender.sendMessage("Failed to remove " + questName + ".");
+        }
+
         return true;
     }
 

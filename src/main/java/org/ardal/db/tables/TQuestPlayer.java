@@ -10,11 +10,10 @@ import java.util.List;
 
 public class TQuestPlayer {
     public boolean saveQuestPlayer(MQuestPlayer mQuestPlayer) {
-        try {
-
-            PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into quest_player(quest_id, player_uuid, is_finished, start_date) values (?,?,?,?)");
-
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+                 PreparedStatement statement = connection
+                     .prepareStatement("insert into quest_player(quest_id, player_uuid, is_finished, start_date) values (?,?,?,?)"))
+        {
             statement.setInt(1, mQuestPlayer.getQuestId());
             statement.setString(2, mQuestPlayer.getPlayerUuid());
             statement.setBoolean(3, mQuestPlayer.getIsFinished());
@@ -37,7 +36,6 @@ public class TQuestPlayer {
              PreparedStatement statement = connection
                      .prepareStatement("SELECT player_uuid, is_finished, start_date FROM quest_player WHERE quest_id = ?"))
         {
-
             statement.setInt(1, questId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while(resultSet.next()){
@@ -61,7 +59,6 @@ public class TQuestPlayer {
              PreparedStatement statement = connection
                      .prepareStatement("SELECT quest_id, is_finished, start_date FROM quest_player WHERE player_uuid = ?"))
         {
-
             statement.setString(1, playerUuid);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while(resultSet.next()){
@@ -85,7 +82,6 @@ public class TQuestPlayer {
              PreparedStatement statement = connection
                      .prepareStatement("SELECT quest_id FROM quest_player WHERE player_uuid = ? AND is_finished = ?"))
         {
-
             statement.setString(1, playerUuid);
             statement.setBoolean(2, isFinished);
             try (ResultSet resultSet = statement.executeQuery()) {

@@ -13,11 +13,11 @@ import java.util.UUID;
 public class TLocation {
     public int saveLocation(@NotNull Location location) {
         int id = -1;
-        try {
-            PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into locations(world_uuid, x, y, z, yaw, pitch) values (?,?,?,?,?,?)",
-                            Statement.RETURN_GENERATED_KEYS);
-
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection
+                 .prepareStatement("insert into locations(world_uuid, x, y, z, yaw, pitch) values (?,?,?,?,?,?)",
+                     Statement.RETURN_GENERATED_KEYS))
+        {
             statement.setString(1, location.getWorld().getUID().toString());
             statement.setDouble(2, location.getX());
             statement.setDouble(3, location.getY());
@@ -32,7 +32,6 @@ public class TLocation {
                 id = generatedKeys.getInt(1);
             }
 
-            statement.close();
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save location in database.");
             e.printStackTrace();
@@ -91,7 +90,6 @@ public class TLocation {
              PreparedStatement statement = connection
                      .prepareStatement("SELECT world_uuid, x, y, z, yaw, pitch FROM locations WHERE id = ?"))
         {
-
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {

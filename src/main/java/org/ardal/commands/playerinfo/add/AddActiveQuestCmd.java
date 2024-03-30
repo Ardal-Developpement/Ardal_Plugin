@@ -39,7 +39,13 @@ public class AddActiveQuestCmd implements ArdalCmd {
         }
 
         PlayerObj playerObj = new PlayerObj(player);
-        playerObj.addPlayerActiveQuest(questName);
+
+        if(playerObj.addPlayerActiveQuest(questName)) {
+            sender.sendMessage("Success to add " + questName + ".");
+        } else {
+            sender.sendMessage("Failed to add " + questName + ".");
+        }
+
         return true;
     }
 

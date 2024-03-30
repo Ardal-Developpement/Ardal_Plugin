@@ -9,11 +9,10 @@ public class TGroup {
     @Nullable
     public int createGroup() {
         int id = -1;
-        try {
-            PreparedStatement statement = Ardal.getInstance().getDb().getConnection()
-                    .prepareStatement("insert into `groups` (id) values (null)",
-                            Statement.RETURN_GENERATED_KEYS);
-
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+                PreparedStatement statement = connection.prepareStatement("insert into `groups` (id) values (null)",
+                        Statement.RETURN_GENERATED_KEYS))
+        {
             statement.executeUpdate();
 
             ResultSet generatedKeys = statement.getGeneratedKeys();

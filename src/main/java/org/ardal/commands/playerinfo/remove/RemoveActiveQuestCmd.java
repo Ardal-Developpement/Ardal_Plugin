@@ -34,7 +34,6 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
         QuestObj questObj = new QuestObj(questName);
         PlayerObj playerObj = new PlayerObj(player);
 
-
         if(!questObj.isQuestExist()){
             sender.sendMessage("Invalid quest name.");
             return true;
@@ -45,7 +44,12 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
             return true;
         }
 
-        playerObj.removeQuest(questName);
+        if(playerObj.removeQuest(questName)) {
+            sender.sendMessage("Success to remove " + questName);
+        } else {
+            sender.sendMessage("Failed to remove " + questName);
+        }
+
         return true;
     }
 
@@ -61,7 +65,6 @@ public class RemoveActiveQuestCmd implements ArdalCmd {
 
         OfflinePlayer player = BukkitUtils.getOfflinePlayerFromName(argv.get(0));
         if(player == null) { return new ArrayList<>(); }
-
 
         return TabCompleteUtils.getTabCompleteFromStrList(
                 new PlayerObj(player).getPlayerActiveQuestNames(),
