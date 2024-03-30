@@ -122,11 +122,7 @@ public class PlayerObj implements PlayerInfo {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, minutes);
         Timestamp timestamp = new Timestamp(calendar.getTimeInMillis());
-
-        Ardal.getInstance().getDb().gettPlayer().setQuestCooldown(
-                this.getUuid(),
-                timestamp
-        );
+        this.mPlayer.setQuestCooldown(timestamp);
 
         return this.mPlayer.updatePlayer();
     }

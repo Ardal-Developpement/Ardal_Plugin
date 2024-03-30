@@ -47,10 +47,15 @@ public class MPlayer {
 
     @Nullable
     public Date getQuestCooldown() {
+        if(this.quest_cooldown != null && this.quest_cooldown.before(new Date())) {
+            this.setQuestCooldown(null);
+            this.updatePlayer();
+        }
+
         return quest_cooldown;
     }
 
-    public void setQuest_cooldown(Date quest_cooldown) {
+    public void setQuestCooldown(Date quest_cooldown) {
         this.quest_cooldown = quest_cooldown;
     }
 }
