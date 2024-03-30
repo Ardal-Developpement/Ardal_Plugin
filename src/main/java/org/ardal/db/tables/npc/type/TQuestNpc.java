@@ -36,19 +36,20 @@ public class TQuestNpc {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("update quest_npc set " +
-                             "quest_id = ?," +
                              "quest_coef = ?," +
                              "is_show = ?" +
                              "where npc_uuid = ?"))
         {
-            statement.setInt(1, mQuestNpc.getQuestId());
-            statement.setInt(2, mQuestNpc.getQuestCoef());
-            statement.setBoolean(3, mQuestNpc.getIsShow());
-            statement.setString(4, mQuestNpc.getNpcUuid());
+            statement.setInt(1, mQuestNpc.getQuestCoef());
+            statement.setBoolean(2, mQuestNpc.getIsShow());
+            statement.setString(3, mQuestNpc.getNpcUuid());
+
+            System.out.println("request : " + statement);
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            Ardal.writeToLogger("Failed to update npc in database.");
+            Ardal.writeToLogger("Failed to update quest npc in database.");
+            System.out.println("getNpcUuid: " + mQuestNpc.getNpcUuid());
             e.printStackTrace();
         }
 

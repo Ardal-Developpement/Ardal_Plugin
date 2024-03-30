@@ -62,9 +62,9 @@ public class TQuest {
             Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement;
              if(includeDelete) {
-                 statement = connection.prepareStatement("SELECT id, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ?");
+                 statement = connection.prepareStatement("SELECT * FROM quests WHERE name = ?");
              } else {
-                 statement = connection.prepareStatement("SELECT id, book_id, synopsis, request_item_group_id, reward_item_group_id, is_active, is_delete FROM quests WHERE name = ? and is_delete = false");
+                 statement = connection.prepareStatement("SELECT * FROM quests WHERE name = ? and is_delete = false");
              }
 
             statement.setString(1, name);

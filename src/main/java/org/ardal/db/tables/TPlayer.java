@@ -46,7 +46,14 @@ public class TPlayer {
                     String name = resultSet.getString("name");
                     int adventureLevel = resultSet.getInt("adventure_level");
                     Timestamp questCooldownTimestamp = resultSet.getTimestamp("quest_cooldown");
-                    java.util.Date questCooldownDate = new Date(questCooldownTimestamp.getTime());
+
+                    java.util.Date questCooldownDate;
+                    if(questCooldownTimestamp == null) {
+                        questCooldownDate = null;
+                    } else {
+                        questCooldownDate = new Date(questCooldownTimestamp.getTime());
+                    }
+
                     return new MPlayer(uuid, name, adventureLevel, questCooldownDate);
                 }
             }

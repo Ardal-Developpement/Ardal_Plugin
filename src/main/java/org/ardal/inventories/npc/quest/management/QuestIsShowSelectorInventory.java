@@ -64,22 +64,37 @@ public class QuestIsShowSelectorInventory extends CICarousel {
     }
 
     private void changeShowStateOfQuest(ItemStack book) {
+        System.out.println("test changeShowStateOfQuest 1");
         MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(book.getItemMeta().getDisplayName());
+        System.out.println("test changeShowStateOfQuest 2; " + mQuestNpc.getQuestName());
         mQuestNpc.setIsShow(!mQuestNpc.getIsShow());
         mQuestNpc.updateQuestNpc();
+        System.out.println("test changeShowStateOfQuest 3");
 
         this.refreshBookMeta(book);
+        System.out.println("test changeShowStateOfQuest 4");
+
     }
 
     private ItemStack getFormattedQuestBook(String questName) {
-        ItemStack book = new QuestObj(questName).getQuestBook();
-        this.refreshBookMeta(book);
-        return book;
+        System.out.println("Quest name: " + questName);
+        QuestObj questObj = new QuestObj(questName);
+
+        System.out.println("Quest exist: " + questObj.isQuestExist());
+
+        if(questObj.isQuestExist()) {
+            ItemStack book = questObj.getQuestBook();
+            this.refreshBookMeta(book);
+            return book;
+        }
+
+        return new ItemStack(Material.BARRIER);
     }
 
     private void refreshBookMeta(ItemStack book){
         ItemMeta meta = book.getItemMeta();
         MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(meta.getDisplayName());
+        if(mQuestNpc == null) { return; }
 
         if(mQuestNpc.getIsShow()) {
             meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);

@@ -52,13 +52,19 @@ public class QuestNpc extends NpcObj {
                 return mQuestNpc;
             }
         }
+
+        System.out.println("getQuestNpcByName: cannot find quest id");
         
         return this.addQuestNpc(questId);
     }
 
     public MQuestNpc addQuestNpc(int questId) {
         MQuestNpc mQuestNpc = new MQuestNpc(this.getUuid(), questId, 1, false);
-        Ardal.getInstance().getDb().gettQuestNpc().createQuestNpc(mQuestNpc);
+        if(Ardal.getInstance().getDb().gettQuestNpc().createQuestNpc(mQuestNpc)) {
+            System.out.println("Success to create a new quest npc.");
+        } else {
+            System.out.println("failed to create a new quest npc.");
+        }
         return mQuestNpc;
     }
 
