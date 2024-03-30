@@ -142,7 +142,7 @@ public class TPlayer {
                      .prepareStatement("update players set quest_cooldown = ? WHERE uuid = ?"))
         {
             if(cooldown == null){
-                statement.setNull(1, java.sql.Types.TIMESTAMP);
+                statement.setNull(1, Types.TIMESTAMP);
             } else {
                 statement.setTimestamp(1, cooldown);
             }
@@ -163,11 +163,17 @@ public class TPlayer {
                              "name = ?," +
                              "adventure_level = ?," +
                              "quest_cooldown = ?" +
-                             "where uuid = ?"))
+                             " where uuid = ?"))
         {
             statement.setString(1, mPlayer.getName());
             statement.setInt(2, mPlayer.getAdventureLevel());
-            statement.setTimestamp(3, new Timestamp(mPlayer.getQuestCooldown().getTime()));
+
+            if(mPlayer.getQuestCooldown() == null) {
+                statement.setNull(3, Types.TIMESTAMP);
+            } else {
+                statement.setTimestamp(3, new Timestamp(mPlayer.getQuestCooldown().getTime()));
+            }
+
             statement.setString(4, mPlayer.getUuid());
 
             return statement.executeUpdate() == 1;

@@ -182,7 +182,7 @@ public class TQuest {
                              "reward_item_group_id = ?," +
                              "is_active = ?," +
                              "is_delete = ?" +
-                             "where name = ?"))
+                             " where name = ?"))
         {
             statement.setString(1, quests.getName());
             statement.setString(2, quests.getBookId());
