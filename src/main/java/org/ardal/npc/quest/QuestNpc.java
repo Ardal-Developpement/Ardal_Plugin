@@ -44,7 +44,6 @@ public class QuestNpc extends NpcObj {
     @Nullable
     public MQuestNpc getQuestNpcByName(String questName) {
         Integer questId = Ardal.getInstance().getDb().gettQuest().getQuestIdByName(questName, false);
-        System.out.println("Test quest id : " + questId + " | name: " + questName);
         if(questId == null) { return null; }
 
         for(MQuestNpc mQuestNpc : this.getQuestNpcList()) {
@@ -53,18 +52,13 @@ public class QuestNpc extends NpcObj {
             }
         }
 
-        System.out.println("getQuestNpcByName: cannot find quest id");
-        
         return this.addQuestNpc(questId);
     }
 
     public MQuestNpc addQuestNpc(int questId) {
         MQuestNpc mQuestNpc = new MQuestNpc(this.getUuid(), questId, 1, false);
-        if(Ardal.getInstance().getDb().gettQuestNpc().createQuestNpc(mQuestNpc)) {
-            System.out.println("Success to create a new quest npc.");
-        } else {
-            System.out.println("failed to create a new quest npc.");
-        }
+        Ardal.getInstance().getDb().gettQuestNpc().createQuestNpc(mQuestNpc);
+
         return mQuestNpc;
     }
 

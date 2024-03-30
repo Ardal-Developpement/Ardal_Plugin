@@ -64,23 +64,14 @@ public class QuestIsShowSelectorInventory extends CICarousel {
     }
 
     private void changeShowStateOfQuest(ItemStack book) {
-        System.out.println("test changeShowStateOfQuest 1");
         MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(book.getItemMeta().getDisplayName());
-        System.out.println("test changeShowStateOfQuest 2; " + mQuestNpc.getQuestName());
         mQuestNpc.setIsShow(!mQuestNpc.getIsShow());
         mQuestNpc.updateQuestNpc();
-        System.out.println("test changeShowStateOfQuest 3");
-
         this.refreshBookMeta(book);
-        System.out.println("test changeShowStateOfQuest 4");
-
     }
 
     private ItemStack getFormattedQuestBook(String questName) {
-        System.out.println("Quest name: " + questName);
         QuestObj questObj = new QuestObj(questName);
-
-        System.out.println("Quest exist: " + questObj.isQuestExist());
 
         if(questObj.isQuestExist()) {
             ItemStack book = questObj.getQuestBook();
@@ -120,7 +111,6 @@ public class QuestIsShowSelectorInventory extends CICarousel {
     private void coefHandler(InventoryClickEvent event, boolean up) {
         ItemStack book = event.getCurrentItem();
         if(book == null) { return; }
-        String questName = book.getItemMeta().getDisplayName();
         MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(book.getItemMeta().getDisplayName());
 
         if(up){
@@ -129,6 +119,7 @@ public class QuestIsShowSelectorInventory extends CICarousel {
             mQuestNpc.setQuestCoef(mQuestNpc.getQuestCoef() - 1);
         }
 
+        mQuestNpc.updateQuestNpc();
         this.refreshBookMeta(book);
     }
 }
