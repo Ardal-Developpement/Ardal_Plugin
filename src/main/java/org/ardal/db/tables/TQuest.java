@@ -159,9 +159,9 @@ public class TQuest {
              PreparedStatement statement = connection.prepareStatement(request))
         {
              try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    questNames.add(resultSet.getString("name"));
-                }
+                 while(resultSet.next()){
+                     questNames.add(resultSet.getString("name"));
+                 }
             }
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to fetch quest names in database.");

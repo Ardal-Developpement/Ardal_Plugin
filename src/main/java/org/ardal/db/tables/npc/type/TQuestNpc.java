@@ -38,11 +38,11 @@ public class TQuestNpc {
                      .prepareStatement("update quest_npc set " +
                              "quest_coef = ?," +
                              "is_show = ? " +
-                             "where npc_uuid = ?"))
+                             "where quest_id = ?"))
         {
             statement.setInt(1, mQuestNpc.getQuestCoef());
             statement.setBoolean(2, mQuestNpc.getIsShow());
-            statement.setString(3, mQuestNpc.getNpcUuid());
+            statement.setInt(3, mQuestNpc.getQuestId());
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
