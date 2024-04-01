@@ -53,7 +53,7 @@ public class MQuest {
         return request_item_group_id;
     }
 
-    public void setRequest_item_group_id(int request_item_group_id) {
+    public void setRequestItemGroupId(int request_item_group_id) {
         this.request_item_group_id = request_item_group_id;
     }
 
@@ -61,7 +61,7 @@ public class MQuest {
         return reward_item_group_id;
     }
 
-    public void setReward_item_group_id(int reward_item_group_id) {
+    public void setRewardItemGroupId(int reward_item_group_id) {
         this.reward_item_group_id = reward_item_group_id;
     }
 

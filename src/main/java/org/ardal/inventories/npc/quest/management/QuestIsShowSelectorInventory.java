@@ -64,9 +64,7 @@ public class QuestIsShowSelectorInventory extends CICarousel {
     }
 
     private void changeShowStateOfQuest(ItemStack book) {
-        System.out.println("changeShowStateOfQuest: " + book.getItemMeta().getDisplayName());
         MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(book.getItemMeta().getDisplayName());
-        System.out.println("mQuestNpc name: " + mQuestNpc.getQuestName());
         mQuestNpc.setIsShow(!mQuestNpc.getIsShow());
         mQuestNpc.updateQuestNpc();
         this.refreshBookMeta(book);

@@ -2,6 +2,7 @@ package org.ardal.objects;
 
 import org.ardal.Ardal;
 import org.ardal.api.quests.QuestInfo;
+import org.ardal.db.tables.TItemGroup;
 import org.ardal.managers.CustomItemManager;
 import org.ardal.models.MQuest;
 import org.bukkit.inventory.ItemStack;
@@ -123,12 +124,20 @@ public class QuestObj implements QuestInfo, Comparable<QuestObj> {
 
     @Override
     public boolean setItemsQuestRequest(List<ItemStack> items) {
-        return false;
+        TItemGroup tItemGroup = Ardal.getInstance().getDb().gettItemGroup();
+        int groupId = tItemGroup.saveItemsByGroupId(items);
+        this.mQuest.setRequestItemGroupId(groupId);
+
+        return this.mQuest.updateQuest();
     }
 
     @Override
     public boolean setItemsQuestReward(List<ItemStack> items) {
-        return false;
+        TItemGroup tItemGroup = Ardal.getInstance().getDb().gettItemGroup();
+        int groupId = tItemGroup.saveItemsByGroupId(items);
+        this.mQuest.setRewardItemGroupId(groupId);
+
+        return this.mQuest.updateQuest();
     }
 
     @Override
