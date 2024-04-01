@@ -46,7 +46,7 @@ public class TQuest {
                      .prepareStatement("delete from quests WHERE name = ?"))
         {
             statement.setString(1, questName);
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to delete quest in database.");
             e.printStackTrace();
@@ -193,7 +193,7 @@ public class TQuest {
             statement.setBoolean(7, quests.getIsDelete());
             statement.setString(8, quests.getName());
 
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to update quest in database.");
             e.printStackTrace();

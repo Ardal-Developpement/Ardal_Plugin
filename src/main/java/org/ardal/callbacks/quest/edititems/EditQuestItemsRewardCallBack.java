@@ -3,6 +3,7 @@ package org.ardal.callbacks.quest.edititems;
 import org.ardal.api.inventories.callback.CICallBack;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.objects.QuestObj;
+import org.ardal.utils.ListUtils;
 
 public class EditQuestItemsRewardCallBack implements CICallBack {
     private final QuestObj questObj;
@@ -13,7 +14,7 @@ public class EditQuestItemsRewardCallBack implements CICallBack {
 
     @Override
     public void executeCICallBack(CustomInventory customInventory) {
-        if(this.questObj.getItemQuestReward() != customInventory.getAllItemStack()) {
+        if(!ListUtils.isItemListEqual(this.questObj.getItemQuestReward(), customInventory.getAllItemStack())) {
             this.questObj.setItemsQuestReward(customInventory.getAllItemStack());
             customInventory.getPlayer().sendMessage("Success to save item reward for: " + this.questObj.getQuestName());
         }

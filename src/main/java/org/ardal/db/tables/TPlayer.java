@@ -25,7 +25,7 @@ public class TPlayer {
                 statement.setTimestamp(4, new Timestamp(mPlayer.getQuestCooldown().getTime()));
             }
 
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to save player in database.");
         }
@@ -128,7 +128,7 @@ public class TPlayer {
         {
             statement.setInt(1, adventureLevel);
             statement.setString(2, uuid);
-           return statement.executeUpdate() == 1;
+           return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -148,7 +148,7 @@ public class TPlayer {
             }
 
             statement.setString(2, uuid);
-           return statement.executeUpdate() == 1;
+           return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -176,7 +176,7 @@ public class TPlayer {
 
             statement.setString(4, mPlayer.getUuid());
 
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to update player in database.");
             e.printStackTrace();

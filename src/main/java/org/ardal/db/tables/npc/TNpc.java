@@ -77,7 +77,7 @@ public class TNpc {
             statement.setString(4, mNpc.getType().toString());
             statement.setString(5, mNpc.getUuid());
 
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to update npc in database.");
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class TNpc {
                      .prepareStatement("delete from npcs WHERE uuid = ?"))
         {
             statement.setString(1, uuid);
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to delete npc in database.");
             e.printStackTrace();

@@ -51,6 +51,38 @@ public class TItemGroup {
         return groupId;
     }
 
+    public boolean deleteItemsByGroupId(int groupId) {
+        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
+        List<String> itemIdsToDelete = new ArrayList<>();
+
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement selectStatement = connection.prepareStatement("SELECT item_id FROM item_group WHERE group_id = ?");
+             PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM item_group WHERE group_id = ?")) {
+
+            selectStatement.setInt(1, groupId);
+            ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                String itemId = resultSet.getString("item_id");
+                itemIdsToDelete.add(itemId);
+            }
+            resultSet.close();
+
+            deleteStatement.setInt(1, groupId);
+            int rowsAffected = deleteStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+
+                customItemManager.removeItems(itemIdsToDelete);
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public List<String> getItemsByGroupId(int groupId) {
         List<String> items = new ArrayList<>();
         try (Connection connection = Ardal.getInstance().getDb().getConnection();

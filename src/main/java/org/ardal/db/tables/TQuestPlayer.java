@@ -103,7 +103,7 @@ public class TQuestPlayer {
             statement.setBoolean(1, isFinished);
             statement.setInt(2, questId);
             statement.setString(3, playerUuid);
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -118,7 +118,7 @@ public class TQuestPlayer {
         {
             statement.setInt(1, questId);
             statement.setString(2, playerUuid);
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

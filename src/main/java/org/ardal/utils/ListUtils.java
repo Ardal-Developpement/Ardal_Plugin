@@ -1,5 +1,7 @@
 package org.ardal.utils;
 
+import org.bukkit.inventory.ItemStack;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,5 +26,21 @@ public class ListUtils {
         }
 
         return null;
+    }
+
+    public static boolean isItemListEqual(List<ItemStack> l1, List<ItemStack> l2) {
+        if(l1.size() != l2.size()) {
+            return false;
+        }
+
+        for(int i = 0; i < l1.size(); i++) {
+            if(l1.get(i).getType() != l2.get(i).getType()
+                || l1.get(i).getAmount() != l2.get(i).getAmount())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

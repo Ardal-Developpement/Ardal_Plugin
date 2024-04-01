@@ -124,18 +124,26 @@ public class QuestObj implements QuestInfo, Comparable<QuestObj> {
 
     @Override
     public boolean setItemsQuestRequest(List<ItemStack> items) {
+        int oldGroupId = this.mQuest.getRequestItemGroupId();
+
         TItemGroup tItemGroup = Ardal.getInstance().getDb().gettItemGroup();
         int groupId = tItemGroup.saveItemsByGroupId(items);
         this.mQuest.setRequestItemGroupId(groupId);
+
+        tItemGroup.deleteItemsByGroupId(oldGroupId);
 
         return this.mQuest.updateQuest();
     }
 
     @Override
     public boolean setItemsQuestReward(List<ItemStack> items) {
+        int oldGroupId = this.mQuest.getRequestItemGroupId();
+
         TItemGroup tItemGroup = Ardal.getInstance().getDb().gettItemGroup();
         int groupId = tItemGroup.saveItemsByGroupId(items);
         this.mQuest.setRewardItemGroupId(groupId);
+
+        tItemGroup.deleteItemsByGroupId(oldGroupId);
 
         return this.mQuest.updateQuest();
     }

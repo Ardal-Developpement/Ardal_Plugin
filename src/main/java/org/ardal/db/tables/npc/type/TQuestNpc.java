@@ -44,7 +44,7 @@ public class TQuestNpc {
             statement.setBoolean(2, mQuestNpc.getIsShow());
             statement.setInt(3, mQuestNpc.getQuestId());
 
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to update quest npc in database.");
             e.printStackTrace();

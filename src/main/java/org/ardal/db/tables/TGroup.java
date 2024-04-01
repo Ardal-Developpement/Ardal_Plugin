@@ -38,7 +38,7 @@ public class TGroup {
                      .prepareStatement("delete from `groups` WHERE id = ?"))
         {
             statement.setInt(1, groupId);
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

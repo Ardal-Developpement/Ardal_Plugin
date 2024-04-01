@@ -46,7 +46,7 @@ public class TLocation {
                      .prepareStatement("delete from locations WHERE id = ?"))
         {
             statement.setInt(1, locationId);
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to delete location in database.");
             e.printStackTrace();
@@ -75,7 +75,7 @@ public class TLocation {
             statement.setFloat(5, location.getYaw());
             statement.setFloat(6, location.getPitch());
 
-            return statement.executeUpdate() == 1;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to update location in database.");
             e.printStackTrace();
