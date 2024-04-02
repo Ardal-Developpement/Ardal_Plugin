@@ -40,6 +40,7 @@ public class TGroup {
             statement.setInt(1, groupId);
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to delete a group in the database.");
             e.printStackTrace();
         }
 

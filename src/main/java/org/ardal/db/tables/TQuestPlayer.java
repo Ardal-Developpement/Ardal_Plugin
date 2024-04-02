@@ -48,6 +48,7 @@ public class TQuestPlayer {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to get quest player by quest id in the database.");
             e.printStackTrace();
         }
         return mQuestPlayerList;
@@ -71,12 +72,13 @@ public class TQuestPlayer {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to get quest player by player uuid in the database.");
             e.printStackTrace();
         }
         return mQuestPlayerList;
     }
 
-    public List<Integer> getQuestsIdByPlayerUuid(String playerUuid, boolean isFinished) {
+    public List<Integer> getQuestIdsByPlayerUuid(String playerUuid, boolean isFinished) {
         List<Integer> questIds = new ArrayList<>();
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
@@ -90,6 +92,7 @@ public class TQuestPlayer {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to get quest ids by player uuid in the database.");
             e.printStackTrace();
         }
         return questIds;
@@ -105,6 +108,7 @@ public class TQuestPlayer {
             statement.setString(3, playerUuid);
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to set finish state of quest player in the database.");
             e.printStackTrace();
         }
 
@@ -120,6 +124,7 @@ public class TQuestPlayer {
             statement.setString(2, playerUuid);
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to remove quest player in the database.");
             e.printStackTrace();
         }
 

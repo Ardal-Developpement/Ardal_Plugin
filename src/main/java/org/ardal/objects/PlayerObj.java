@@ -59,7 +59,7 @@ public class PlayerObj implements PlayerInfo {
 
     public List<MQuest> getPlayerQuestObj(boolean isFinished) {
         Database db = Ardal.getInstance().getDb();
-        List<Integer> questIds = db.gettQuestPlayer().getQuestsIdByPlayerUuid(this.getUuid(), isFinished);
+        List<Integer> questIds = db.gettQuestPlayer().getQuestIdsByPlayerUuid(this.getUuid(), isFinished);
         List<MQuest> questObjs = new ArrayList<>();
         for(Integer id : questIds) {
             MQuest mQuest = db.gettQuest().getQuestById(id, false);

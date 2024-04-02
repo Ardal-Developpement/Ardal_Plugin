@@ -59,6 +59,7 @@ public class TPlayer {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to get player by uuid in the database.");
             e.printStackTrace();
         }
 
@@ -78,6 +79,7 @@ public class TPlayer {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to check if a player exist by uuid in the database.");
             e.printStackTrace();
         }
         return false;

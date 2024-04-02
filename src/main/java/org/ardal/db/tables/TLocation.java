@@ -105,6 +105,7 @@ public class TLocation {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to get location by id in the database.");
             e.printStackTrace();
         }
         return null;

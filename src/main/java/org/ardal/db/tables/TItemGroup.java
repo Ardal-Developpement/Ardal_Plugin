@@ -71,12 +71,12 @@ public class TItemGroup {
             int rowsAffected = deleteStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-
                 customItemManager.removeItems(itemIdsToDelete);
                 return true;
             }
 
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to delete items by group in the database.");
             e.printStackTrace();
         }
 
@@ -96,6 +96,7 @@ public class TItemGroup {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to get items by group id in the database.");
             e.printStackTrace();
         }
 

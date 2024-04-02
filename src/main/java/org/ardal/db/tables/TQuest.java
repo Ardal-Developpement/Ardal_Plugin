@@ -141,6 +141,7 @@ public class TQuest {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to get quest id by name in the database.");
             e.printStackTrace();
         }
         return null;
