@@ -41,7 +41,7 @@ public class MPlayer {
         return adventure_level;
     }
 
-    public void setAdventure_level(int adventure_level) {
+    public void setAdventureLevel(int adventure_level) {
         this.adventure_level = adventure_level;
     }
 

@@ -19,7 +19,7 @@ public class MQuestPlayer {
         return quest_id;
     }
 
-    public void setQuest_id(int quest_id) {
+    public void setQuestId(int quest_id) {
         this.quest_id = quest_id;
     }
 
@@ -27,7 +27,7 @@ public class MQuestPlayer {
         return player_uuid;
     }
 
-    public void setPlayer_uuid(String player_uuid) {
+    public void setPlayerUuid(String player_uuid) {
         this.player_uuid = player_uuid;
     }
 
@@ -35,7 +35,7 @@ public class MQuestPlayer {
         return is_finished;
     }
 
-    public void setIs_finished(boolean is_finished) {
+    public void setIsFinished(boolean is_finished) {
         this.is_finished = is_finished;
     }
 
@@ -43,7 +43,7 @@ public class MQuestPlayer {
         return start_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStartDate(Date start_date) {
         this.start_date = start_date;
     }
 }

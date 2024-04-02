@@ -113,7 +113,7 @@ public class PlayerObj implements PlayerInfo {
 
     @Override
     public boolean setAdventureLevel(int level) {
-        this.mPlayer.setAdventure_level(level);
+        this.mPlayer.setAdventureLevel(level);
         return this.mPlayer.updatePlayer();
     }
 
