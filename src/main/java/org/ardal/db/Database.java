@@ -14,8 +14,8 @@ import java.sql.Statement;
 public class Database {
 
     private static final String URL = "jdbc:mysql://localhost/ardal?useSSL=false";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String USER = "laravel";
+    private static final String PASSWORD = "laravel";
 
     private final HikariDataSource dataSource;
 
@@ -73,6 +73,16 @@ public class Database {
                         "is_delete bool)";
                 statement.execute(sql);
 
+                sql = "create table if not exists locations(" +
+                        "id int auto_increment primary key," +
+                        "world_uuid varchar(36)," +
+                        "x double," +
+                        "y double," +
+                        "z double," +
+                        "yaw float," +
+                        "pitch float)";
+                statement.execute(sql);
+
                 sql = "create table if not exists npcs(" +
                         "uuid varchar(36) primary key," +
                         "name varchar(255)," +
@@ -90,16 +100,6 @@ public class Database {
                         "is_show bool," +
                         "foreign key (npc_uuid) references npcs(uuid) on delete cascade on update cascade," +
                         "foreign key (quest_id) references quests(id) on delete cascade)";
-                statement.execute(sql);
-
-                sql = "create table if not exists locations(" +
-                        "id int auto_increment primary key," +
-                        "world_uuid varchar(36)," +
-                        "x double," +
-                        "y double," +
-                        "z double," +
-                        "yaw float," +
-                        "pitch float)";
                 statement.execute(sql);
 
                 sql = "create table if not exists quest_player(" +

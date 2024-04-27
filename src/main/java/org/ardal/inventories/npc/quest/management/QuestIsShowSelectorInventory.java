@@ -67,7 +67,7 @@ public class QuestIsShowSelectorInventory extends CICarousel {
         MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(book.getItemMeta().getDisplayName());
         mQuestNpc.setIsShow(!mQuestNpc.getIsShow());
         mQuestNpc.updateQuestNpc();
-        this.refreshBookMeta(book);
+        this.refreshBookMeta(book, mQuestNpc);
     }
 
     private ItemStack getFormattedQuestBook(String questName) {
@@ -75,16 +75,16 @@ public class QuestIsShowSelectorInventory extends CICarousel {
 
         if(questObj.isQuestExist()) {
             ItemStack book = questObj.getQuestBook();
-            this.refreshBookMeta(book);
+            MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(questName);
+            this.refreshBookMeta(book, mQuestNpc);
             return book;
         }
 
         return new ItemStack(Material.BARRIER);
     }
 
-    private void refreshBookMeta(ItemStack book){
+    private void refreshBookMeta(ItemStack book, MQuestNpc mQuestNpc){
         ItemMeta meta = book.getItemMeta();
-        MQuestNpc mQuestNpc =  this.questNpc.getQuestNpcByName(meta.getDisplayName());
         if(mQuestNpc == null) { return; }
 
         if(mQuestNpc.getIsShow()) {
@@ -120,7 +120,7 @@ public class QuestIsShowSelectorInventory extends CICarousel {
         }
 
         mQuestNpc.updateQuestNpc();
-        this.refreshBookMeta(book);
+        this.refreshBookMeta(book, mQuestNpc);
     }
 }
 
