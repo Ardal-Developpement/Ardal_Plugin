@@ -52,6 +52,7 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
 
     private List<QuestObj> getRandomQuest(){
         List<QuestObj> rdQuest = new ArrayList<>();
+        List<String> rdQuestNames = new ArrayList<>();
         List<QuestObj> allQuestObjs = this.questNpc.getAllActiveQuestIdWithCoef();
         Random random = new Random();
         for(int i = 0; i < this.nbRandomQuest; i++){
@@ -60,7 +61,11 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
             }
             QuestObj questObj = allQuestObjs.get(random.nextInt(allQuestObjs.size()));
             allQuestObjs.remove(questObj);
-            rdQuest.add(questObj);
+
+            if(!rdQuestNames.contains(questObj.getQuestName())) {
+                rdQuestNames.add(questObj.getQuestName());
+                rdQuest.add(questObj);
+            }
         }
 
         return rdQuest;
