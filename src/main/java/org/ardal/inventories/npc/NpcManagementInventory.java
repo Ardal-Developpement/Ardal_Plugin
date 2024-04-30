@@ -4,6 +4,7 @@ import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.objects.NpcObj;
+import org.ardal.utils.PromptUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -30,6 +31,15 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
         this.setCell(new CICell(
                 this.getDeleteItem(),
                 6, 1,
+                null,
+                null,
+                this,
+                null)
+        );
+
+        this.setCell(new CICell(
+                this.getUuidItemItem(),
+                4, 1,
                 null,
                 null,
                 this,
@@ -66,6 +76,20 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
         return this.propertiesItem;
     }
 
+    private ItemStack uuidItem = null;
+
+    private ItemStack getUuidItemItem(){
+        if(this.uuidItem != null) { return this.uuidItem; }
+
+        this.uuidItem = new ItemStack(Material.NAME_TAG);
+        ItemMeta meta = this.uuidItem.getItemMeta();
+
+        meta.setDisplayName("Get npc uuid.");
+
+        this.uuidItem.setItemMeta(meta);
+        return this.uuidItem;
+    }
+
     private void deleteNpc(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
 
@@ -99,6 +123,9 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
                 break;
             case COBWEB:
                 this.deleteNpc(event);
+                break;
+            case NAME_TAG:
+                PromptUtils.copyToClipboard((Player) event.getWhoClicked(), this.npc.getUuid());
                 break;
         }
     }
