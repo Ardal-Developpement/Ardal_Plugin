@@ -3,6 +3,7 @@ package org.ardal.objects;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.trait.CurrentLocation;
 import net.citizensnpcs.trait.SkinTrait;
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcInfo;
@@ -14,8 +15,10 @@ import org.ardal.managers.NPCManager;
 import org.ardal.models.npc.MNpc;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -124,9 +127,9 @@ public class NpcObj implements NpcInfo {
     }
 
     @Override
-    public boolean setLocation(@NotNull Location newLocation) {
+    public boolean setLocation(@NotNull Player player) {
         TLocation tLocation = Ardal.getInstance().getDb().gettLocation();
-        int newLocationId = tLocation.saveLocation(newLocation);
+        int newLocationId = tLocation.saveLocation(player.getLocation());
         int oldLocationId = this.mNpc.getLocationId();
 
         this.mNpc.setLocationId(newLocationId);
@@ -135,8 +138,10 @@ public class NpcObj implements NpcInfo {
 
             tLocation.deleteLocation(oldLocationId);
 
-            this.npc.getEntity().teleport(newLocation);
-
+            // Cannot find a better solution to rotate body and eyes correctly..
+            this.npc.despawn();
+            this.npc.spawn(player.getLocation());
+            this.npc.teleport(player.getLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
             return true;
         }
 

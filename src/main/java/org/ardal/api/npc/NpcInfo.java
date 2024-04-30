@@ -1,6 +1,7 @@
 package org.ardal.api.npc;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.jetbrains.annotations.NotNull;
@@ -82,10 +83,10 @@ public interface NpcInfo {
     /**
      * Set the npc location
      *
-     * @param newLocation of the npc
+     * @param player that teleport the npc
      * @return true on success
      */
-    boolean setLocation(@NotNull Location newLocation);
+    boolean setLocation(@NotNull Player player);
 
     /**
      * Delete the npc
