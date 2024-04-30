@@ -38,8 +38,8 @@ public class TQuestNpcInfo {
                              "nb_quest_show = ? " +
                              "where npc_uuid = ?"))
         {
-            statement.setString(1, mQuestNpcInfo.getNpcUuid());
-            statement.setInt(2, mQuestNpcInfo.getNbQuestShow());
+            statement.setInt(1, mQuestNpcInfo.getNbQuestShow());
+            statement.setString(2, mQuestNpcInfo.getNpcUuid());
 
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {
