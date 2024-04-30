@@ -20,6 +20,12 @@ import java.util.List;
 public class SetQuestSynopsis implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
+        if(argv.isEmpty()) {
+            return false;
+        }
+
+        String questName = StringUtils.getStringFromConcatStringList(argv);
+
         Player player = (Player) sender;
         ItemStack book = player.getInventory().getItemInMainHand().clone();
 
@@ -47,7 +53,6 @@ public class SetQuestSynopsis implements ArdalCmd {
             synopsis = sb.toString();
         }
 
-        String questName = meta.getDisplayName();
         QuestObj questObj = new QuestObj(questName);
         if(!questObj.isQuestExist()) {
             player.sendMessage("Invalid quest name.");
@@ -62,12 +67,8 @@ public class SetQuestSynopsis implements ArdalCmd {
 
     @Override
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
-        if(argv.size() < 2) {
-            QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
-            return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(false), StringUtils.getStringFromConcatStringList(argv));
-        }
-
-        return new ArrayList<>();
+        QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);
+        return TabCompleteUtils.getTabCompleteFromStrList(questManager.getAllQuestNames(false), StringUtils.getStringFromConcatStringList(argv));
     }
 
     public String getHelp() {
