@@ -2,6 +2,7 @@ package org.ardal.db.tables.npc;
 
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcType;
+import org.ardal.exceptions.NpcNotFound;
 import org.ardal.models.npc.MNpc;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +41,7 @@ public class TNpc {
     }
 
     @Nullable
-    public MNpc getNpcByUuid(String uuid) {
+    public MNpc getNpcByUuid(String uuid) throws NpcNotFound {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("SELECT name, is_visible, location_id, type FROM npcs WHERE uuid = ?"))
@@ -56,7 +57,7 @@ public class TNpc {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new NpcNotFound();
         }
         return null;
     }

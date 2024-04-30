@@ -3,14 +3,13 @@ package org.ardal.objects;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
-import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.citizensnpcs.trait.SkinTrait;
-import net.citizensnpcs.util.NMS;
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcInfo;
 import org.ardal.api.npc.NpcType;
 import org.ardal.db.Database;
 import org.ardal.db.tables.TLocation;
+import org.ardal.exceptions.NpcNotFound;
 import org.ardal.managers.NPCManager;
 import org.ardal.models.npc.MNpc;
 import org.bukkit.Location;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public abstract class NpcObj implements NpcInfo {
+public class NpcObj implements NpcInfo {
     private MNpc mNpc;
     private NPC npc;
 
@@ -32,19 +31,21 @@ public abstract class NpcObj implements NpcInfo {
         Database db = Ardal.getInstance().getDb();
         int locationId = db.gettLocation().saveLocation(location);
         this.mNpc = new MNpc(this.npc.getUniqueId().toString(), npcName, true, locationId, npcType);
+
         this.setNpcProperties();
         db.gettNpc().createNpc(this.mNpc);
+
         Ardal.getInstance().getManager(NPCManager.class).registerNpc(this);
     }
 
-    public NpcObj(String npcUuid) {
+    public NpcObj(String npcUuid) throws NpcNotFound {
         this.mNpc = Ardal.getInstance().getDb().gettNpc().getNpcByUuid(npcUuid);
 
         UUID uuid = UUID.fromString(this.mNpc.getUuid());
         NPCRegistry npcRegistry = CitizensAPI.getNPCRegistry();
 
         for (NPC npc : npcRegistry) {
-            if(npc.getUniqueId() == uuid) {
+            if(npc.getUniqueId().equals(uuid)) {
                 this.npc = npc;
                 break;
             }
@@ -53,18 +54,18 @@ public abstract class NpcObj implements NpcInfo {
         Ardal.getInstance().getManager(NPCManager.class).registerNpc(this);
     }
 
-    public abstract void onNPCInteract(PlayerInteractEntityEvent event);
-    public abstract void onNpcManagentEvent(InventoryClickEvent event);
+
+    public void onNPCInteractEvent(PlayerInteractEntityEvent event) {}
+    public void onNpManagementEvent(InventoryClickEvent event) {}
 
     private void createCitizensNpc(String npcName, Location location) {
         this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
         this.npc.spawn(location);
-        this.setNpcProperties();
-        this.setNpcSkin(this.getName());
+        this.setNpcSkin(npcName);
         Ardal.getInstance().getManager(NPCManager.class).registerNpc(this);
     }
 
-    private void setNpcSkin(String skinName) {
+    public void setNpcSkin(String skinName) {
         this.npc.getOrAddTrait(SkinTrait.class).setSkinName(skinName);
     }
 

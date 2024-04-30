@@ -95,7 +95,7 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
 
         switch (item.getType()){
             case WOODEN_PICKAXE:
-                this.npc.onNpcManagentEvent(event);
+                this.npc.onNpManagementEvent(event);
                 break;
             case COBWEB:
                 this.deleteNpc(event);

@@ -3,6 +3,7 @@ package org.ardal.npc.quest;
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcType;
 
+import org.ardal.exceptions.NpcNotFound;
 import org.ardal.inventories.npc.quest.NpcMenuSelectorInventory;
 import org.ardal.inventories.npc.quest.NpcQuestSelectorInventory;
 import org.ardal.inventories.npc.quest.management.QuestIsShowSelectorInventory;
@@ -33,7 +34,7 @@ public class QuestNpc extends NpcObj {
         super(npcName, location, npcType);
     }
 
-    public QuestNpc(String npcUuid) {
+    public QuestNpc(String npcUuid) throws NpcNotFound {
         super(npcUuid);
     }
 
@@ -63,7 +64,7 @@ public class QuestNpc extends NpcObj {
     }
 
     @Override
-    public void onNPCInteract(PlayerInteractEntityEvent event) {
+    public void onNPCInteractEvent(PlayerInteractEntityEvent event) {
         if(!hasOneQuestShowed()){
             event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getName(),
                     String.format("Hey %s, I'm not working today, come back later.",
@@ -105,7 +106,7 @@ public class QuestNpc extends NpcObj {
     }
 
     @Override
-    public void onNpcManagentEvent(InventoryClickEvent event) {
+    public void onNpManagementEvent(InventoryClickEvent event) {
         new QuestIsShowSelectorInventory(this, (Player) event.getWhoClicked()).showInventory();
     }
 

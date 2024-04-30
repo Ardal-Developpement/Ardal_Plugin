@@ -8,13 +8,14 @@ import org.ardal.api.npc.NpcType;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.npc.CreateAndInvokeNpc;
 import org.ardal.commands.npc.give.GiveNpcManager;
+import org.ardal.commands.npc.set.SetNpcManager;
 import org.ardal.db.tables.npc.TNpc;
+import org.ardal.exceptions.NpcNotFound;
 import org.ardal.inventories.npc.NpcManagementInventory;
 import org.ardal.inventories.npc.quest.management.NpcManagementTool;
 import org.ardal.models.npc.MNpc;
 import org.ardal.npc.quest.QuestNpc;
 import org.ardal.objects.NpcObj;
-import org.ardal.objects.PlayerObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -38,6 +39,7 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
 
         this.registerCmd(new CreateAndInvokeNpc());
         this.registerCmd(new GiveNpcManager());
+        this.registerCmd(new SetNpcManager());
 
         this.npcs = new ArrayList<>();
 
@@ -78,12 +80,15 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
         List<String> npcUuids = this.getAllNpcUuids();
         TNpc tNpc = Ardal.getInstance().getDb().gettNpc();
         for(String npcUuid : npcUuids) {
-            MNpc mNpc = tNpc.getNpcByUuid(npcUuid);
-
-            switch (mNpc.getType()) {
-                case QUEST_NPC:
-                    new QuestNpc(npcUuid);
-                    break;
+            try {
+                MNpc mNpc = tNpc.getNpcByUuid(npcUuid);
+                switch (mNpc.getType()) {
+                    case QUEST_NPC:
+                        new QuestNpc(npcUuid);
+                        break;
+                }
+            } catch (NpcNotFound e) {
+                e.printStackTrace();
             }
         }
     }
@@ -141,7 +146,7 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
                 return;
             }
 
-            npc.onNPCInteract(event);
+            npc.onNPCInteractEvent(event);
         }
     }
 
