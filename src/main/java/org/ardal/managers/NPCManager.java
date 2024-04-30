@@ -8,6 +8,7 @@ import org.ardal.api.npc.NpcManagerInfo;
 import org.ardal.api.npc.NpcType;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.npc.CreateAndInvokeNpc;
+import org.ardal.commands.npc.TeleportNpc;
 import org.ardal.commands.npc.give.GiveNpcManager;
 import org.ardal.commands.npc.set.SetNpcManager;
 import org.ardal.db.tables.npc.TNpc;
@@ -39,6 +40,7 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
         super(BaseCmdAlias.BASE_NPC_CMD_ALIAS);
 
         this.registerCmd(new CreateAndInvokeNpc());
+        this.registerCmd(new TeleportNpc());
         this.registerCmd(new GiveNpcManager());
         this.registerCmd(new SetNpcManager());
 
