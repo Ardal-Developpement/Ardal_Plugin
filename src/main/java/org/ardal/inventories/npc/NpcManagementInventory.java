@@ -1,9 +1,12 @@
 package org.ardal.inventories.npc;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.objects.NpcObj;
+import org.ardal.utils.ChatUtils;
 import org.ardal.utils.PromptUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -125,7 +128,13 @@ public class NpcManagementInventory extends CustomInventory implements CellCallB
                 this.deleteNpc(event);
                 break;
             case NAME_TAG:
-                PromptUtils.copyToClipboard((Player) event.getWhoClicked(), this.npc.getUuid());
+                TextComponent part1 = new TextComponent(this.npc.getName() + " id: ");
+                TextComponent part2 = new TextComponent(this.npc.getUuid() + " [Click me]");
+                part1.setColor(ChatColor.GOLD);
+                part2.setColor(ChatColor.AQUA);
+
+                TextComponent message = new TextComponent(part1, part2);
+                ChatUtils.copyToClipboard((Player) event.getWhoClicked(), message, this.npc.getUuid());
                 break;
         }
     }
