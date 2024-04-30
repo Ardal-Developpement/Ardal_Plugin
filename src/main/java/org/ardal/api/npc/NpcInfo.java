@@ -23,12 +23,6 @@ public interface NpcInfo {
      */
     String getName();
 
-    /**
-     * Get npc visible state
-     *
-     * @return npc visible state
-     */
-    boolean getIsVisible();
 
     /**
      * Get npc location
@@ -67,14 +61,6 @@ public interface NpcInfo {
      * @return true on success
      */
     boolean setName(@NotNull String newName);
-
-    /**
-     * Set the visible state of the npc
-     *
-     * @param visibleState of the npc
-     * @return true on success
-     */
-    boolean setIsVisible(boolean visibleState);
 
     /**
      * Set the npc location

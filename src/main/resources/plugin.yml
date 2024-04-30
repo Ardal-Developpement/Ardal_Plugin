@@ -2,6 +2,7 @@ name: Ardal_Plugin
 version: '${project.version}'
 main: org.ardal.Ardal
 api-version: '1.16'
+depend: [Citizens]
 commands:
   quest:
     description: Manage quests.
@@ -9,7 +10,7 @@ commands:
   ardal:
     description: Manager player info
     permission: ardal_plugin.ardal
-  npc:
+  custom_npc:
     description: Manager npc.
     permission: ardal_plugin.npc
   ec:
