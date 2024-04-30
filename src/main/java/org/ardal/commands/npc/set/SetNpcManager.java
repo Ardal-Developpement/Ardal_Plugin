@@ -14,6 +14,7 @@ public class SetNpcManager extends ArdalCmdNode implements ArdalCmd {
         super(CMD_NAME);
 
         this.registerCmd(new SetNpcSkin());
+        this.registerCmd(new SetNpcName());
     }
 
     @Override
