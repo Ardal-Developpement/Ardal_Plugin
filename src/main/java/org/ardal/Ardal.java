@@ -1,9 +1,11 @@
 package org.ardal;
 
 
+import net.citizensnpcs.api.CitizensAPI;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.db.Database;
 import org.ardal.managers.*;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,14 +25,20 @@ public final class Ardal extends JavaPlugin {
         this.db = new Database();
         db.initDb();
 
-        this.registerManager(new PlayerInfoManager());
-        this.registerManager(new QuestManager());
-        this.registerManager(new CustomItemManager());
-        this.registerManager(new CustomInventoryManager());
-        this.registerManager(new IndividualCmdManager());
-        this.registerManager(new NPCManager());
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            if (CitizensAPI.hasImplementation() && CitizensAPI.getNPCRegistry() != null) {
+                Bukkit.getScheduler().cancelTasks(this);
 
-        enableManagers();
+                this.registerManager(new PlayerInfoManager());
+                this.registerManager(new QuestManager());
+                this.registerManager(new CustomItemManager());
+                this.registerManager(new CustomInventoryManager());
+                this.registerManager(new IndividualCmdManager());
+                this.registerManager(new NPCManager());
+
+                enableManagers();
+            }
+        }, 5L, 20L);
     }
 
     @Override
@@ -56,6 +64,7 @@ public final class Ardal extends JavaPlugin {
             this.getLogger().info("Manager already registered.");
         }
     }
+
 
     @NotNull
     public <T extends ArdalManager> T getManager(Class<T> managerClass) {

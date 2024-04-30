@@ -1,6 +1,7 @@
 package org.ardal.objects;
 
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
@@ -15,14 +16,13 @@ import org.ardal.models.npc.MNpc;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class NpcObj implements NpcInfo {
-    private MNpc mNpc;
+    private final MNpc mNpc;
     private NPC npc;
 
     public NpcObj(String npcName, Location location, NpcType npcType) {
@@ -42,20 +42,18 @@ public class NpcObj implements NpcInfo {
         this.mNpc = Ardal.getInstance().getDb().gettNpc().getNpcByUuid(npcUuid);
 
         UUID uuid = UUID.fromString(this.mNpc.getUuid());
-        NPCRegistry npcRegistry = CitizensAPI.getNPCRegistry();
 
-        for (NPC npc : npcRegistry) {
-            if(npc.getUniqueId().equals(uuid)) {
-                this.npc = npc;
-                break;
-            }
+        this.npc = CitizensAPI.getNPCRegistry().getByUniqueId(uuid);
+
+        if(this.npc == null) {
+            throw new NpcNotFound();
         }
 
         Ardal.getInstance().getManager(NPCManager.class).registerNpc(this);
     }
 
 
-    public void onNPCInteractEvent(PlayerInteractEntityEvent event) {}
+    public void onNPCInteractEvent(NPCRightClickEvent event) {}
     public void onNpManagementEvent(InventoryClickEvent event) {}
 
     private void createCitizensNpc(String npcName, Location location) {
@@ -66,7 +64,7 @@ public class NpcObj implements NpcInfo {
     }
 
     public void setNpcSkin(String skinName) {
-        this.npc.getOrAddTrait(SkinTrait.class).setSkinName(skinName);
+        this.npc.getOrAddTrait(SkinTrait.class).setSkinName(skinName, true);
     }
 
     private void setNpcProperties(){

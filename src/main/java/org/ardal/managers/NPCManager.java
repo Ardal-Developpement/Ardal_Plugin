@@ -1,5 +1,6 @@
 package org.ardal.managers;
 
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
@@ -132,22 +133,19 @@ public class NPCManager extends ArdalCmdManager implements NpcManagerInfo, Ardal
     }
 
     @EventHandler
-    public void onNPCInteract(PlayerInteractEntityEvent event) {
-        if (event.getRightClicked().getType() == EntityType.VILLAGER) {
-            NpcObj npc = this.getRegisteredNpcByUuid(event.getRightClicked().getUniqueId().toString());
-            if(npc == null) { return; }
+    public void onRightClick(NPCRightClickEvent event) {
+        NpcObj npc = this.getRegisteredNpcByUuid(event.getNPC().getUniqueId().toString());
+        if(npc == null) { return; }
 
-            Player player = event.getPlayer();
+        Player player = event.getClicker();
+        event.setCancelled(true);
 
-            event.setCancelled(true);
-
-            if (player.getInventory().getItemInMainHand().isSimilar(this.npcManagementTool.getTool())) {
-                player.openInventory(new NpcManagementInventory(npc, player).getInventory());
-                return;
-            }
-
-            npc.onNPCInteractEvent(event);
+        if (player.getInventory().getItemInMainHand().isSimilar(this.npcManagementTool.getTool())) {
+            player.openInventory(new NpcManagementInventory(npc, player).getInventory());
+            return;
         }
+
+        npc.onNPCInteractEvent(event);
     }
 
     public NpcManagementTool getNpcManagementTool() {

@@ -1,5 +1,6 @@
 package org.ardal.npc.quest;
 
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcType;
 
@@ -64,30 +65,30 @@ public class QuestNpc extends NpcObj {
     }
 
     @Override
-    public void onNPCInteractEvent(PlayerInteractEntityEvent event) {
+    public void onNPCInteractEvent(NPCRightClickEvent event) {
         if(!hasOneQuestShowed()){
-            event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getName(),
+            event.getClicker().sendMessage(ChatUtils.getFormattedMsg(this.getName(),
                     String.format("Hey %s, I'm not working today, come back later.",
-                            event.getPlayer().getDisplayName())));
+                            event.getClicker().getDisplayName())));
 
             return;
         }
 
-        PlayerObj playerObj = new PlayerObj(event.getPlayer());
+        PlayerObj playerObj = new PlayerObj(event.getClicker());
         int questCooldown = playerObj.getQuestCooldown();
         if(questCooldown != 0){
-            event.getPlayer().sendMessage(ChatUtils.getFormattedMsg(this.getName(),
+            event.getClicker().sendMessage(ChatUtils.getFormattedMsg(this.getName(),
                     String.format("Hey %s, I'm busy, please come back in %d minutes.",
-                            event.getPlayer().getDisplayName(), questCooldown)));
+                            event.getClicker().getDisplayName(), questCooldown)));
 
             return;
         }
 
-        String questName = this.playerHasNpcActiveQuest(event.getPlayer());
+        String questName = this.playerHasNpcActiveQuest(event.getClicker());
         if(questName != null){
-            new NpcMenuSelectorInventory(this, event.getPlayer(), questName).showInventory();
+            new NpcMenuSelectorInventory(this, event.getClicker(), questName).showInventory();
         } else {
-            new NpcQuestSelectorInventory(this, event.getPlayer(), 9).showInventory();
+            new NpcQuestSelectorInventory(this, event.getClicker(), 9).showInventory();
         }
     }
 
