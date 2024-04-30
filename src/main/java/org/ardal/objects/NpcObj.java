@@ -73,8 +73,6 @@ public class NpcObj implements NpcInfo {
         }
     }
 
-
-
     private void setNpcProperties(){
         this.npc.setName(this.mNpc.getName());
 
@@ -134,8 +132,11 @@ public class NpcObj implements NpcInfo {
         this.mNpc.setLocationId(newLocationId);
 
         if(this.mNpc.updateNpc()) {
+
             tLocation.deleteLocation(oldLocationId);
-            this.npc.teleport(newLocation, PlayerTeleportEvent.TeleportCause.COMMAND);
+
+            this.npc.getEntity().teleport(newLocation);
+
             return true;
         }
 
@@ -152,5 +153,16 @@ public class NpcObj implements NpcInfo {
         }
 
         return false;
+    }
+
+    public static NpcObj getNpc(String npcUuid) throws NpcNotFound {
+        NPCManager npcManager = Ardal.getInstance().getManager(NPCManager.class);
+        NpcObj npc = npcManager.getRegisteredNpcByUuid(npcUuid);
+
+        if(npc != null) {
+            return npc;
+        }
+
+        return new NpcObj(npcUuid);
     }
 }

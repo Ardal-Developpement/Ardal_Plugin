@@ -22,7 +22,7 @@ public class SetNpcName implements ArdalCmd {
         String name = argv.get(1);
 
         try {
-            NpcObj npc = new NpcObj(uuid);
+            NpcObj npc = NpcObj.getNpc(uuid);
             npc.setName(name);
 
         } catch (NpcNotFound e) {

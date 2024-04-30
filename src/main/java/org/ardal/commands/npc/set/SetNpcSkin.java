@@ -27,7 +27,7 @@ public class SetNpcSkin implements ArdalCmd {
         String skinName = argv.get(1);
 
         try {
-            NpcObj npc = new NpcObj(uuid);
+            NpcObj npc = NpcObj.getNpc(uuid);
             npc.setNpcSkin(skinName, true);
 
         } catch (NpcNotFound e) {
