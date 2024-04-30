@@ -8,8 +8,8 @@ import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.playerinfo.add.AddPlayerInfoManager;
 import org.ardal.commands.playerinfo.list.ListPlayerInfoManager;
 import org.ardal.commands.playerinfo.remove.RemovePlayerInfoManager;
+import org.ardal.commands.playerinfo.set.SetPlayerInfoManager;
 import org.ardal.models.MPlayer;
-import org.ardal.objects.PlayerObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -18,9 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.EventListener;
 import java.util.List;
 
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerInfo, ArdalManager, Listener {
@@ -30,6 +28,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
         this.registerCmd(new AddPlayerInfoManager());
         this.registerCmd(new RemovePlayerInfoManager());
         this.registerCmd(new ListPlayerInfoManager());
+        this.registerCmd(new SetPlayerInfoManager());
 
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
