@@ -1,11 +1,8 @@
 package org.ardal.inventories.npc.quest;
 
-import org.ardal.Ardal;
 import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
-import org.ardal.managers.PlayerInfoManager;
-import org.ardal.managers.QuestManager;
 import org.ardal.npc.quest.QuestNpc;
 import org.ardal.objects.PlayerObj;
 import org.ardal.objects.QuestObj;
@@ -55,7 +52,8 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         List<String> rdQuestNames = new ArrayList<>();
         List<QuestObj> allQuestObjs = this.questNpc.getAllActiveQuestIdWithCoef();
         Random random = new Random();
-        for(int i = 0; i < this.nbRandomQuest; i++){
+
+        while(rdQuest.size() < this.nbRandomQuest){
             if(allQuestObjs.isEmpty()){
                 break;
             }

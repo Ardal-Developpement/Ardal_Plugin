@@ -3,7 +3,6 @@ package org.ardal.objects;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.trait.CurrentLocation;
 import net.citizensnpcs.trait.SkinTrait;
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcInfo;
@@ -18,7 +17,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;

@@ -3,15 +3,13 @@ package org.ardal.npc.quest;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcType;
-
+import org.ardal.api.npc.type.QuestNpcInfo;
 import org.ardal.exceptions.NpcNotFound;
 import org.ardal.inventories.npc.quest.NpcMenuSelectorInventory;
 import org.ardal.inventories.npc.quest.NpcQuestSelectorInventory;
 import org.ardal.inventories.npc.quest.management.QuestIsShowSelectorInventory;
-import org.ardal.managers.NPCManager;
-import org.ardal.managers.PlayerInfoManager;
-import org.ardal.managers.QuestManager;
 import org.ardal.models.npc.type.MQuestNpc;
+import org.ardal.models.npc.type.MQuestNpcInfo;
 import org.ardal.objects.NpcObj;
 import org.ardal.objects.PlayerObj;
 import org.ardal.objects.QuestObj;
@@ -19,24 +17,27 @@ import org.ardal.utils.ChatUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestNpc extends NpcObj {
+public class QuestNpc extends NpcObj implements QuestNpcInfo {
+    private static final int DEFAULT_NB_QUEST_SHOW = 3;
+
+    private final MQuestNpcInfo mQuestNpcInfo;
 
     public QuestNpc(String npcName, Location location, NpcType npcType){
         super(npcName, location, npcType);
+
+        this.mQuestNpcInfo = new MQuestNpcInfo(this.getUuid(), DEFAULT_NB_QUEST_SHOW);
+        Ardal.getInstance().getDb().gettQuestNpcInfo().createQuestNpcInfo(this.mQuestNpcInfo);
     }
 
     public QuestNpc(String npcUuid) throws NpcNotFound {
         super(npcUuid);
+
+        this.mQuestNpcInfo = Ardal.getInstance().getDb().gettQuestNpcInfo().getNpcQuestInfoByUuid(this.getUuid());
     }
 
     private List<MQuestNpc> getQuestNpcList() {
@@ -88,7 +89,7 @@ public class QuestNpc extends NpcObj {
         if(questName != null){
             new NpcMenuSelectorInventory(this, event.getClicker(), questName).showInventory();
         } else {
-            new NpcQuestSelectorInventory(this, event.getClicker(), 9).showInventory();
+            new NpcQuestSelectorInventory(this, event.getClicker(), this.getNbQuestShow()).showInventory();
         }
     }
 
@@ -133,6 +134,17 @@ public class QuestNpc extends NpcObj {
         }
 
         return false;
+    }
+
+    @Override
+    public int getNbQuestShow() {
+        return this.mQuestNpcInfo.getNbQuestShow();
+    }
+
+    @Override
+    public boolean setNbQuestShow(int nbQuestShow) {
+        this.mQuestNpcInfo.setNbQuestShow(nbQuestShow);
+        return this.mQuestNpcInfo.updateQuestNpcInfo();
     }
 }
 
