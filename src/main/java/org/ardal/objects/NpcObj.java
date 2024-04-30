@@ -78,7 +78,6 @@ public class NpcObj implements NpcInfo {
 
     private void setNpcProperties(){
         this.npc.setName(this.mNpc.getName());
-
         this.npc.setProtected(true);
         this.npc.setUseMinecraftAI(false);
     }

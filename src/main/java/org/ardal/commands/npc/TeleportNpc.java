@@ -27,7 +27,6 @@ public class TeleportNpc implements ArdalCmd {
             Player player = (Player) sender;
 
             if(npc.setLocation(player)) {
-                System.out.println("Player location: " + player.getLocation());
                 sender.sendMessage("Successfully teleported: " + npc.getName() + " to " + player.getDisplayName());
             } else {
                 sender.sendMessage("Failed to teleport: " + npc.getName() + " to " + player.getDisplayName());

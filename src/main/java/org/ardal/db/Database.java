@@ -6,6 +6,7 @@ import org.ardal.Ardal;
 import org.ardal.db.tables.*;
 import org.ardal.db.tables.npc.TNpc;
 import org.ardal.db.tables.npc.type.TQuestNpc;
+import org.ardal.db.tables.npc.type.TQuestNpcInfo;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,6 +28,7 @@ public class Database {
     private final TNpc tNpc;
     private final TLocation tLocation;
     private final TQuestNpc tQuestNpc;
+    private final TQuestNpcInfo tQuestNpcInfo;
 
     public Database(){
         HikariConfig config = new HikariConfig();
@@ -45,6 +47,7 @@ public class Database {
         this.tNpc = new TNpc();
         this.tLocation = new TLocation();
         this.tQuestNpc = new TQuestNpc();
+        this.tQuestNpcInfo = new TQuestNpcInfo();
     }
 
     public Connection getConnection() throws SQLException {
@@ -91,6 +94,12 @@ public class Database {
                         "location_id int," +
                         "type varchar(127)," +
                         "foreign key (location_id) references locations(id) on delete cascade)";
+                statement.execute(sql);
+
+                sql = "create table if not exists quest_npc_info(" +
+                        "npc_uuid varchar(36)," +
+                        "nb_quest_show int," +
+                        "foreign key (npc_uuid) references npcs(uuid) on delete cascade on update cascade)";
                 statement.execute(sql);
 
                 sql = "create table if not exists quest_npc(" +
@@ -170,5 +179,9 @@ public class Database {
 
     public TQuestNpc gettQuestNpc() {
         return tQuestNpc;
+    }
+
+    public TQuestNpcInfo gettQuestNpcInfo() {
+        return tQuestNpcInfo;
     }
 }
