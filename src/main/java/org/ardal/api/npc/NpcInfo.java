@@ -25,6 +25,13 @@ public interface NpcInfo {
      */
     String getName();
 
+    /**
+     * Get npc skin name
+     *
+     * @return npc skin name
+     */
+    String getSkinName();
+
 
     /**
      * Get npc location
@@ -63,6 +70,14 @@ public interface NpcInfo {
      * @return true on success
      */
     boolean setName(@NotNull String newName);
+
+    /**
+     * Set the npc skin name
+     *
+     * @param skinName of the npc skin
+     * @param updateDB update skin name in the db
+     */
+    void setNpcSkin(@NotNull String skinName, boolean updateDB);
 
     /**
      * Set the npc location

@@ -28,7 +28,7 @@ public class SetNpcSkin implements ArdalCmd {
 
         try {
             NpcObj npc = new NpcObj(uuid);
-            npc.setNpcSkin(skinName);
+            npc.setNpcSkin(skinName, true);
 
         } catch (NpcNotFound e) {
             sender.sendMessage("Npc not found.");

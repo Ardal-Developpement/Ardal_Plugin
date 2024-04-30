@@ -86,6 +86,7 @@ public class Database {
                 sql = "create table if not exists npcs(" +
                         "uuid varchar(36) primary key," +
                         "name varchar(255)," +
+                        "skin_name varchar(255), " +
                         "is_visible bool," +
                         "location_id int," +
                         "type varchar(127)," +

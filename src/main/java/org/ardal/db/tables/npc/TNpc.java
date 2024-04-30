@@ -16,14 +16,15 @@ public class TNpc {
     public String createNpc(MNpc mNpc) {
         String npcUuid = null;
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
-                PreparedStatement statement = connection.prepareStatement("insert into npcs(uuid, name, is_visible, location_id, type) values (?,?,?,?,?)",
+                PreparedStatement statement = connection.prepareStatement("insert into npcs(uuid, name, skin_name, is_visible, location_id, type) values (?,?,?,?,?,?)",
                         Statement.RETURN_GENERATED_KEYS)){
 
             statement.setString(1, mNpc.getUuid());
             statement.setString(2, mNpc.getName());
-            statement.setBoolean(3, mNpc.getIsVisible());
-            statement.setInt(4, mNpc.getLocationId());
-            statement.setString(5, mNpc.getType().toString());
+            statement.setString(3, mNpc.getSkinName());
+            statement.setBoolean(4, mNpc.getIsVisible());
+            statement.setInt(5, mNpc.getLocationId());
+            statement.setString(6, mNpc.getType().toString());
 
             statement.executeUpdate();
 
@@ -44,13 +45,14 @@ public class TNpc {
     public MNpc getNpcByUuid(String uuid) throws NpcNotFound {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT name, is_visible, location_id, type FROM npcs WHERE uuid = ?"))
+                     .prepareStatement("SELECT name, skin_name, is_visible, location_id, type FROM npcs WHERE uuid = ?"))
         {
             statement.setString(1, uuid);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new MNpc(uuid,
                             resultSet.getString("name"),
+                            resultSet.getString("skin_name"),
                             resultSet.getBoolean("is_visible"),
                             resultSet.getInt("location_id"),
                             NpcType.getNpcTypeByName(resultSet.getString("type")));
@@ -67,16 +69,18 @@ public class TNpc {
              PreparedStatement statement = connection
                      .prepareStatement("update npcs set " +
                              "name = ?," +
+                             "skin_name = ?," +
                              "is_visible = ?," +
                              "location_id = ?," +
                              "type = ?" +
                              " WHERE uuid = ?"))
         {
             statement.setString(1, mNpc.getName());
-            statement.setBoolean(2, mNpc.getIsVisible());
-            statement.setInt(3, mNpc.getLocationId());
-            statement.setString(4, mNpc.getType().toString());
-            statement.setString(5, mNpc.getUuid());
+            statement.setString(2, mNpc.getSkinName());
+            statement.setBoolean(3, mNpc.getIsVisible());
+            statement.setInt(4, mNpc.getLocationId());
+            statement.setString(5, mNpc.getType().toString());
+            statement.setString(6, mNpc.getUuid());
 
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {

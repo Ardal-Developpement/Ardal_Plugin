@@ -3,7 +3,6 @@ package org.ardal.objects;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import org.ardal.Ardal;
 import org.ardal.api.npc.NpcInfo;
@@ -30,7 +29,7 @@ public class NpcObj implements NpcInfo {
 
         Database db = Ardal.getInstance().getDb();
         int locationId = db.gettLocation().saveLocation(location);
-        this.mNpc = new MNpc(this.npc.getUniqueId().toString(), npcName, true, locationId, npcType);
+        this.mNpc = new MNpc(this.npc.getUniqueId().toString(), npcName, npcName, true, locationId, npcType);
 
         this.setNpcProperties();
         db.gettNpc().createNpc(this.mNpc);
@@ -49,9 +48,9 @@ public class NpcObj implements NpcInfo {
             throw new NpcNotFound();
         }
 
+        this.setNpcSkin(this.getSkinName(), false);
         Ardal.getInstance().getManager(NPCManager.class).registerNpc(this);
     }
-
 
     public void onNPCInteractEvent(NPCRightClickEvent event) {}
     public void onNpManagementEvent(InventoryClickEvent event) {}
@@ -59,13 +58,22 @@ public class NpcObj implements NpcInfo {
     private void createCitizensNpc(String npcName, Location location) {
         this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
         this.npc.spawn(location);
-        this.setNpcSkin(npcName);
+        this.setNpcSkin(npcName, false);
         Ardal.getInstance().getManager(NPCManager.class).registerNpc(this);
     }
 
-    public void setNpcSkin(String skinName) {
+
+    @Override
+    public void setNpcSkin(@NotNull String skinName, boolean updateDB) {
         this.npc.getOrAddTrait(SkinTrait.class).setSkinName(skinName, true);
+
+        if(updateDB) {
+            this.mNpc.setSkinName(skinName);
+            this.mNpc.updateNpc();
+        }
     }
+
+
 
     private void setNpcProperties(){
         this.npc.setName(this.mNpc.getName());
@@ -82,6 +90,11 @@ public class NpcObj implements NpcInfo {
     @Override
     public String getName() {
         return this.mNpc.getName();
+    }
+
+    @Override
+    public String getSkinName() {
+        return this.mNpc.getSkinName();
     }
 
     @Override
