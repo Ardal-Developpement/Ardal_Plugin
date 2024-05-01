@@ -2,7 +2,7 @@ package org.ardal.commands.npc.set;
 
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.exceptions.NpcNotFound;
-import org.ardal.npc.quest.QuestNpc;
+import org.ardal.entities.quest.QuestNpc;
 import org.ardal.objects.NpcObj;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

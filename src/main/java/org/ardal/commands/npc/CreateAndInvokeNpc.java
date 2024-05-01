@@ -2,9 +2,8 @@ package org.ardal.commands.npc;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
-import org.ardal.api.npc.NpcType;
+import org.ardal.api.entities.npc.NpcType;
 import org.ardal.managers.NPCManager;
-import org.ardal.objects.NpcObj;
 import org.ardal.utils.StringUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;

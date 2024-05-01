@@ -1,18 +1,13 @@
 package org.ardal.commands.npc.set;
 
-import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.exceptions.NpcNotFound;
-import org.ardal.managers.NPCManager;
-import org.ardal.npc.quest.QuestNpc;
 import org.ardal.objects.NpcObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 

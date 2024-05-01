@@ -1,4 +1,4 @@
-package org.ardal.api.npc;
+package org.ardal.api.entities.npc;
 
 import org.ardal.objects.NpcObj;
 import org.bukkit.entity.Player;

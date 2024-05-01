@@ -1,7 +1,7 @@
 package org.ardal.models.npc;
 
 import org.ardal.Ardal;
-import org.ardal.api.npc.NpcType;
+import org.ardal.api.entities.npc.NpcType;
 
 public class MNpc {
     private String uuid;

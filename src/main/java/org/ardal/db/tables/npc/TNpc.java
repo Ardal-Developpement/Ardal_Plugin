@@ -1,7 +1,7 @@
 package org.ardal.db.tables.npc;
 
 import org.ardal.Ardal;
-import org.ardal.api.npc.NpcType;
+import org.ardal.api.entities.npc.NpcType;
 import org.ardal.exceptions.NpcNotFound;
 import org.ardal.models.npc.MNpc;
 import org.jetbrains.annotations.Nullable;

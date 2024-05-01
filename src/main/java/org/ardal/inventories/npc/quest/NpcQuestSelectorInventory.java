@@ -3,7 +3,7 @@ package org.ardal.inventories.npc.quest;
 import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
-import org.ardal.npc.quest.QuestNpc;
+import org.ardal.entities.quest.QuestNpc;
 import org.ardal.objects.PlayerObj;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.ChatUtils;

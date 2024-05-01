@@ -1,9 +1,9 @@
-package org.ardal.npc.quest;
+package org.ardal.entities.quest;
 
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.ardal.Ardal;
-import org.ardal.api.npc.NpcType;
-import org.ardal.api.npc.type.QuestNpcInfo;
+import org.ardal.api.entities.npc.NpcType;
+import org.ardal.api.entities.npc.type.QuestNpcInfo;
 import org.ardal.exceptions.NpcNotFound;
 import org.ardal.inventories.npc.quest.NpcMenuSelectorInventory;
 import org.ardal.inventories.npc.quest.NpcQuestSelectorInventory;

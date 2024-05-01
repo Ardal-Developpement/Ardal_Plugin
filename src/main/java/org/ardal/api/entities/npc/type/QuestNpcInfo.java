@@ -1,4 +1,4 @@
-package org.ardal.api.npc.type;
+package org.ardal.api.entities.npc.type;
 
 public interface QuestNpcInfo {
     /**

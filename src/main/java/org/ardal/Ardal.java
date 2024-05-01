@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,7 @@ public final class Ardal extends JavaPlugin {
                 this.registerManager(new CustomInventoryManager());
                 this.registerManager(new IndividualCmdManager());
                 this.registerManager(new NPCManager());
+                this.registerManager(new CustomMobManager());
 
                 enableManagers();
             }

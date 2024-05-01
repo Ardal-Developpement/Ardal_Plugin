@@ -1,9 +1,7 @@
-package org.ardal.api.npc;
+package org.ardal.api.entities.npc;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.jetbrains.annotations.NotNull;
 
 public interface NpcInfo {

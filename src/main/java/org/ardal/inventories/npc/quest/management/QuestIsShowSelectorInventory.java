@@ -6,7 +6,7 @@ import org.ardal.api.inventories.CICell;
 import org.ardal.inventories.CICarousel;
 import org.ardal.managers.QuestManager;
 import org.ardal.models.npc.type.MQuestNpc;
-import org.ardal.npc.quest.QuestNpc;
+import org.ardal.entities.quest.QuestNpc;
 import org.ardal.objects.QuestObj;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
