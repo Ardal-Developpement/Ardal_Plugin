@@ -7,9 +7,7 @@ import org.ardal.objects.PlayerObj;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -37,13 +35,8 @@ public abstract class CustomMob implements Listener {
         this(entityMobType, mobType, xpReward, DEFAULT_DETECTED_MIN_MOVE_RANGE);
     }
 
-    public abstract List<ItemStack> getIemsReward();
+    public abstract List<ItemStack> getItemsReward();
     public abstract UUID getMobUuid();
-
-    private boolean isThis(LivingEntity entity) {
-        return !(entity instanceof CustomMob)
-                || this.getMobUuid().equals(entity.getUniqueId());
-    }
 
     public void destroy() {
         this.entity.remove();
@@ -58,29 +51,19 @@ public abstract class CustomMob implements Listener {
                         MOB DEATH
      */
 
-    @EventHandler
-    public void onEntityDeath(EntityDeathEvent event) {
-        if(this.isThis(event.getEntity())
-                && event.getEntity().getKiller() != null)
-        {
-            this.giveXpToPlayer(event.getEntity().getKiller());
-            this.dropItemsReward(event.getEntity().getLocation());
-        }
-    }
-
-    private void giveXpToPlayer(Player player) {
+    public void giveXpToPlayer(Player player) {
         PlayerObj playerObj = new PlayerObj(player);
         //playerObj.addAdventureXp() // TODO
     }
 
-    private void dropItemsReward(Location location) {
-        for(ItemStack item : this.getIemsReward()) {
+    public void dropItemsReward(Location location) {
+        for(ItemStack item : this.getItemsReward()) {
             location.getWorld().dropItem(location, item);
         }
     }
 
     /*
-                        MOB AREA
+                        MOB AREA CHECK
      */
 
     /**
