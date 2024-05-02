@@ -31,6 +31,13 @@ public interface PlayerInfo {
     int getAdventureLevel();
 
     /**
+     * Get the adventure xp of the player
+     *
+     * @return adventure xp
+     */
+    int getAdventureXp();
+
+    /**
      * get player quest cooldown
      *
      * @return the cooldown of the player
@@ -80,6 +87,23 @@ public interface PlayerInfo {
      * @return true on success
      */
     boolean setAdventureLevel(int level);
+
+    /**
+     * Set the adventure xp of a player
+     *
+     * @param xp to set
+     * @return true on success
+     */
+    boolean setAdventureXp(int xp);
+
+    /**
+     * Add adventure xp of a player,
+     * Takes into account the adventure level
+     *
+     * @param xp to add
+     * @return true on success
+     */
+    boolean addAdventureXp(int xp);
 
     /**
      * Set quest cooldown to a player

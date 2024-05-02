@@ -49,6 +49,11 @@ public class PlayerObj implements PlayerInfo {
     }
 
     @Override
+    public int getAdventureXp() {
+        return this.mPlayer.getAdventureXp();
+    }
+
+    @Override
     public int getQuestCooldown() {
         if(this.mPlayer.getQuestCooldown() == null){
             return 0;
@@ -114,6 +119,25 @@ public class PlayerObj implements PlayerInfo {
     @Override
     public boolean setAdventureLevel(int level) {
         this.mPlayer.setAdventureLevel(level);
+        return this.mPlayer.updatePlayer();
+    }
+
+    @Override
+    public boolean setAdventureXp(int xp) {
+        this.mPlayer.setAdventureXp(xp);
+        return this.mPlayer.updatePlayer();
+    }
+
+    private int nextAdventureXpLevelUp;
+
+    @Override
+    public boolean addAdventureXp(int xp) {
+        int newXpValue = this.mPlayer.getAdventureXp() + xp;
+        if(newXpValue >= this.nextAdventureXpLevelUp) {
+            this.setAdventureXp(newXpValue - this.nextAdventureXpLevelUp);
+            // TODO increment adventure level of the player
+        }
+
         return this.mPlayer.updatePlayer();
     }
 

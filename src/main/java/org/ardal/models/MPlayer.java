@@ -9,11 +9,13 @@ public class MPlayer {
     private String uuid;
     private String name;
     private int adventure_level;
+    private int adventure_xp;
     private Date quest_cooldown;
-    public MPlayer(String uuid, String name, int adventure_level, @Nullable Date quest_cooldown) {
+    public MPlayer(String uuid, String name, int adventure_level, int adventure_xp, @Nullable Date quest_cooldown) {
         this.uuid = uuid;
         this.name = name;
         this.adventure_level = adventure_level;
+        this.adventure_xp = adventure_xp;
         this.quest_cooldown = quest_cooldown;
     }
 
@@ -57,5 +59,13 @@ public class MPlayer {
 
     public void setQuestCooldown(Date quest_cooldown) {
         this.quest_cooldown = quest_cooldown;
+    }
+
+    public int getAdventureXp() {
+        return adventure_xp;
+    }
+
+    public void setAdventureXp(int adventure_xp) {
+        this.adventure_xp = adventure_xp;
     }
 }

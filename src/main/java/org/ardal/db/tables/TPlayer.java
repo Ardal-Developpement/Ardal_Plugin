@@ -13,16 +13,17 @@ import java.util.List;
 public class TPlayer {
     public boolean createPlayer(@NotNull MPlayer mPlayer) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
-             PreparedStatement statement = connection.prepareStatement("insert into players(uuid, name, adventure_level, quest_cooldown) values (?,?,?,?)"))
+             PreparedStatement statement = connection.prepareStatement("insert into players(uuid, name, adventure_level, adventure_xp, quest_cooldown) values (?,?,?,?,?)"))
         {
             statement.setString(1, mPlayer.getUuid());
             statement.setString(2, mPlayer.getName());
             statement.setInt(3, mPlayer.getAdventureLevel());
+            statement.setInt(4, mPlayer.getAdventureXp());
 
             if(mPlayer.getQuestCooldown() == null) {
-                statement.setNull(4, Types.TIMESTAMP);
+                statement.setNull(5, Types.TIMESTAMP);
             } else {
-                statement.setTimestamp(4, new Timestamp(mPlayer.getQuestCooldown().getTime()));
+                statement.setTimestamp(6, new Timestamp(mPlayer.getQuestCooldown().getTime()));
             }
 
             return statement.executeUpdate() != 0;
@@ -39,13 +40,14 @@ public class TPlayer {
         MPlayer mPlayer = null;
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT name, adventure_level, quest_cooldown FROM players WHERE uuid = ?"))
+                     .prepareStatement("SELECT name, adventure_level, adventure_xp, quest_cooldown FROM players WHERE uuid = ?"))
         {
             statement.setString(1, uuid);
             try (ResultSet resultSet = statement.executeQuery();) {
                 if (resultSet.next()) {
                     String name = resultSet.getString("name");
                     int adventureLevel = resultSet.getInt("adventure_level");
+                    int adventureXp = resultSet.getInt("adventure_xp");
                     Timestamp questCooldownTimestamp = resultSet.getTimestamp("quest_cooldown");
 
                     java.util.Date questCooldownDate;
@@ -55,7 +57,7 @@ public class TPlayer {
                         questCooldownDate = new Date(questCooldownTimestamp.getTime());
                     }
 
-                    mPlayer = new MPlayer(uuid, name, adventureLevel, questCooldownDate);
+                    mPlayer = new MPlayer(uuid, name, adventureLevel, adventureXp, questCooldownDate);
                 }
             }
         } catch (SQLException e) {
@@ -164,19 +166,21 @@ public class TPlayer {
                      .prepareStatement("update players set " +
                              "name = ?," +
                              "adventure_level = ?," +
+                             "adventure_xp = ?," +
                              "quest_cooldown = ?" +
                              " where uuid = ?"))
         {
             statement.setString(1, mPlayer.getName());
             statement.setInt(2, mPlayer.getAdventureLevel());
+            statement.setInt(3, mPlayer.getAdventureXp());
 
             if(mPlayer.getQuestCooldown() == null) {
-                statement.setNull(3, Types.TIMESTAMP);
+                statement.setNull(4, Types.TIMESTAMP);
             } else {
-                statement.setTimestamp(3, new Timestamp(mPlayer.getQuestCooldown().getTime()));
+                statement.setTimestamp(4, new Timestamp(mPlayer.getQuestCooldown().getTime()));
             }
 
-            statement.setString(4, mPlayer.getUuid());
+            statement.setString(5, mPlayer.getUuid());
 
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {

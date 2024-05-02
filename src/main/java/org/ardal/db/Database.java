@@ -62,6 +62,7 @@ public class Database {
                         "uuid varchar(36) primary key,  " +
                         "name varchar(255), " +
                         "adventure_level int," +
+                        "adventure_xp int," +
                         "quest_cooldown datetime null)";
                 statement.execute(sql);
 
