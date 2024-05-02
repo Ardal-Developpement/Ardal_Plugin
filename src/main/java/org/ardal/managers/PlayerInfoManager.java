@@ -57,6 +57,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
                     player.getUniqueId().toString(),
                     player.getName(),
                     0,
+                    0,
                     null);
 
             Ardal.getInstance().getDb().gettPlayer().createPlayer(mPlayer);
@@ -87,6 +88,7 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
                 new MPlayer(
                         player.getUniqueId().toString(),
                         player.getName(),
+                        0,
                         0,
                         null
                 ));

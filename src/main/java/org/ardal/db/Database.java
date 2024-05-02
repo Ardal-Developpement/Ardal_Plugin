@@ -29,6 +29,7 @@ public class Database {
     private final TLocation tLocation;
     private final TQuestNpc tQuestNpc;
     private final TQuestNpcInfo tQuestNpcInfo;
+    private final TAdventureLevel tAdventureLevel;
 
     public Database(){
         HikariConfig config = new HikariConfig();
@@ -48,6 +49,7 @@ public class Database {
         this.tLocation = new TLocation();
         this.tQuestNpc = new TQuestNpc();
         this.tQuestNpcInfo = new TQuestNpcInfo();
+        this.tAdventureLevel = new TAdventureLevel();
     }
 
     public Connection getConnection() throws SQLException {
@@ -64,6 +66,12 @@ public class Database {
                         "adventure_level int," +
                         "adventure_xp int," +
                         "quest_cooldown datetime null)";
+                statement.execute(sql);
+
+                sql = "create table if not exists adventure_level(" +
+                        "level int primary key, " +
+                        "name varchar(255), " +
+                        "xp_required int)";
                 statement.execute(sql);
 
                 sql = "create table if not exists quests(" +
@@ -184,5 +192,9 @@ public class Database {
 
     public TQuestNpcInfo gettQuestNpcInfo() {
         return tQuestNpcInfo;
+    }
+
+    public TAdventureLevel gettAdventureLevel() {
+        return tAdventureLevel;
     }
 }

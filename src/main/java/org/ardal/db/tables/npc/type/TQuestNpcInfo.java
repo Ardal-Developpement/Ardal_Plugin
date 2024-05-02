@@ -63,6 +63,7 @@ public class TQuestNpcInfo {
                 }
             }
         } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to fetch npc quest info by uuid in database.");
             e.printStackTrace();
         }
         return null;

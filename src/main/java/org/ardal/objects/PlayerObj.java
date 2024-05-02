@@ -4,6 +4,8 @@ import org.ardal.Ardal;
 import org.ardal.api.players.PlayerInfo;
 import org.ardal.db.Database;
 import org.ardal.db.tables.TQuestPlayer;
+import org.ardal.managers.AdventureLevelManager;
+import org.ardal.models.MAdventureLevel;
 import org.ardal.models.MPlayer;
 import org.ardal.models.MQuest;
 import org.ardal.models.pivot.MQuestPlayer;
@@ -17,8 +19,19 @@ import java.util.*;
 public class PlayerObj implements PlayerInfo {
     private final MPlayer mPlayer;
 
+    private int nextAdventureXpLevelUp;
+
     public PlayerObj(MPlayer mPlayer) {
         this.mPlayer = mPlayer;
+
+        MAdventureLevel nextLevel = Ardal.getInstance().getManager(AdventureLevelManager.class)
+                .getNextAdventureLevel(this.getAdventureLevel());
+
+        if(nextLevel == null) {
+            this.nextAdventureXpLevelUp = -1;
+        } else {
+            this.nextAdventureXpLevelUp = nextLevel.getLevel();
+        }
     }
 
     public PlayerObj(String playerUuid) {
@@ -128,14 +141,21 @@ public class PlayerObj implements PlayerInfo {
         return this.mPlayer.updatePlayer();
     }
 
-    private int nextAdventureXpLevelUp;
-
     @Override
     public boolean addAdventureXp(int xp) {
         int newXpValue = this.mPlayer.getAdventureXp() + xp;
-        if(newXpValue >= this.nextAdventureXpLevelUp) {
+        if(nextAdventureXpLevelUp > 0 &&  newXpValue >= this.nextAdventureXpLevelUp) {
             this.setAdventureXp(newXpValue - this.nextAdventureXpLevelUp);
-            // TODO increment adventure level of the player
+            MAdventureLevel nextLevel = Ardal.getInstance().getManager(AdventureLevelManager.class)
+                    .getNextAdventureLevel(this.getAdventureLevel());
+
+            if(nextLevel == null) {
+                this.nextAdventureXpLevelUp = -1;
+            } else {
+                this.setAdventureLevel(nextLevel.getLevel());
+                this.nextAdventureXpLevelUp = nextLevel.getLevel();
+            }
+
         }
 
         return this.mPlayer.updatePlayer();
