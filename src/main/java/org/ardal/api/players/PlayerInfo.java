@@ -1,5 +1,7 @@
 package org.ardal.api.players;
 
+import org.bukkit.entity.Player;
+
 import java.util.List;
 
 public interface PlayerInfo {
@@ -103,7 +105,7 @@ public interface PlayerInfo {
      * @param xp to add
      * @return true on success
      */
-    boolean addAdventureXp(int xp);
+    boolean addAdventureXp(int xp, Player player);
 
     /**
      * Set quest cooldown to a player

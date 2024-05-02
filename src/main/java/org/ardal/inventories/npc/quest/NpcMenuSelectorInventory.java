@@ -1,9 +1,11 @@
 package org.ardal.inventories.npc.quest;
 
+import org.ardal.Ardal;
 import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.entities.quest.QuestNpc;
+import org.ardal.managers.PlayerInfoManager;
 import org.ardal.objects.PlayerObj;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.BukkitUtils;
@@ -49,7 +51,7 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
 
     private void onQuestCanceledEvent(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        PlayerObj playerObj = new PlayerObj(player);
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);
         playerObj.removeQuest(this.questName);
 
         player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getName(),
@@ -99,7 +101,7 @@ public class NpcMenuSelectorInventory extends CustomInventory implements CellCal
         {
             PlayerUtils.removeItemsToPlayer(itemsRequest, player);
 
-            PlayerObj playerObj = new PlayerObj(player);
+            PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);;
             playerObj.addPlayerFinishedQuest(questName);
 
             this.giveRewardItemToPlayer(questName, player);

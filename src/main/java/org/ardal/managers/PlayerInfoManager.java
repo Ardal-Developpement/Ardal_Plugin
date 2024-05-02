@@ -10,6 +10,8 @@ import org.ardal.commands.playerinfo.list.ListPlayerInfoManager;
 import org.ardal.commands.playerinfo.remove.RemovePlayerInfoManager;
 import org.ardal.commands.playerinfo.set.SetPlayerInfoManager;
 import org.ardal.models.MPlayer;
+import org.ardal.objects.PlayerObj;
+import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -19,9 +21,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerInfo, ArdalManager, Listener {
+    private HashMap<String, PlayerObj> registerPlayers = new HashMap<>();
+
     public PlayerInfoManager(){
         super(BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
 
@@ -30,11 +36,17 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
         this.registerCmd(new ListPlayerInfoManager());
         this.registerCmd(new SetPlayerInfoManager());
 
+        this.registerPlayers = new HashMap<>();
+
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
 
     @Override
-    public void onEnable() { }
+    public void onEnable() {
+        for(OfflinePlayer p : BukkitUtils.getOfflinePlayersAsList()) {
+            this.registerPlayer(p.getUniqueId(), new PlayerObj(p));
+        }
+    }
 
     @Override
     public void onDisable(){ }
@@ -62,6 +74,28 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
 
             Ardal.getInstance().getDb().gettPlayer().createPlayer(mPlayer);
         }
+
+        this.registerPlayer(player.getUniqueId(), new PlayerObj(player));
+    }
+
+    public void registerPlayer(UUID uuid, PlayerObj playerObj) {
+        this.registerPlayers.put(uuid.toString(), playerObj);
+    }
+
+    public PlayerObj getPlayerObj(String playerUuid) {
+        return this.registerPlayers.get(playerUuid);
+    }
+
+    public PlayerObj getPlayerObj(UUID PlayerUuid) {
+        return this.registerPlayers.get(PlayerUuid.toString());
+    }
+
+    public PlayerObj getPlayerObj(Player player) {
+        return this.registerPlayers.get(player.getUniqueId().toString());
+    }
+
+    public PlayerObj getPlayerObj(OfflinePlayer player) {
+        return this.registerPlayers.get(player.getUniqueId().toString());
     }
 
 

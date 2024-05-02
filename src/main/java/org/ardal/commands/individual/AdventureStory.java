@@ -4,7 +4,6 @@ import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.inventories.CIPickUp;
 import org.ardal.managers.PlayerInfoManager;
-import org.ardal.managers.QuestManager;
 import org.ardal.objects.PlayerObj;
 import org.ardal.objects.QuestObj;
 import org.bukkit.ChatColor;
@@ -22,7 +21,7 @@ public class AdventureStory implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
         Player player = (Player) sender;
-        PlayerObj playerObj = new PlayerObj(player);
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);;
         List<Integer> finishedQuest = playerObj.getPlayerFinishedQuestIds();
         List<ItemStack> questBooks = new ArrayList<>();
         for (Integer questId : finishedQuest) {

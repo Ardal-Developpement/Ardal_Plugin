@@ -1,10 +1,11 @@
 package org.ardal.inventories.npc.quest;
 
+import org.ardal.Ardal;
 import org.ardal.api.inventories.CICell;
 import org.ardal.api.inventories.CustomInventory;
 import org.ardal.api.inventories.callback.CellCallBack;
 import org.ardal.entities.quest.QuestNpc;
-import org.ardal.objects.PlayerObj;
+import org.ardal.managers.PlayerInfoManager;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.ChatUtils;
 import org.ardal.utils.PlayerUtils;
@@ -77,7 +78,7 @@ public class NpcQuestSelectorInventory extends CustomInventory implements CellCa
         Player player = (Player) event.getWhoClicked();
         String questName = item.getItemMeta().getDisplayName();
 
-        new PlayerObj(player).addPlayerActiveQuest(questName);
+        Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player).addPlayerActiveQuest(questName);
 
         String msg = "You select a new quest: " + questName + "\nGood luck!";
         player.sendMessage(ChatUtils.getFormattedMsg(this.questNpc.getName(), msg));

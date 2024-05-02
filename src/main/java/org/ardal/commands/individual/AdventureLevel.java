@@ -31,7 +31,7 @@ public class AdventureLevel implements ArdalCmd {
             player = offlinePlayer.getPlayer();
         }
 
-        PlayerObj playerObj = new PlayerObj(player);
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);
         player.sendMessage("Your current adventure level is: " + playerObj.getAdventureLevel());
         return true;
     }

@@ -1,5 +1,7 @@
 package org.ardal.objects;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.ardal.Ardal;
 import org.ardal.api.players.PlayerInfo;
 import org.ardal.db.Database;
@@ -9,12 +11,16 @@ import org.ardal.models.MAdventureLevel;
 import org.ardal.models.MPlayer;
 import org.ardal.models.MQuest;
 import org.ardal.models.pivot.MQuestPlayer;
+import org.ardal.utils.ChatUtils;
 import org.ardal.utils.DateUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class PlayerObj implements PlayerInfo {
     private final MPlayer mPlayer;
@@ -142,7 +148,17 @@ public class PlayerObj implements PlayerInfo {
     }
 
     @Override
-    public boolean addAdventureXp(int xp) {
+    public boolean addAdventureXp(int xp, Player player) {
+        TextComponent part1 = new TextComponent("+ ");
+        TextComponent part2 = new TextComponent(String.valueOf(xp));
+        TextComponent part3 = new TextComponent(" xp");
+        part1.setColor(ChatColor.AQUA);
+        part2.setColor(ChatColor.GREEN);
+        part3.setColor(ChatColor.AQUA);
+
+        ChatUtils.sendActionBar(player, new TextComponent(part1, part2, part3));
+
+
         int newXpValue = this.mPlayer.getAdventureXp() + xp;
         if(nextAdventureXpLevelUp > 0 &&  newXpValue >= this.nextAdventureXpLevelUp) {
             this.setAdventureXp(newXpValue - this.nextAdventureXpLevelUp);

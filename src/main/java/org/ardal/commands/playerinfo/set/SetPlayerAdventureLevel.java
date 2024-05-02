@@ -1,7 +1,9 @@
 package org.ardal.commands.playerinfo.set;
 
+import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 
+import org.ardal.managers.PlayerInfoManager;
 import org.ardal.objects.PlayerObj;
 import org.ardal.utils.BukkitUtils;
 import org.ardal.utils.TabCompleteUtils;
@@ -38,7 +40,7 @@ public class SetPlayerAdventureLevel implements ArdalCmd {
                 level = Integer.parseInt(argv.get(1));
             }
 
-            PlayerObj playerObj = new PlayerObj(player);
+            PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);;
             if(playerObj.setAdventureLevel(level)) {
                 sender.sendMessage("Successfully set the adventure level to " + level + ".");
             } else {

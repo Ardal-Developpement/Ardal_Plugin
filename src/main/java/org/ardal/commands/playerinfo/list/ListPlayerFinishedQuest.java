@@ -28,7 +28,7 @@ public class ListPlayerFinishedQuest implements ArdalCmd {
             }
         }
 
-        PlayerObj playerObj = new PlayerObj(player);
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);;
         List<String> finishedQuests = playerObj.getPlayerFinishedQuestNames();
         sender.sendMessage("Found " + finishedQuests.size() + " finished quests:");
 

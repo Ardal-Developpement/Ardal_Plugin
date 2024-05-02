@@ -4,6 +4,7 @@ import org.ardal.Ardal;
 import org.ardal.api.entities.mobs.MobType;
 import org.ardal.entities.mobs.type.CustomSkeleton;
 import org.ardal.managers.MobManager;
+import org.ardal.managers.PlayerInfoManager;
 import org.ardal.objects.PlayerObj;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -64,8 +65,8 @@ public abstract class CustomMob  {
      */
 
     public void giveXpToPlayer(Player player) {
-        PlayerObj playerObj = new PlayerObj(player);
-        playerObj.addAdventureXp(this.xpReward);
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);;
+        playerObj.addAdventureXp(this.xpReward, player);
     }
 
     /*

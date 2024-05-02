@@ -3,7 +3,6 @@ package org.ardal.commands.playerinfo.remove;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.PlayerInfoManager;
-import org.ardal.managers.QuestManager;
 import org.ardal.objects.PlayerObj;
 import org.ardal.objects.QuestObj;
 import org.ardal.utils.BukkitUtils;
@@ -33,7 +32,7 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
 
         String questName = StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size()));
         QuestObj questObj = new QuestObj(questName);
-        PlayerObj playerObj = new PlayerObj(player);
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);
 
         if(!questObj.isQuestExist()){
             sender.sendMessage("Invalid quest name.");
@@ -68,7 +67,9 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
         if(player == null) { return new ArrayList<>(); }
 
         return TabCompleteUtils.getTabCompleteFromStrList(
-                new PlayerObj(player).getPlayerFinishedQuestNames(),
+                Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player)
+                        .getPlayerFinishedQuestNames(),
+
                 StringUtils.getStringFromConcatStringList(argv.subList(1, argv.size())));
     }
 

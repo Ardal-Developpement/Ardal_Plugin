@@ -38,7 +38,7 @@ public class AddFinishedQuestCmd implements ArdalCmd {
             return true;
         }
 
-        PlayerObj playerObj = new PlayerObj(player);
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);
         playerObj.addPlayerFinishedQuest(questName);
         return true;
     }

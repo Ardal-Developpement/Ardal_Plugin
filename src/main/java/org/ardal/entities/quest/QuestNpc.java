@@ -8,6 +8,7 @@ import org.ardal.exceptions.NpcNotFound;
 import org.ardal.inventories.npc.quest.NpcMenuSelectorInventory;
 import org.ardal.inventories.npc.quest.NpcQuestSelectorInventory;
 import org.ardal.inventories.npc.quest.management.QuestIsShowSelectorInventory;
+import org.ardal.managers.PlayerInfoManager;
 import org.ardal.models.npc.type.MQuestNpc;
 import org.ardal.models.npc.type.MQuestNpcInfo;
 import org.ardal.objects.NpcObj;
@@ -75,7 +76,7 @@ public class QuestNpc extends NpcObj implements QuestNpcInfo {
             return;
         }
 
-        PlayerObj playerObj = new PlayerObj(event.getClicker());
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(event.getClicker());
         int questCooldown = playerObj.getQuestCooldown();
         if(questCooldown != 0){
             event.getClicker().sendMessage(ChatUtils.getFormattedMsg(this.getName(),
@@ -95,7 +96,7 @@ public class QuestNpc extends NpcObj implements QuestNpcInfo {
 
     @Nullable
     private String playerHasNpcActiveQuest(Player player) {
-        PlayerObj playerObj = new PlayerObj(player);
+        PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);
         List<String> playerActiveQuests = playerObj.getPlayerActiveQuestNames();
 
         for(MQuestNpc mQuestNpc : this.getQuestNpcList()) {
