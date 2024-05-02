@@ -149,16 +149,7 @@ public class PlayerObj implements PlayerInfo {
 
     @Override
     public boolean addAdventureXp(int xp, Player player) {
-        TextComponent part1 = new TextComponent("+ ");
-        TextComponent part2 = new TextComponent(String.valueOf(xp));
-        TextComponent part3 = new TextComponent(" xp");
-        part1.setColor(ChatColor.AQUA);
-        part2.setColor(ChatColor.GREEN);
-        part3.setColor(ChatColor.AQUA);
-
-        ChatUtils.sendActionBar(player, new TextComponent(part1, part2, part3));
-
-
+        this.addXpOnActionBar(xp, player);
         int newXpValue = this.mPlayer.getAdventureXp() + xp;
         if(nextAdventureXpLevelUp > 0 &&  newXpValue >= this.nextAdventureXpLevelUp) {
             this.setAdventureXp(newXpValue - this.nextAdventureXpLevelUp);
@@ -176,6 +167,29 @@ public class PlayerObj implements PlayerInfo {
         }
 
         return true;
+    }
+
+    private long lastActionBarTime = 0;
+    private long timeBeforeResetActionBarXp = 3000;
+    private int currentXpAdd = 0;
+
+    private void addXpOnActionBar(int xp, Player player) {
+        if (System.currentTimeMillis() > this.lastActionBarTime + this.timeBeforeResetActionBarXp) {
+            this.currentXpAdd = 0;
+        }
+
+        this.currentXpAdd += xp;
+
+        TextComponent part1 = new TextComponent("+ ");
+        TextComponent part2 = new TextComponent(String.valueOf(this.currentXpAdd));
+        TextComponent part3 = new TextComponent(" xp");
+        part1.setColor(ChatColor.AQUA);
+        part2.setColor(ChatColor.GREEN);
+        part3.setColor(ChatColor.AQUA);
+
+        ChatUtils.sendActionBar(player, new TextComponent(part1, part2, part3));
+
+        this.lastActionBarTime = System.currentTimeMillis();
     }
 
     @Override
