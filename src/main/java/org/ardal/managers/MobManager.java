@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -93,18 +94,15 @@ public class MobManager extends ArdalCmdManager implements ArdalManager, Listene
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        System.out.println("Detect entity death : " + event.getEntity().getName());
-        if(event.getEntity() instanceof CustomMob) {
+        if(event.getEntity() instanceof Monster) {
             CustomMob mob = getMobInstanceByUuid(event.getEntity().getUniqueId());
-            if(mob == null) {
-                System.err.println("Failed to find register mob with UUID " + event.getEntity().getUniqueId());
-                return;
+            if(mob != null) {
+                System.out.println(event.getEntity().getKiller().getName() + ": kill " + mob.getEntity().getName());
+
+                event.getDrops().clear();
+                event.getDrops().addAll(mob.getItemsReward());
+                mob.giveXpToPlayer(event.getEntity().getKiller());
             }
-
-            System.out.println(event.getEntity().getKiller().getName() + ": kill " + mob.getEntity().getName());
-
-            mob.giveXpToPlayer(event.getEntity().getKiller());
-            mob.dropItemsReward(event.getEntity().getLocation());
         }
     }
 

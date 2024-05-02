@@ -68,14 +68,6 @@ public abstract class CustomMob  {
         playerObj.addAdventureXp(this.xpReward);
     }
 
-    public void dropItemsReward(Location location) {
-        for(ItemStack item : this.getItemsReward()) {
-            location.getWorld().dropItem(location, item);
-        }
-    }
-
-
-
     /*
                         MOB AREA CHECK
      */
