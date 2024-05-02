@@ -6,13 +6,14 @@ import org.ardal.entities.mobs.CustomMob;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class CustomMobManager implements ArdalManager {
+public class CustomMobManager implements ArdalManager, Listener {
     private static final int MOB_AREA_CHECK_SPEED = 60; // in ticks
 
     private final HashMap<UUID, CustomMob> mobsRegister;
@@ -21,6 +22,8 @@ public class CustomMobManager implements ArdalManager {
 
     public CustomMobManager() {
         mobsRegister = new HashMap<>();
+
+        Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
 
     @Override
@@ -34,17 +37,18 @@ public class CustomMobManager implements ArdalManager {
     }
 
     public void registerCustomMob(CustomMob mob) {
-        mobsRegister.put(mob.getMobUuid(), mob);
+        mobsRegister.put(mob.getEntity().getUniqueId(), mob);
     }
 
     public void unregisterCustomMob(CustomMob mob) {
-        mobsRegister.remove(mob.getMobUuid());
+        mobsRegister.remove(mob.getEntity().getUniqueId());
     }
 
     @Nullable
     private CustomMob getMobInstanceByUuid(UUID mobUuid) {
         return this.mobsRegister.get(mobUuid);
     }
+
 
     /*
                         MOB AREA CHECK
@@ -84,6 +88,8 @@ public class CustomMobManager implements ArdalManager {
                 System.err.println("Failed to find register mob with UUID " + event.getEntity().getUniqueId());
                 return;
             }
+
+            System.out.println(event.getEntity().getKiller().getName() + ": kill " + mob.getEntity().getName());
 
             mob.giveXpToPlayer(event.getEntity().getKiller());
             mob.dropItemsReward(event.getEntity().getLocation());

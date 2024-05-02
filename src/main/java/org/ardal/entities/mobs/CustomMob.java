@@ -7,38 +7,40 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.UUID;
 
-public abstract class CustomMob implements Listener {
+public abstract class CustomMob  {
     private static final int DEFAULT_DETECTED_MIN_MOVE_RANGE = 1;
 
     private final int xpReward;
     private final int detectedMinMoveRange;
+    private final Location entityLocation;
+    private final EntityType entityType;
 
     private Entity entity;
 
-    public CustomMob(int xpReward, int detectedMinMoveRange) {
+    public CustomMob(EntityType entityType, Location entityLocation, int xpReward, int detectedMinMoveRange) {
+        this.entityType = entityType;
+        this.entityLocation = entityLocation;
         this.xpReward = xpReward;
         this.detectedMinMoveRange = detectedMinMoveRange;
 
-        Ardal.getInstance().getManager(CustomMobManager.class).registerCustomMob(this);
     }
 
-    public CustomMob(int xpReward) {
-        this(xpReward, DEFAULT_DETECTED_MIN_MOVE_RANGE);
+    public CustomMob(EntityType entityType, Location location, int xpReward) {
+        this(entityType, location, xpReward, DEFAULT_DETECTED_MIN_MOVE_RANGE);
     }
 
     public abstract List<ItemStack> getItemsReward();
-    public abstract UUID getMobUuid();
     public abstract void setEntityProperty();
 
-    public void spawn(Location location, EntityType entityType) {
-        this.entity = location.getWorld().spawnEntity(location, entityType);
+    public void spawn() {
+        this.entity = this.entityLocation.getWorld().spawnEntity(this.entityLocation, entityType);
         this.setEntityProperty();
+
+        Ardal.getInstance().getManager(CustomMobManager.class).registerCustomMob(this);
     }
 
     public void destroy() {
@@ -58,7 +60,7 @@ public abstract class CustomMob implements Listener {
 
     public void giveXpToPlayer(Player player) {
         PlayerObj playerObj = new PlayerObj(player);
-        //playerObj.addAdventureXp() // TODO
+        playerObj.addAdventureXp(this.xpReward);
     }
 
     public void dropItemsReward(Location location) {
