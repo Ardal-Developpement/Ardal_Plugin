@@ -2,6 +2,7 @@ package org.ardal.managers;
 
 import org.ardal.Ardal;
 import org.ardal.api.managers.ArdalManager;
+import org.ardal.db.tables.TAdventureLevel;
 import org.ardal.models.MAdventureLevel;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +19,11 @@ public class AdventureLevelManager implements ArdalManager {
     @Override
     public void onEnable() {
         this.loadLevels();
+
+        if(this.levels.isEmpty()) {
+            this.createDefaultLevel();
+            this.loadLevels();
+        }
     }
 
     @Override
@@ -49,5 +55,23 @@ public class AdventureLevelManager implements ArdalManager {
     @Nullable
     public MAdventureLevel getNextAdventureLevel(int level) {
         return this.nextLevels.get(level);
+    }
+
+    private void createDefaultLevel() {
+        System.out.println("Creating default adventure level.");
+
+        TAdventureLevel tAdventureLevel = Ardal.getInstance().getDb().gettAdventureLevel();
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(0, "Paysan", 0));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(1, "Roturier", 100));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(2, "Apprenti", 1000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(3, "Écuyer", 3000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(4, "Mercenaire", 6000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(5, "Chevalier", 10000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(6, "Seigneur", 25000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(7, "Baron", 50000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(8, "Comte", 100000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(9, "Duc", 250000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(10, "Prince", 5000000));
+        tAdventureLevel.createAdventureLevel(new MAdventureLevel(11, "Roi", 1000000));
     }
 }
