@@ -97,11 +97,13 @@ public class MobManager extends ArdalCmdManager implements ArdalManager, Listene
         if(event.getEntity() instanceof Monster) {
             CustomMob mob = getMobInstanceByUuid(event.getEntity().getUniqueId());
             if(mob != null) {
-                System.out.println(event.getEntity().getKiller().getName() + ": kill " + mob.getEntity().getName());
-
                 event.getDrops().clear();
-                event.getDrops().addAll(mob.getItemsReward());
-                mob.giveXpToPlayer(event.getEntity().getKiller());
+                if (event.getEntity().getKiller() != null) {
+                    System.out.println(event.getEntity().getKiller().getName() + ": kill " + mob.getEntity().getName());
+
+                    event.getDrops().addAll(mob.getItemsReward());
+                    mob.giveXpToPlayer(event.getEntity().getKiller());
+                }
             }
         }
     }

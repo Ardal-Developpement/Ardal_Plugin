@@ -156,9 +156,10 @@ public class PlayerObj implements PlayerInfo {
                 this.nextAdventureXpLevelUp = nextLevel.getLevel();
             }
 
+            this.mPlayer.updatePlayer();
         }
 
-        return this.mPlayer.updatePlayer();
+        return true;
     }
 
     @Override
