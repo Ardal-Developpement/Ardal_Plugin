@@ -22,21 +22,22 @@ public abstract class CustomMob  {
     private final int detectedMinMoveRange;
     private final Location entityLocation;
     private final EntityType entityType;
+    private final int mobLevel;
 
     private Location oldLocation = null;
     private Entity entity;
 
-    public CustomMob(EntityType entityType, Location entityLocation, int xpReward, int detectedMinMoveRange) {
+    public CustomMob(EntityType entityType, Location entityLocation, int mobLevel, int xpReward, int detectedMinMoveRange) {
         this.entityType = entityType;
         this.entityLocation = entityLocation;
+        this.mobLevel = mobLevel;
         this.xpReward = xpReward;
         this.detectedMinMoveRange = detectedMinMoveRange;
-
         this.oldLocation = entityLocation;
     }
 
-    public CustomMob(EntityType entityType, Location location, int xpReward) {
-        this(entityType, location, xpReward, DEFAULT_DETECTED_MIN_MOVE_RANGE);
+    public CustomMob(EntityType entityType, Location location, int mobLevel, int xpReward) {
+        this(entityType, location, mobLevel, xpReward, DEFAULT_DETECTED_MIN_MOVE_RANGE);
     }
 
     public abstract List<ItemStack> getItemsReward();
@@ -93,12 +94,16 @@ public abstract class CustomMob  {
 
 
     @Nullable
-    public static CustomMob invokeCustomMob(MobType mobType, Location spawningLocation) {
+    public static CustomMob invokeCustomMob(MobType mobType, Location spawningLocation, int mobLevel) {
         switch (mobType) {
             case SKELETON:
-                return new CustomSkeleton(spawningLocation);
+                return new CustomSkeleton(spawningLocation, mobLevel);
             default:
                 return null;
         }
+    }
+
+    public int getMobLevel() {
+        return mobLevel;
     }
 }

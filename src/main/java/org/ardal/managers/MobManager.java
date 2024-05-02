@@ -99,8 +99,6 @@ public class MobManager extends ArdalCmdManager implements ArdalManager, Listene
             if(mob != null) {
                 event.getDrops().clear();
                 if (event.getEntity().getKiller() != null) {
-                    System.out.println(event.getEntity().getKiller().getName() + ": kill " + mob.getEntity().getName());
-
                     event.getDrops().addAll(mob.getItemsReward());
                     mob.giveXpToPlayer(event.getEntity().getKiller());
                 }

@@ -16,12 +16,14 @@ import java.util.List;
 public class InvokeMobManager implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
-        if (!(argv.size() == 1 || argv.size() == 4)) {
+        if (!(argv.size() == 2 || argv.size() == 5)) {
             return false;
         }
 
         Player player = (Player) sender;
         MobType mobType = MobType.getMobTypeByName(argv.get(0));
+        int mobLevel = Integer.parseInt(argv.get(1));
+
         if(mobType == null) {
             player.sendMessage("Invalid mob type");
             return true;
@@ -29,7 +31,7 @@ public class InvokeMobManager implements ArdalCmd {
 
         Location spawnLocation = player.getLocation();
 
-        CustomMob.invokeCustomMob(mobType, spawnLocation).spawn();
+        CustomMob.invokeCustomMob(mobType, spawnLocation, mobLevel).spawn();
 
         return true;
     }
