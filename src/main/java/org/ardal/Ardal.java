@@ -9,12 +9,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Ardal extends JavaPlugin {
     private static Ardal instance;
-    private List<ArdalManager> ardalManagers;
+    private Map<Class<? extends ArdalManager>, ArdalManager> ardalManagers = new HashMap<>();
     private Database db;
 
     @Override
@@ -49,30 +49,23 @@ public final class Ardal extends JavaPlugin {
     }
 
     private void enableManagers(){
-        this.ardalManagers.forEach(ArdalManager::onEnable);
+        this.ardalManagers.values().forEach(ArdalManager::onEnable);
     }
 
     private void disableManagers(){
-        this.ardalManagers.forEach(ArdalManager::onDisable);
+        this.ardalManagers.values().forEach(ArdalManager::onDisable);
     }
 
     private void registerManager(ArdalManager manager){
-        if(this.ardalManagers == null) { this.ardalManagers = new ArrayList<>(); }
-
-        if(!this.ardalManagers.contains(manager)){
-            this.ardalManagers.add(manager);
-        } else {
-            this.getLogger().info("Manager already registered.");
-        }
+        this.ardalManagers.put(manager.getClass(), manager);
     }
 
 
     @NotNull
     public <T extends ArdalManager> T getManager(Class<T> managerClass) {
-        for (ArdalManager manager : this.ardalManagers) {
-            if (managerClass.isInstance(manager)) {
-                return managerClass.cast(manager);
-            }
+        ArdalManager manager = ardalManagers.get(managerClass);
+        if (managerClass.isInstance(manager)) {
+            return managerClass.cast(manager);
         }
 
         throw new RuntimeException("Manager: " + managerClass.getName() + " is not registered.");
