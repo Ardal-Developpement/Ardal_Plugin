@@ -2,6 +2,7 @@ package org.ardal.entities.mobs.type;
 
 import org.ardal.entities.mobs.CustomMob;
 import org.ardal.utils.MathUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -43,6 +44,8 @@ public class CustomSkeleton extends CustomMob {
     @Override
     public void setEntityProperty() {
         Skeleton skeleton = (Skeleton) this.getEntity();
+        skeleton.setCustomName("Level: " + ChatColor.AQUA + this.getMobLevel());
+        skeleton.setCustomNameVisible(true);
 
         /*
                 Mob power
