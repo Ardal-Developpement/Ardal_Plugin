@@ -28,14 +28,14 @@ public final class Ardal extends JavaPlugin {
             if (CitizensAPI.hasImplementation() && CitizensAPI.getNPCRegistry() != null) {
                 Bukkit.getScheduler().cancelTasks(this);
 
+                this.registerManager(new MobManager());
                 this.registerManager(new AdventureLevelManager());
                 this.registerManager(new PlayerInfoManager());
                 this.registerManager(new QuestManager());
-                this.registerManager(new CustomItemManager());
+                this.registerManager(new ItemManager());
                 this.registerManager(new CustomInventoryManager());
                 this.registerManager(new IndividualCmdManager());
                 this.registerManager(new NPCManager());
-                this.registerManager(new CustomMobManager());
 
                 enableManagers();
             }

@@ -12,13 +12,11 @@ import org.ardal.commands.quests.give.GiveQuestManager;
 import org.ardal.commands.quests.set.SetQuestManager;
 import org.ardal.db.Database;
 import org.ardal.models.MQuest;
-import org.ardal.objects.QuestObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -61,11 +59,11 @@ public class QuestManager extends ArdalCmdManager implements QuestManagerInfo, A
     @Override
     public boolean createNewQuest(ItemStack book, List<ItemStack> itemsRequest, List<ItemStack> itemsReward){
         Database db = Ardal.getInstance().getDb();
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
+        ItemManager itemManager = Ardal.getInstance().getManager(ItemManager.class);
 
         int itemsRequestId = db.gettItemGroup().saveItemsByGroupId(itemsRequest);
         int itemsRewardId = db.gettItemGroup().saveItemsByGroupId(itemsReward);
-        String bookId = customItemManager.addItem(book);
+        String bookId = itemManager.addItem(book);
         String questName = book.getItemMeta().getDisplayName();
 
         MQuest mQuest = new MQuest(-1, questName, bookId, "", itemsRequestId, itemsRewardId, true, false);

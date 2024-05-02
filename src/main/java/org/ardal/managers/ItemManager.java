@@ -9,10 +9,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomItemManager implements CustomItem, ArdalManager {
+public class ItemManager implements CustomItem, ArdalManager {
     private final CustomItemDB customItemDB;
 
-    public CustomItemManager() {
+    public ItemManager() {
         this.customItemDB = new CustomItemDB(Ardal.getInstance().getDataFolder().toPath().toAbsolutePath());
     }
 

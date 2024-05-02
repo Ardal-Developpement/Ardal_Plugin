@@ -1,26 +1,38 @@
 package org.ardal.managers;
 
 import org.ardal.Ardal;
+import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
+import org.ardal.commands.BaseCmdAlias;
+import org.ardal.commands.mobs.InvokeMobManager;
 import org.ardal.entities.mobs.CustomMob;
+import org.ardal.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class CustomMobManager implements ArdalManager, Listener {
+public class MobManager extends ArdalCmdManager implements ArdalManager, Listener {
     private static final int MOB_AREA_CHECK_SPEED = 60; // in ticks
 
     private final HashMap<UUID, CustomMob> mobsRegister;
 
     private BukkitTask mobAreaCheckTask;
 
-    public CustomMobManager() {
+    public MobManager() {
+        super(BaseCmdAlias.BASE_MOB_CMD_ALIAS);
+
+        this.registerCmd(new InvokeMobManager());
+
         mobsRegister = new HashMap<>();
 
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
@@ -48,7 +60,6 @@ public class CustomMobManager implements ArdalManager, Listener {
     private CustomMob getMobInstanceByUuid(UUID mobUuid) {
         return this.mobsRegister.get(mobUuid);
     }
-
 
     /*
                         MOB AREA CHECK
@@ -94,5 +105,15 @@ public class CustomMobManager implements ArdalManager, Listener {
             mob.giveXpToPlayer(event.getEntity().getKiller());
             mob.dropItemsReward(event.getEntity().getLocation());
         }
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        if (!(commandSender instanceof Player)) {
+            commandSender.sendMessage("Command can be only used by player.");
+            return true;
+        }
+
+        return this.onSubCmd(commandSender, command, s, StringUtils.getStrListFromStrArray(strings));
     }
 }

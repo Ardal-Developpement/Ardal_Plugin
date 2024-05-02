@@ -1,7 +1,8 @@
 package org.ardal.entities.mobs;
 
 import org.ardal.Ardal;
-import org.ardal.managers.CustomMobManager;
+import org.ardal.api.entities.mobs.MobType;
+import org.ardal.managers.MobManager;
 import org.ardal.objects.PlayerObj;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -40,12 +41,12 @@ public abstract class CustomMob  {
         this.entity = this.entityLocation.getWorld().spawnEntity(this.entityLocation, entityType);
         this.setEntityProperty();
 
-        Ardal.getInstance().getManager(CustomMobManager.class).registerCustomMob(this);
+        Ardal.getInstance().getManager(MobManager.class).registerCustomMob(this);
     }
 
     public void destroy() {
         this.entity.remove();
-        Ardal.getInstance().getManager(CustomMobManager.class).unregisterCustomMob(this);
+        Ardal.getInstance().getManager(MobManager.class).unregisterCustomMob(this);
     }
 
     public Entity getEntity() {
@@ -93,5 +94,10 @@ public abstract class CustomMob  {
         }
 
         return false;
+    }
+
+
+    public static CustomMob invokeCustomMob(MobType mobType, Location spawningLocation) throws Exception {
+        return mobType.getMobClass().getDeclaredConstructor().newInstance();
     }
 }

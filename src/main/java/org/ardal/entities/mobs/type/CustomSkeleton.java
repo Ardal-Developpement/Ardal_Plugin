@@ -11,12 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomSkeleton extends CustomMob {
-    public CustomSkeleton(Location entityLocation, int xpReward, int detectedMinMoveRange) {
-        super(EntityType.SKELETON, entityLocation, xpReward, detectedMinMoveRange);
-    }
-
-    public CustomSkeleton(Location location, int xpReward) {
-        super(EntityType.SKELETON, location, xpReward);
+    public CustomSkeleton(Location entityLocation) {
+        super(EntityType.SKELETON, entityLocation, 50, 1);
     }
 
     @Override

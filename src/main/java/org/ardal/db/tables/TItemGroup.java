@@ -1,7 +1,7 @@
 package org.ardal.db.tables;
 
 import org.ardal.Ardal;
-import org.ardal.managers.CustomItemManager;
+import org.ardal.managers.ItemManager;
 import org.ardal.models.MItemGroup;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,7 +27,7 @@ public class TItemGroup {
     }
 
     public int saveItemsByGroupId(List<ItemStack> items){
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
+        ItemManager itemManager = Ardal.getInstance().getManager(ItemManager.class);
 
         int groupId = Ardal.getInstance().getDb().gettGroups().createGroup();
         if(groupId != -1) {
@@ -37,7 +37,7 @@ public class TItemGroup {
                  .prepareStatement("insert into item_group(item_id, group_id) values (?,?)"))
         {
             for (ItemStack item : items) {
-                statement.setString(1, customItemManager.addItem(item));
+                statement.setString(1, itemManager.addItem(item));
                 statement.setInt(2, groupId);
                 statement.executeUpdate();
             }
@@ -52,7 +52,7 @@ public class TItemGroup {
     }
 
     public boolean deleteItemsByGroupId(int groupId) {
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
+        ItemManager itemManager = Ardal.getInstance().getManager(ItemManager.class);
         List<String> itemIdsToDelete = new ArrayList<>();
 
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
@@ -71,7 +71,7 @@ public class TItemGroup {
             int rowsAffected = deleteStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                customItemManager.removeItems(itemIdsToDelete);
+                itemManager.removeItems(itemIdsToDelete);
                 return true;
             }
 

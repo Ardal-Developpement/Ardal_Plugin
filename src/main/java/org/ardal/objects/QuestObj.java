@@ -3,7 +3,7 @@ package org.ardal.objects;
 import org.ardal.Ardal;
 import org.ardal.api.quests.QuestInfo;
 import org.ardal.db.tables.TItemGroup;
-import org.ardal.managers.CustomItemManager;
+import org.ardal.managers.ItemManager;
 import org.ardal.models.MQuest;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -47,8 +47,8 @@ public class QuestObj implements QuestInfo, Comparable<QuestObj> {
 
     @Override
     public ItemStack getQuestBook() {
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
-        ItemStack book = customItemManager.getItem(this.mQuest.getBookId());
+        ItemManager itemManager = Ardal.getInstance().getManager(ItemManager.class);
+        ItemStack book = itemManager.getItem(this.mQuest.getBookId());
         String synopsis = this.getQuestSynopsis();
 
         if(synopsis != null) {
@@ -79,20 +79,20 @@ public class QuestObj implements QuestInfo, Comparable<QuestObj> {
 
     @Override
     public List<ItemStack> getItemsQuestRequest() {
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
+        ItemManager itemManager = Ardal.getInstance().getManager(ItemManager.class);
         List<String>  itemIds = Ardal.getInstance().getDb().gettItemGroup().getItemsByGroupId(
                 this.mQuest.getRequestItemGroupId());
 
-        return customItemManager.getItems(itemIds);
+        return itemManager.getItems(itemIds);
     }
 
     @Override
     public List<ItemStack> getItemQuestReward() {
-        CustomItemManager customItemManager = Ardal.getInstance().getManager(CustomItemManager.class);
+        ItemManager itemManager = Ardal.getInstance().getManager(ItemManager.class);
         List<String>  itemIds = Ardal.getInstance().getDb().gettItemGroup().getItemsByGroupId(
                 this.mQuest.getRewardItemGroupId());
 
-        return customItemManager.getItems(itemIds);
+        return itemManager.getItems(itemIds);
     }
 
     @Override

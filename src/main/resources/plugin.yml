@@ -13,6 +13,9 @@ commands:
   custom_npc:
     description: Manager npc.
     permission: ardal_plugin.npc
+  custom_mob:
+    description: Manager mob.
+    permission: ardal_plugin.mob
   ec:
     description: Open enderchest.
     permission: ardal_plugin.ec
