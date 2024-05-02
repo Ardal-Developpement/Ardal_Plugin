@@ -29,11 +29,7 @@ public class InvokeMobManager implements ArdalCmd {
 
         Location spawnLocation = player.getLocation();
 
-        try {
-            CustomMob.invokeCustomMob(mobType, spawnLocation).spawn();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        CustomMob.invokeCustomMob(mobType, spawnLocation).spawn();
 
         return true;
     }

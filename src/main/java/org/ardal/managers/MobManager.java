@@ -93,6 +93,7 @@ public class MobManager extends ArdalCmdManager implements ArdalManager, Listene
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
+        System.out.println("Detect entity death : " + event.getEntity().getName());
         if(event.getEntity() instanceof CustomMob) {
             CustomMob mob = getMobInstanceByUuid(event.getEntity().getUniqueId());
             if(mob == null) {
