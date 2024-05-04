@@ -19,7 +19,7 @@ import java.util.List;
 public class CustomSkeleton extends CustomMob {
 
     public CustomSkeleton(Location entityLocation, int mobLevel) {
-        super(EntityType.SKELETON, entityLocation, mobLevel, 10 * mobLevel, 1);
+        super(EntityType.SKELETON, entityLocation, mobLevel, 10 * mobLevel);
     }
 
 

@@ -151,19 +151,25 @@ public class PlayerObj implements PlayerInfo {
     public boolean addAdventureXp(int xp, Player player) {
         this.addXpOnActionBar(xp, player);
         int newXpValue = this.mPlayer.getAdventureXp() + xp;
+        System.out.println("test2");
         if(nextAdventureXpLevelUp > 0 &&  newXpValue >= this.nextAdventureXpLevelUp) {
             this.setAdventureXp(newXpValue - this.nextAdventureXpLevelUp);
             MAdventureLevel nextLevel = Ardal.getInstance().getManager(AdventureLevelManager.class)
                     .getNextAdventureLevel(this.getAdventureLevel());
 
             if(nextLevel == null) {
+                System.out.println("test4");
                 this.nextAdventureXpLevelUp = -1;
             } else {
+                System.out.println("test5");
                 this.setAdventureLevel(nextLevel.getLevel());
                 this.nextAdventureXpLevelUp = nextLevel.getLevel();
             }
 
-            this.mPlayer.updatePlayer();
+            System.out.println("test6");
+
+
+            return this.mPlayer.updatePlayer();
         }
 
         return true;

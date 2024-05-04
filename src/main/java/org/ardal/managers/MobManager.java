@@ -47,6 +47,7 @@ public class MobManager extends ArdalCmdManager implements ArdalManager, Listene
     @Override
     public void onDisable() {
         this.mobAreaCheckTask.cancel();
+        this.mobsRegister.values().forEach(CustomMob::destroy);
     }
 
     public void registerCustomMob(CustomMob mob) {
