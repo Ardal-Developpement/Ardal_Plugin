@@ -13,17 +13,16 @@ public class AdventureLevelManager implements ArdalManager {
     private HashMap<Integer, MAdventureLevel> nextLevels;
 
     public AdventureLevelManager() {
-
-    }
-
-    @Override
-    public void onEnable() {
         this.loadLevels();
 
         if(this.levels.isEmpty()) {
             this.createDefaultLevel();
             this.loadLevels();
         }
+    }
+
+    @Override
+    public void onEnable() {
     }
 
     @Override

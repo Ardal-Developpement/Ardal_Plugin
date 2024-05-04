@@ -17,18 +17,15 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class PlayerObj implements PlayerInfo {
     private final MPlayer mPlayer;
 
     private int nextAdventureXpLevelUp;
 
-    public PlayerObj(MPlayer mPlayer) {
-        this.mPlayer = mPlayer;
+    public PlayerObj(String playerUuid) {
+        this.mPlayer = Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(playerUuid);
 
         MAdventureLevel nextLevel = Ardal.getInstance().getManager(AdventureLevelManager.class)
                 .getNextAdventureLevel(this.getAdventureLevel());
@@ -36,20 +33,16 @@ public class PlayerObj implements PlayerInfo {
         if(nextLevel == null) {
             this.nextAdventureXpLevelUp = -1;
         } else {
-            this.nextAdventureXpLevelUp = nextLevel.getLevel();
+            this.nextAdventureXpLevelUp = nextLevel.getXpRequire();
         }
     }
 
-    public PlayerObj(String playerUuid) {
-        this.mPlayer = Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(playerUuid);
-    }
-
     public PlayerObj(Player player) {
-        this.mPlayer = Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(player.getUniqueId().toString());
+        this(player.getUniqueId().toString());
     }
 
     public PlayerObj(OfflinePlayer player) {
-        this.mPlayer = Ardal.getInstance().getDb().gettPlayer().getPlayerByUUID(player.getUniqueId().toString());
+        this(player.getUniqueId().toString());
     }
 
     @Override
@@ -151,23 +144,19 @@ public class PlayerObj implements PlayerInfo {
     public boolean addAdventureXp(int xp, Player player) {
         this.addXpOnActionBar(xp, player);
         int newXpValue = this.mPlayer.getAdventureXp() + xp;
-        System.out.println("test2");
         if(nextAdventureXpLevelUp > 0 &&  newXpValue >= this.nextAdventureXpLevelUp) {
             this.setAdventureXp(newXpValue - this.nextAdventureXpLevelUp);
             MAdventureLevel nextLevel = Ardal.getInstance().getManager(AdventureLevelManager.class)
                     .getNextAdventureLevel(this.getAdventureLevel());
 
             if(nextLevel == null) {
-                System.out.println("test4");
                 this.nextAdventureXpLevelUp = -1;
             } else {
-                System.out.println("test5");
+                // Level up
                 this.setAdventureLevel(nextLevel.getLevel());
-                this.nextAdventureXpLevelUp = nextLevel.getLevel();
+                this.nextAdventureXpLevelUp = nextLevel.getXpRequire();
+                this.onAdventureLevelUp(player, nextLevel);
             }
-
-            System.out.println("test6");
-
 
             return this.mPlayer.updatePlayer();
         }
@@ -197,6 +186,22 @@ public class PlayerObj implements PlayerInfo {
 
         this.lastActionBarTime = System.currentTimeMillis();
     }
+
+    private void onAdventureLevelUp(Player player, MAdventureLevel newLevel) {
+        MAdventureLevel nextLevel = Ardal.getInstance().getManager(AdventureLevelManager.class)
+                .getNextAdventureLevel(newLevel.getLevel());
+
+        String nextLevelName;
+        if(nextLevel != null) {
+            nextLevelName = "Prochain level up dans " + nextLevel.getXpRequire() + " xp !";
+        } else {
+            nextLevelName = "Vous avez atteint le level maximum !";
+        }
+
+        String title = "Level up: " + newLevel.getName();
+        player.sendTitle(title, nextLevelName);
+    }
+
 
     @Override
     public boolean setQuestCooldown(int minutes) {

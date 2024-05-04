@@ -50,7 +50,7 @@ public class AddFinishedQuestCmd implements ArdalCmd {
         }
 
         if(argv.size() == 1){
-            return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv);
+            return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNames(), argv);
         }
 
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);

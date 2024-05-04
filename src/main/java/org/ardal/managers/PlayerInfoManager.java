@@ -20,13 +20,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerInfo, ArdalManager, Listener {
-    private HashMap<String, PlayerObj> registerPlayers = new HashMap<>();
+    private HashMap<String, PlayerObj> registerPlayers;
 
     public PlayerInfoManager(){
         super(BaseCmdAlias.BASE_PLAYER_INFO_CMD_ALIAS);
@@ -43,13 +44,15 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
 
     @Override
     public void onEnable() {
-        for(OfflinePlayer p : BukkitUtils.getOfflinePlayersAsList()) {
+        for(OfflinePlayer p : BukkitUtils.getOnlinePlayers()) {
             this.registerPlayer(p.getUniqueId(), new PlayerObj(p));
         }
     }
 
     @Override
-    public void onDisable(){ }
+    public void onDisable(){
+        this.registerPlayers.values().forEach(playerObj -> {this.unregisterPlayer(playerObj.getUuid());});
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
@@ -78,6 +81,11 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
         this.registerPlayer(player.getUniqueId(), new PlayerObj(player));
     }
 
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event){
+        this.unregisterPlayer(event.getPlayer().getUniqueId().toString());
+    }
+
     public void registerPlayer(UUID uuid, PlayerObj playerObj) {
         this.registerPlayers.put(uuid.toString(), playerObj);
     }
@@ -96,6 +104,10 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
 
     public PlayerObj getPlayerObj(OfflinePlayer player) {
         return this.registerPlayers.get(player.getUniqueId().toString());
+    }
+
+    public void unregisterPlayer(String playerUuid) {
+        this.registerPlayers.remove(playerUuid);
     }
 
 

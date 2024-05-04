@@ -34,7 +34,7 @@ public class SetNpcSkin implements ArdalCmd {
 
     @Override
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv);
+        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNames(), argv);
     }
 
     @Override

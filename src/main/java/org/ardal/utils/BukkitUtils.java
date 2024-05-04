@@ -5,13 +5,14 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class BukkitUtils {
-    public static List<OfflinePlayer> getOfflinePlayersAsList(){
+    public static List<OfflinePlayer> getOfflinePlayers(){
         List<OfflinePlayer> offlinePlayers = new ArrayList<>();
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
             offlinePlayers.add(offlinePlayer);
@@ -20,7 +21,7 @@ public class BukkitUtils {
         return offlinePlayers;
     }
 
-    public static List<String> getOfflinePlayerNamesAsList(){
+    public static List<String> getOfflinePlayerNames(){
         List<String> offlinePlayersNames = new ArrayList<>();
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
             offlinePlayersNames.add(offlinePlayer.getName());
@@ -31,15 +32,20 @@ public class BukkitUtils {
 
     @Nullable
     public static OfflinePlayer getOfflinePlayerFromName(String playerName){
-        List<String> offlinePlayersNames = BukkitUtils.getOfflinePlayerNamesAsList();
+        List<String> offlinePlayersNames = BukkitUtils.getOfflinePlayerNames();
         int playerIndex = offlinePlayersNames.indexOf(playerName);
 
         if(playerIndex == -1){
             return null;
         }
 
-        return BukkitUtils.getOfflinePlayersAsList().get(playerIndex);
+        return BukkitUtils.getOfflinePlayers().get(playerIndex);
     }
+
+    public static Collection<? extends Player> getOnlinePlayers() {
+        return Bukkit.getOnlinePlayers();
+    }
+
 
     @Nullable
     public static Entity getEntityFromId(UUID id, UUID world){

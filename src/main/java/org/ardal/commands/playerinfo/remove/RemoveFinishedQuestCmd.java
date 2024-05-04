@@ -60,7 +60,7 @@ public class RemoveFinishedQuestCmd implements ArdalCmd {
         }
 
         if(argv.size() == 1){
-            return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv);
+            return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNames(), argv);
         }
 
         OfflinePlayer player = BukkitUtils.getOfflinePlayerFromName(argv.get(0));

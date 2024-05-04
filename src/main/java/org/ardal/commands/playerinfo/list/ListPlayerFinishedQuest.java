@@ -46,7 +46,7 @@ public class ListPlayerFinishedQuest implements ArdalCmd {
             return new ArrayList<>();
         }
 
-        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv.get(0));
+        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNames(), argv.get(0));
     }
 
     @Override

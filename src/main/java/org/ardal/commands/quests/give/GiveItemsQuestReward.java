@@ -56,7 +56,7 @@ public class GiveItemsQuestReward implements ArdalCmd {
         }
 
         if(argv.size() < 2){
-            return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv.get(0));
+            return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNames(), argv.get(0));
         }
 
         QuestManager questManager = Ardal.getInstance().getManager(QuestManager.class);

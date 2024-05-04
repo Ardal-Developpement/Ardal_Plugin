@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class GiveNpcManagementTool implements ArdalCmd {
 
     @Override
     public List<String> getTabComplete(CommandSender sender, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv);
+        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNames(), argv);
     }
 
     @Override

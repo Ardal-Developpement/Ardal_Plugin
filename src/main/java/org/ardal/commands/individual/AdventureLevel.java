@@ -38,7 +38,7 @@ public class AdventureLevel implements ArdalCmd {
 
     @Override
     public List<String> getTabComplete(CommandSender player, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNamesAsList(), argv);
+        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNames(), argv);
     }
 
     @Override
