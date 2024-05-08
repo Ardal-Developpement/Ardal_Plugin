@@ -165,11 +165,11 @@ public class PlayerObj implements PlayerInfo {
     }
 
     private long lastActionBarTime = 0;
-    private long timeBeforeResetActionBarXp = 3000;
+    private static final long TIME_BEFORE_RESET_ACTION_BAR_XP = 3000;
     private int currentXpAdd = 0;
 
     private void addXpOnActionBar(int xp, Player player) {
-        if (System.currentTimeMillis() > this.lastActionBarTime + this.timeBeforeResetActionBarXp) {
+        if (System.currentTimeMillis() > this.lastActionBarTime + TIME_BEFORE_RESET_ACTION_BAR_XP) {
             this.currentXpAdd = 0;
         }
 

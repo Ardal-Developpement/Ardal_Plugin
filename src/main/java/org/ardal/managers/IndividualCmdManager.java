@@ -4,9 +4,10 @@ import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.api.commands.ArdalCmdNode;
 import org.ardal.api.managers.ArdalManager;
-import org.ardal.commands.individual.AdventureStory;
-import org.ardal.commands.individual.EC;
 import org.ardal.commands.individual.AdventureLevel;
+import org.ardal.commands.individual.AdventureStory;
+import org.ardal.commands.individual.AdventureXp;
+import org.ardal.commands.individual.EC;
 import org.ardal.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,6 +24,7 @@ public class IndividualCmdManager extends ArdalCmdNode implements CommandExecuto
 
         this.registerCmd(new EC());
         this.registerCmd(new AdventureLevel());
+        this.registerCmd(new AdventureXp());
         this.registerCmd(new AdventureStory());
 
         for(ArdalCmd cmd : this.getRegisteredCmd()){

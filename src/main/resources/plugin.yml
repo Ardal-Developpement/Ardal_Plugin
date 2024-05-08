@@ -25,3 +25,6 @@ commands:
   adventureLevel:
     description: your adventure level.
     permission: ardal_plugin.adventureLevel
+  adventureXp:
+    description: your adventure xp.
+    permission: ardal_plugin.adventureXp
