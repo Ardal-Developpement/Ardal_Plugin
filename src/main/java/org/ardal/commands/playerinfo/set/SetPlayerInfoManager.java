@@ -14,6 +14,7 @@ public class SetPlayerInfoManager extends ArdalCmdNode implements ArdalCmd {
         super(CMD_NAME);
 
         this.registerCmd(new SetPlayerAdventureLevel());
+        this.registerCmd(new SetPlayerAdventureXp());
     }
 
     @Override
