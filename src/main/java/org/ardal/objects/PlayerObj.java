@@ -144,18 +144,22 @@ public class PlayerObj implements PlayerInfo {
     public boolean addAdventureXp(int xp, Player player) {
         this.addXpOnActionBar(xp, player);
         int newXpValue = this.mPlayer.getAdventureXp() + xp;
-        if(nextAdventureXpLevelUp > 0 &&  newXpValue >= this.nextAdventureXpLevelUp) {
-            this.setAdventureXp(newXpValue - this.nextAdventureXpLevelUp);
-            MAdventureLevel nextLevel = Ardal.getInstance().getManager(AdventureLevelManager.class)
-                    .getNextAdventureLevel(this.getAdventureLevel());
+        if(nextAdventureXpLevelUp > 0 ) {
+            if (newXpValue >= this.nextAdventureXpLevelUp) {
+                this.setAdventureXp(newXpValue - this.nextAdventureXpLevelUp);
+                MAdventureLevel nextLevel = Ardal.getInstance().getManager(AdventureLevelManager.class)
+                        .getNextAdventureLevel(this.getAdventureLevel());
 
-            if(nextLevel == null) {
-                this.nextAdventureXpLevelUp = -1;
+                if (nextLevel == null) {
+                    this.nextAdventureXpLevelUp = -1;
+                } else {
+                    // Level up
+                    this.setAdventureLevel(nextLevel.getLevel());
+                    this.nextAdventureXpLevelUp = nextLevel.getXpRequire();
+                    this.onAdventureLevelUp(player, nextLevel);
+                }
             } else {
-                // Level up
-                this.setAdventureLevel(nextLevel.getLevel());
-                this.nextAdventureXpLevelUp = nextLevel.getXpRequire();
-                this.onAdventureLevelUp(player, nextLevel);
+                this.setAdventureXp(newXpValue);
             }
 
             return this.mPlayer.updatePlayer();
