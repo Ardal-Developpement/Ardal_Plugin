@@ -19,9 +19,7 @@ Base command: `/quest`.
   - `itemsReward [player] [quest name]`: give to the player the items reward by the quest.
   - `questBook [player] [quest name]`: give to the player the quest book of the quest.
 - `help`: print the quest command help.
-- `list`: list all the quest registered.
-- `npc`:
-  
+- `list`: list all the quest registered.  
 - `open`: open an interface with all quest book.
 - `remove [quest name]`: remove the quest.
 - `set`:
@@ -41,18 +39,30 @@ Base command: `/ardal`.
 - `remove`
   - `activeQuest [player]`: remove an active quest to the player.
   - `finishedQuest [player]`: remove a finished quest to the player.
+- `set`
+  - `adventureLevel [@Nullable player]`: set the adventure level of a player.
+  - `adventureXp [@Nullable player]`: set the adventure xp of a player.
 
 
 ### Npc command usage:
-Base command: `/npc`.
+Base command: `/custom_npc`.
 - `create [type] [name]`: create a new npc.
 - `give`
   - `managementTool [@Nullable player]`: give npc management tool.
+- `set`
+  - `name [npc uuid]`: set the name of the npc. 
+  - `nbQuestShow [npc uuid]`: set the number of quest show when a player select a new quest.
+  - `skin [npc uuid]`: set the skin of a npc. 
+- `teleport [npc uuid]`: teleport a npc to a new location (or just to change his face/body orientation).
 
+### Npc command usage:
+Base command: `/custom_mob`.
+- `invoke [mob type] [mob level]`: invoke a new mob.
 
 ### Shortcut commands usage:
 - `/ec [@Nullable player]`: open enderchest of the player (or of itself).
-- `/adventureLevel [@Nullable player]`: get the adventure level of the player (or of itself).
+- `/adventureLevel [@Nullable player]`: get the adventure level of a player.
+- `/adventureXp [@Nullable player]`: get the adventure xp of a player.
 - `/story`: get your adventure story.
 
 ## Database:

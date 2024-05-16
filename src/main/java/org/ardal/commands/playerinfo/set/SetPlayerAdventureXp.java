@@ -44,7 +44,7 @@ public class SetPlayerAdventureXp implements ArdalCmd {
                 return true;
             }
 
-            PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);;
+            PlayerObj playerObj = Ardal.getInstance().getManager(PlayerInfoManager.class).getPlayerObj(player);
             if(playerObj.addAdventureXp(xp - playerObj.getAdventureXp(), player)) {
                 sender.sendMessage("Successfully set the adventure xp to " + xp + ".");
             } else {
