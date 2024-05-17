@@ -14,9 +14,7 @@ import java.sql.Statement;
 
 public class Database {
 
-    private static final String URL = "jdbc:mysql://localhost/ardal?useSSL=false";
-    private static final String USER = "laravel";
-    private static final String PASSWORD = "laravel";
+    private static final String URL = "jdbc:mysql://{dbHost}/{dbName}?useSSL=false";
 
     private final HikariDataSource dataSource;
 
@@ -31,11 +29,62 @@ public class Database {
     private final TQuestNpcInfo tQuestNpcInfo;
     private final TAdventureLevel tAdventureLevel;
 
+    private void checkDbConfigInit() {
+        String dbHost = Ardal.getInstance().getConfig().getString("DB_HOST");
+        String dbUser = Ardal.getInstance().getConfig().getString("DB_USER");
+        String dbPassword = Ardal.getInstance().getConfig().getString("DB_PASSWORD");
+        String dbName = Ardal.getInstance().getConfig().getString("DB_NAME");
+
+        if(dbHost == null) {
+            Ardal.getInstance().getConfig().set("DB_HOST", "");
+        }
+
+        if(dbUser == null) {
+            Ardal.getInstance().getConfig().set("DB_USER", "");
+        }
+
+        if(dbPassword == null) {
+            Ardal.getInstance().getConfig().set("DB_PASSWORD", "");
+        }
+
+        if(dbName == null) {
+            Ardal.getInstance().getConfig().set("DB_NAME", "");
+        }
+
+
+        Ardal.getInstance().saveConfig();
+    }
+
     public Database(){
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(URL);
-        config.setUsername(USER);
-        config.setPassword(PASSWORD);
+
+        String dbHost = Ardal.getInstance().getConfig().getString("DB_HOST");
+        if(dbHost == null || dbHost.isEmpty()){
+            checkDbConfigInit();
+            throw new RuntimeException("Please provide a mysql host in the config file.");
+        }
+
+        String dbUser = Ardal.getInstance().getConfig().getString("DB_USER");
+        if(dbUser == null || dbUser.isEmpty()){
+            checkDbConfigInit();
+            throw new RuntimeException("Please provide a db user in the config file.");
+        }
+
+        String dbPassword = Ardal.getInstance().getConfig().getString("DB_PASSWORD");
+        if(dbPassword == null || dbPassword.isEmpty()){
+            checkDbConfigInit();
+            throw new RuntimeException("Please provide a db password in the config file.");
+        }
+
+        String dbName = Ardal.getInstance().getConfig().getString("DB_NAME");
+        if(dbName == null || dbName.isEmpty()){
+            checkDbConfigInit();
+            throw new RuntimeException("Please provide a db name in the config file.");
+        }
+
+        config.setJdbcUrl(URL.replace("{dbHost}", dbHost).replace("{dbName}", dbName));
+        config.setUsername(dbUser);
+        config.setPassword(dbPassword);
         config.setLeakDetectionThreshold(3000); // TODO DEBUG
         config.setConnectionTimeout(3000); // TODO DEBUG
         dataSource = new HikariDataSource(config);
