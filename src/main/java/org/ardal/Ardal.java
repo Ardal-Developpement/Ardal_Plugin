@@ -36,6 +36,7 @@ public final class Ardal extends JavaPlugin {
                 this.registerManager(new CustomInventoryManager());
                 this.registerManager(new IndividualCmdManager());
                 this.registerManager(new NPCManager());
+                this.registerManager(new ChunkManager());
 
                 enableManagers();
             }

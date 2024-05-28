@@ -28,6 +28,7 @@ public class Database {
     private final TQuestNpc tQuestNpc;
     private final TQuestNpcInfo tQuestNpcInfo;
     private final TAdventureLevel tAdventureLevel;
+    private final TChunk tChunk;
 
     private void checkDbConfigInit() {
         String dbHost = Ardal.getInstance().getConfig().getString("DB_HOST");
@@ -99,6 +100,7 @@ public class Database {
         this.tQuestNpc = new TQuestNpc();
         this.tQuestNpcInfo = new TQuestNpcInfo();
         this.tAdventureLevel = new TAdventureLevel();
+        this.tChunk = new TChunk();
     }
 
     public Connection getConnection() throws SQLException {
@@ -189,7 +191,19 @@ public class Database {
                         "item_id varchar(40)," +
                         "foreign key (group_id) references `groups`(id) on delete cascade)";
                 statement.execute(sql);
+
+                sql = "create table if not exists chunks(" +
+                        "id int auto_increment primary key," +
+                        "chunk_id long, " +
+                        "chunk_group_id int)";
+                statement.execute(sql);
+
+//                sql = "create table if not exists mob_spawning_area(" +
+//                        "id int auto_increment primary key," +
+//                        "chunk_group_id int)";
+
                 statement.close();
+
                 Ardal.writeToLogger("Created database tables.");
             } catch (SQLException e) {
                 Ardal.writeToLogger("Unable to create tables in the database.");
@@ -245,5 +259,9 @@ public class Database {
 
     public TAdventureLevel gettAdventureLevel() {
         return tAdventureLevel;
+    }
+
+    public TChunk gettChunk() {
+        return tChunk;
     }
 }

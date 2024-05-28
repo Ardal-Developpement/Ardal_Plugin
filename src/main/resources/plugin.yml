@@ -28,3 +28,6 @@ commands:
   adventureXp:
     description: your adventure xp.
     permission: ardal_plugin.adventureXp
+  special_chunk:
+    description: save chunk where the player are.
+    permission: ardal_plugin.special_chunk
