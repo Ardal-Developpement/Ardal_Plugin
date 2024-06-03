@@ -3,13 +3,17 @@ package org.ardal.managers;
 import org.ardal.Ardal;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.models.MChunk;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class ChunkManager implements ArdalManager, Listener {
     private final HashMap<Long, MChunk> savedChunks;
@@ -51,5 +55,21 @@ public class ChunkManager implements ArdalManager, Listener {
         long cI = ((long) x << 32) | (z & 0xFFFFFFFFL);
         cI ^= wI;
         return cI;
+    }
+
+    @Nullable
+    public static Location getChunkLocationFromChunkId(long chunkId, UUID worldUUID) {
+        long worldUUIDBits = worldUUID.getMostSignificantBits() ^ worldUUID.getLeastSignificantBits();
+
+        long combined = chunkId ^ worldUUIDBits;
+
+        int chunkX = (int) (combined >> 32);
+        int chunkZ = (int) combined;
+
+        World world = Bukkit.getWorld(worldUUID);
+        if (world != null) {
+            return new Location(world, chunkX << 4, 0, chunkZ << 4);
+        }
+        return null;
     }
 }

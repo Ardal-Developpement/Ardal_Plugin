@@ -4,6 +4,9 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.ardal.Ardal;
 import org.ardal.db.tables.*;
+import org.ardal.db.tables.chunk.TChunk;
+import org.ardal.db.tables.chunk.TChunkGroup;
+import org.ardal.db.tables.chunk.TChunkMob;
 import org.ardal.db.tables.npc.TNpc;
 import org.ardal.db.tables.npc.type.TQuestNpc;
 import org.ardal.db.tables.npc.type.TQuestNpcInfo;
@@ -29,6 +32,8 @@ public class Database {
     private final TQuestNpcInfo tQuestNpcInfo;
     private final TAdventureLevel tAdventureLevel;
     private final TChunk tChunk;
+    private final TChunkGroup tChunkGroup;
+    private final TChunkMob tChunkMob;
 
     private void checkDbConfigInit() {
         String dbHost = Ardal.getInstance().getConfig().getString("DB_HOST");
@@ -101,6 +106,8 @@ public class Database {
         this.tQuestNpcInfo = new TQuestNpcInfo();
         this.tAdventureLevel = new TAdventureLevel();
         this.tChunk = new TChunk();
+        this.tChunkGroup = new TChunkGroup();
+        this.tChunkMob = new TChunkMob();
     }
 
     public Connection getConnection() throws SQLException {
@@ -198,9 +205,17 @@ public class Database {
                         "chunk_group_id int)";
                 statement.execute(sql);
 
-//                sql = "create table if not exists mob_spawning_area(" +
-//                        "id int auto_increment primary key," +
-//                        "chunk_group_id int)";
+                sql = "create table if not exists chunk_mob(" +
+                        "chunk_id_group int," +
+                        "mob_type varchar(127)," +
+                        "level int," +
+                        "cooldown float)";
+                statement.execute(sql);
+
+                sql = "create table if not exists chunk_id_group(" +
+                        "chunk_id long," +
+                        "chunk_id_group int)";
+                statement.execute(sql);
 
                 statement.close();
 
@@ -263,5 +278,13 @@ public class Database {
 
     public TChunk gettChunk() {
         return tChunk;
+    }
+
+    public TChunkGroup gettChunkGroup() {
+        return tChunkGroup;
+    }
+
+    public TChunkMob gettChunkMob() {
+        return tChunkMob;
     }
 }

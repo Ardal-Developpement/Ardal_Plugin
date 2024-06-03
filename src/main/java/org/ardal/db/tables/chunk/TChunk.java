@@ -1,4 +1,4 @@
-package org.ardal.db.tables;
+package org.ardal.db.tables.chunk;
 
 import org.ardal.Ardal;
 import org.ardal.models.MChunk;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TChunk {
-    @Nullable
     public boolean createChunk(@NotNull MChunk mChunk) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
@@ -81,6 +80,8 @@ public class TChunk {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection.prepareStatement(request))
         {
+            statement.setInt(1, groupId);
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while(resultSet.next()){
                     chunks.add(new MChunk(

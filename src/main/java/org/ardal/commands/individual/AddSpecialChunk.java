@@ -3,7 +3,7 @@ package org.ardal.commands.individual;
 
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
-import org.ardal.db.tables.TChunk;
+import org.ardal.db.tables.chunk.TChunk;
 import org.ardal.managers.ChunkManager;
 import org.ardal.models.MChunk;
 import org.ardal.utils.BukkitUtils;

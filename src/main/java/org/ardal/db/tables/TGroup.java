@@ -1,12 +1,10 @@
 package org.ardal.db.tables;
 
 import org.ardal.Ardal;
-import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 
 public class TGroup {
-    @Nullable
     public int createGroup() {
         int id = -1;
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
