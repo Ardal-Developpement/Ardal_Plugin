@@ -16,6 +16,9 @@ commands:
   custom_mob:
     description: Manager mob.
     permission: ardal_plugin.mob
+  chunk:
+    description: Manager chunk.
+    permission: ardal_plugin.chunk
   ec:
     description: Open enderchest.
     permission: ardal_plugin.ec
@@ -28,6 +31,3 @@ commands:
   adventureXp:
     description: your adventure xp.
     permission: ardal_plugin.adventureXp
-  special_chunk:
-    description: save chunk where the player are.
-    permission: ardal_plugin.special_chunk

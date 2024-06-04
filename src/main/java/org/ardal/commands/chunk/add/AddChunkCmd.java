@@ -1,4 +1,4 @@
-package org.ardal.commands.individual;
+package org.ardal.commands.chunk.add;
 
 
 import org.ardal.Ardal;
@@ -15,11 +15,17 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class AddSpecialChunk implements ArdalCmd {
+public class AddChunkCmd implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
+        if(argv.isEmpty()) {
+            return false;
+        }
+
         Player player = (Player) sender;
         long chunkId = ChunkManager.GetChunkId(player.getLocation().getChunk());
+
+        int groupId = Integer.parseInt(argv.get(0));
 
         TChunk tChunk = Ardal.getInstance().getDb().gettChunk();
         if(tChunk.getChunkById(chunkId) != null) {
@@ -27,7 +33,9 @@ public class AddSpecialChunk implements ArdalCmd {
             return true;
         }
 
-        if(tChunk.createChunk(new MChunk(chunkId, 1))) {
+        MChunk mChunk = new MChunk(chunkId, groupId);
+
+        if(Ardal.getInstance().getManager(ChunkManager.class).addChunkInGroup(mChunk)) {
             player.sendMessage("Success to save in database.");
         } else {
             player.sendMessage("Failed to save in database.");
@@ -51,6 +59,6 @@ public class AddSpecialChunk implements ArdalCmd {
 
     @Override
     public String getCmdName() {
-        return "special_chunk";
+        return "chunk";
     }
 }

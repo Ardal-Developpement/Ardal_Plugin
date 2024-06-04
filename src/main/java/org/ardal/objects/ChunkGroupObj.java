@@ -41,4 +41,8 @@ public class ChunkGroupObj {
     public List<MChunk> getChunks() {
         return chunks;
     }
+
+    public boolean containChunk(Long chunkId) {
+        return this.chunks.contains(new MChunk(chunkId, this.chunkGroupId));
+    }
 }
