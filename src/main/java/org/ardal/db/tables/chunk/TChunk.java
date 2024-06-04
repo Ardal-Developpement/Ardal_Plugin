@@ -119,4 +119,34 @@ public class TChunk {
 
         return chunks;
     }
+
+    public boolean deleteChunkById(Long chunkId) {
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("delete from chunks WHERE chunk_id = ?"))
+        {
+            statement.setLong(1, chunkId);
+            return statement.executeUpdate() != 0;
+        } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to delete chunk by id in database.");
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean deleteChunkGroup(int chunkGroupId) {
+        try (Connection connection = Ardal.getInstance().getDb().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("delete from chunks WHERE chunk_group_id = ?"))
+        {
+            statement.setInt(1, chunkGroupId);
+            return statement.executeUpdate() != 0;
+        } catch (SQLException e) {
+            Ardal.writeToLogger("Failed to delete chunk group in database.");
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

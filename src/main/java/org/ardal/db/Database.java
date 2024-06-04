@@ -5,7 +5,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.ardal.Ardal;
 import org.ardal.db.tables.*;
 import org.ardal.db.tables.chunk.TChunk;
-import org.ardal.db.tables.chunk.TChunkGroup;
 import org.ardal.db.tables.chunk.TChunkMob;
 import org.ardal.db.tables.npc.TNpc;
 import org.ardal.db.tables.npc.type.TQuestNpc;
@@ -32,7 +31,6 @@ public class Database {
     private final TQuestNpcInfo tQuestNpcInfo;
     private final TAdventureLevel tAdventureLevel;
     private final TChunk tChunk;
-    private final TChunkGroup tChunkGroup;
     private final TChunkMob tChunkMob;
 
     private void checkDbConfigInit() {
@@ -106,7 +104,6 @@ public class Database {
         this.tQuestNpcInfo = new TQuestNpcInfo();
         this.tAdventureLevel = new TAdventureLevel();
         this.tChunk = new TChunk();
-        this.tChunkGroup = new TChunkGroup();
         this.tChunkMob = new TChunkMob();
     }
 
@@ -212,11 +209,6 @@ public class Database {
                         "cooldown float)";
                 statement.execute(sql);
 
-                sql = "create table if not exists chunk_id_group(" +
-                        "chunk_id long," +
-                        "chunk_id_group int)";
-                statement.execute(sql);
-
                 statement.close();
 
                 Ardal.writeToLogger("Created database tables.");
@@ -278,10 +270,6 @@ public class Database {
 
     public TChunk gettChunk() {
         return tChunk;
-    }
-
-    public TChunkGroup gettChunkGroup() {
-        return tChunkGroup;
     }
 
     public TChunkMob gettChunkMob() {
