@@ -8,7 +8,6 @@ import org.ardal.api.managers.ArdalManager;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.chunk.add.AddChunkManager;
 import org.ardal.commands.chunk.remove.RemoveChunkManager;
-import org.ardal.db.Database;
 import org.ardal.models.MChunk;
 import org.ardal.models.MChunkMob;
 import org.ardal.objects.ChunkGroupMob;
@@ -78,11 +77,8 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
     public void onPlayerMove(PlayerMoveEvent e){
         if (e.getFrom().getChunk() != e.getTo().getChunk()) {
             long cI = GetChunkId(e.getTo().getChunk());
-            System.out.println("test10");
             for(MChunk chunk : savedChunks.values()) {
-                System.out.println("test11");
                 if(chunk.getChunkId().equals(cI)) {
-                    System.out.println("test12");
                     ChunkGroupObj chunkGroupObj = this.getChunkGroupObj(chunk.getChunkGroupId());
                     chunkGroupObj.onPlayerEnter(e.getPlayer());
                 }
@@ -123,6 +119,7 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
             chunkGroup = this.addNewChunkGroup(mChunk.getChunkGroupId(), mChunk.getType());
         }
 
+        this.savedChunks.put(mChunk.getChunkId(), mChunk);
         return chunkGroup.addChunkInGroup(mChunk);
     }
 
@@ -143,15 +140,12 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
             return chunkGroupObj;
         }
 
-        Database db = Ardal.getInstance().getDb();
-        int groupId = db.gettGroups().createGroup();
-
         switch (type) {
             case MOB:
                 chunkGroupObj = new ChunkGroupMob(new MChunkMob(chunkGroupId, "test1", 1, 1, true));
                 break;
             default:
-                chunkGroupObj = new ChunkGroupObj(groupId);
+                chunkGroupObj = new ChunkGroupObj(chunkGroupId);
         }
 
         this.chunkGroups.add(chunkGroupObj);
@@ -175,13 +169,8 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
     }
 
     @Override
-    public boolean chunkIsSaved(Long chunkId, int chunkGroupId) {
-        ChunkGroupObj chunkGroup = this.getChunkGroupObj(chunkGroupId);
-        if(chunkGroup == null) {
-            return false;
-        }
-
-        return chunkGroup.containChunk(chunkId);
+    public boolean chunkIsSaved(Long chunkId) {
+        return this.savedChunks.containsKey(chunkId);
     }
 
     @Override

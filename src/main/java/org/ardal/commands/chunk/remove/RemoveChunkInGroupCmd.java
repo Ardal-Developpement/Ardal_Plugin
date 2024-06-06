@@ -32,7 +32,7 @@ public class RemoveChunkInGroupCmd implements ArdalCmd {
             return true;
         }
 
-        if(!chunkManager.chunkIsSaved(chunkId, groupId)) {
+        if(!chunkManager.chunkIsSaved(chunkId)) {
             player.sendMessage("Chunk in group not found.");
             return true;
         }

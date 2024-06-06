@@ -33,7 +33,7 @@ public class AddChunkCmd implements ArdalCmd {
             return true;
         }
 
-        if(chunkManager.chunkIsSaved(chunkId, groupId)) {
+        if(chunkManager.chunkIsSaved(chunkId)) {
             player.sendMessage("Chunk already saved in the group.");
             return true;
         }

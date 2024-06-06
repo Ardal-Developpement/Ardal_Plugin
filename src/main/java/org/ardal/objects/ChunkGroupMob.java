@@ -9,6 +9,7 @@ public class ChunkGroupMob extends ChunkGroupObj{
 
     public ChunkGroupMob(MChunkMob mChunkMob) {
         super(mChunkMob.getChunkIdGroup());
+        Ardal.getInstance().getDb().gettChunkMob().createChunkMob(mChunkMob);
         this.mChunkMob = mChunkMob;
     }
 
