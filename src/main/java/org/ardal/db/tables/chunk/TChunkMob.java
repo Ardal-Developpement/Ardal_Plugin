@@ -3,24 +3,24 @@ package org.ardal.db.tables.chunk;
 import org.ardal.Ardal;
 import org.ardal.models.MChunkMob;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TChunkMob {
     public boolean createChunkMob(@NotNull MChunkMob mChunkMob) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("insert into chunk_mob (chunk_id_group, mob_type, level, cooldown) values (?,?,?,?)"))
+                     .prepareStatement("insert into chunk_mob (chunk_id_group, mob_type, level, cooldown, enable) values (?,?,?,?,?)"))
         {
             statement.setInt(1, mChunkMob.getChunkIdGroup());
             statement.setString(2, mChunkMob.getMobType());
             statement.setInt(3, mChunkMob.getLevel());
             statement.setFloat(4, mChunkMob.getCooldown());
+            statement.setBoolean(5, mChunkMob.isEnable());
 
             statement.execute();
             statement.close();
@@ -40,13 +40,15 @@ public class TChunkMob {
                              "chunk_id_group = ?," +
                              "mob_type = ?," +
                              "level = ?," +
-                             "cooldown = ? " +
+                             "cooldown = ?, " +
+                             "enable = ? " +
                              "where chunk_id_group = ?"))
         {
             statement.setInt(1, mChunkMob.getChunkIdGroup());
             statement.setString(2, mChunkMob.getMobType());
             statement.setInt(3, mChunkMob.getLevel());
             statement.setFloat(4, mChunkMob.getCooldown());
+            statement.setBoolean(5, mChunkMob.isEnable());
 
 
             return statement.executeUpdate() != 0;
@@ -58,22 +60,23 @@ public class TChunkMob {
         return false;
     }
 
-    public List<MChunkMob> getChunkMobsByChunkGroupId(int chunkIdGroup) {
-        List<MChunkMob> chunks = new ArrayList<>();
-        String request = "select mob_type, level, cooldown from chunk_mob where chunk_id_group = ?";
+    @Nullable
+    public MChunkMob getChunkMobByChunkGroupId(int chunkIdGroup) {
+        String request = "select mob_type, level, cooldown, enable from chunk_mob where chunk_id_group = ?";
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection.prepareStatement(request))
         {
             statement.setInt(1, chunkIdGroup);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while(resultSet.next()){
-                    chunks.add(new MChunkMob(
+                if(resultSet.next()){
+                    new MChunkMob(
                             chunkIdGroup,
                             resultSet.getString("mob_type"),
                             resultSet.getInt("level"),
-                            resultSet.getFloat("cooldown")
-                    ));
+                            resultSet.getFloat("cooldown"),
+                            resultSet.getBoolean("enable")
+                    );
                 }
             }
         } catch (SQLException e) {
@@ -81,6 +84,6 @@ public class TChunkMob {
             e.printStackTrace();
         }
 
-        return chunks;
+        return null;
     }
 }

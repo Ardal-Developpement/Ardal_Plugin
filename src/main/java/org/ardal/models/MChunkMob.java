@@ -5,12 +5,14 @@ public class MChunkMob {
     private String mob_type;
     private int level;
     private float cooldown;
+    private boolean enable;
 
-    public MChunkMob(int chunk_id_group, String mob_type, int level, float cooldown) {
+    public MChunkMob(int chunk_id_group, String mob_type, int level, float cooldown, boolean enable) {
         this.chunk_id_group = chunk_id_group;
         this.mob_type = mob_type;
         this.level = level;
         this.cooldown = cooldown;
+        this.enable = enable;
     }
 
     public int getChunkIdGroup() {
@@ -43,5 +45,13 @@ public class MChunkMob {
 
     public void setCooldown(float cooldown) {
         this.cooldown = cooldown;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }

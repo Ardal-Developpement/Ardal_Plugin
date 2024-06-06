@@ -2,6 +2,7 @@ package org.ardal.objects;
 
 import org.ardal.Ardal;
 import org.ardal.models.MChunk;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -12,6 +13,10 @@ public class ChunkGroupObj {
     public ChunkGroupObj(int chunkGroupId) {
         this.chunkGroupId = chunkGroupId;
         this.chunks = Ardal.getInstance().getDb().gettChunk().getAllChunksByGroupId(this.chunkGroupId);
+    }
+
+    public void onPlayerEnter(Player player) {
+        player.sendMessage("You enter in chunk group " + this.chunkGroupId);
     }
 
     public boolean addChunkInGroup(MChunk chunk) {
@@ -25,7 +30,7 @@ public class ChunkGroupObj {
 
     public boolean deleteChunkInGroup(MChunk chunk) {
         if(this.chunks.contains(chunk)) {
-            if(Ardal.getInstance().getDb().gettChunk().deleteChunkById(chunk.getChunckId())) {
+            if(Ardal.getInstance().getDb().gettChunk().deleteChunkById(chunk.getChunkId())) {
                 this.chunks.remove(chunk);
                 return true;
             }
@@ -43,6 +48,12 @@ public class ChunkGroupObj {
     }
 
     public boolean containChunk(Long chunkId) {
-        return this.chunks.contains(new MChunk(chunkId, this.chunkGroupId));
+        for(MChunk chunk : this.chunks) {
+            if(chunk.getChunkId().equals(chunkId)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

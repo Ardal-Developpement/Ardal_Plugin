@@ -14,6 +14,7 @@ public class RemoveChunkManager extends ArdalCmdNode implements ArdalCmd {
         super(CMD_NAME);
 
         this.registerCmd(new RemoveChunkInGroupCmd());
+        this.registerCmd(new RemoveChunkGroup());
     }
 
     @Override

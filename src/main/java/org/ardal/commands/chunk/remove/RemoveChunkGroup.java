@@ -3,13 +3,12 @@ package org.ardal.commands.chunk.remove;
 import org.ardal.Ardal;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.ChunkManager;
-import org.ardal.utils.BukkitUtils;
-import org.ardal.utils.TabCompleteUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RemoveChunkGroup implements ArdalCmd {
@@ -39,12 +38,12 @@ public class RemoveChunkGroup implements ArdalCmd {
 
     @Override
     public List<String> getTabComplete(CommandSender player, Command command, String s, List<String> argv) {
-        return TabCompleteUtils.getTabCompleteFromStrList(BukkitUtils.getOfflinePlayerNames(), argv);
+        return new ArrayList<>();
     }
 
     @Override
     public String getHelp() {
-        return String.format("%s%s:%s remove chunk in group where the player are.",
+        return String.format("%s%s:%s remove chunk group.",
                 ChatColor.GOLD,
                 getCmdName(),
                 ChatColor.WHITE);

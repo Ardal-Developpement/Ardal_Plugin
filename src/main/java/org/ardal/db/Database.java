@@ -199,14 +199,16 @@ public class Database {
                 sql = "create table if not exists chunks(" +
                         "id int auto_increment primary key," +
                         "chunk_id long, " +
-                        "chunk_group_id int)";
+                        "chunk_group_id int," +
+                        "type varchar(127))";
                 statement.execute(sql);
 
                 sql = "create table if not exists chunk_mob(" +
                         "chunk_id_group int," +
                         "mob_type varchar(127)," +
                         "level int," +
-                        "cooldown float)";
+                        "cooldown float," +
+                        "enable boolean)";
                 statement.execute(sql);
 
                 statement.close();
