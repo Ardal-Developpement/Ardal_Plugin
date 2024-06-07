@@ -13,6 +13,7 @@ public interface ChunkManagerInfo {
     ChunkGroupObj addNewChunkGroup(List<ChunkModifierType> modifierTypes);
     boolean deleteChunkGroup(int chunkGroupId);
 
+    @Nullable MChunk getChunkById(Long chunkId);
     @Nullable ChunkGroupObj getChunkGroupObj(int chunkGroupId);
 
     boolean chunkIsSaved(Long chunkId);

@@ -6,6 +6,7 @@ import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.commands.BaseCmdAlias;
+import org.ardal.commands.chunk.ShowChunkMapCmd;
 import org.ardal.commands.chunk.add.AddChunkManager;
 import org.ardal.commands.chunk.remove.RemoveChunkManager;
 import org.ardal.db.Database;
@@ -43,6 +44,7 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
 
         this.registerCmd(new AddChunkManager());
         this.registerCmd(new RemoveChunkManager());
+        this.registerCmd(new ShowChunkMapCmd());
 
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
@@ -51,7 +53,7 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
     public void onEnable() {
         Database db = Ardal.getInstance().getDb();
         // load saved chunk cache
-        db.gettChunkGroup().getAllChunkGroups().forEach(e -> 
+        db.gettChunkGroup().getAllChunkGroups().forEach(e ->
                 this.chunkGroups.add(new ChunkGroupObj(e.getChunkIdGroup()))
         );
 
@@ -160,6 +162,11 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
         }
 
         return false;
+    }
+
+    @Override
+    public @Nullable MChunk getChunkById(Long chunkId) {
+        return this.savedChunks.get(chunkId);
     }
 
     @Override
