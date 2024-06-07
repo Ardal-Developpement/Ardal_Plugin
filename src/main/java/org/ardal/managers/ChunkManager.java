@@ -8,7 +8,9 @@ import org.ardal.api.managers.ArdalManager;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.chunk.add.AddChunkManager;
 import org.ardal.commands.chunk.remove.RemoveChunkManager;
+import org.ardal.db.Database;
 import org.ardal.models.MChunk;
+import org.ardal.models.MChunkGroup;
 import org.ardal.objects.chunk.ChunkGroupObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -24,7 +26,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, ArdalManager, Listener {
     private final HashMap<Long, MChunk> savedChunks;
@@ -44,15 +49,14 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
 
     @Override
     public void onEnable() {
+        Database db = Ardal.getInstance().getDb();
         // load saved chunk cache
-        Set<Integer> groupIds = new HashSet<>();
-        for(MChunk chunk : Ardal.getInstance().getDb().gettChunk().getAllChunks()) {
-            this.savedChunks.put(chunk.getChunkId(), chunk);
-            groupIds.add(chunk.getChunkGroupId());
-        }
+        db.gettChunkGroup().getAllChunkGroups().forEach(e -> 
+                this.chunkGroups.add(new ChunkGroupObj(e.getChunkIdGroup()))
+        );
 
-        for(Integer groupId : groupIds) {
-            this.chunkGroups.add(new ChunkGroupObj(groupId));
+        for(MChunk chunk : db.gettChunk().getAllChunks()) {
+            this.savedChunks.put(chunk.getChunkId(), chunk);
         }
     }
 
@@ -114,12 +118,20 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
     public boolean addChunkInGroup(MChunk mChunk) {
         ChunkGroupObj chunkGroup = this.getChunkGroupObj(mChunk.getChunkGroupId());
         if(chunkGroup == null) {
-            //If the group do not exist:
-            chunkGroup = this.addNewChunkGroup(mChunk.getChunkGroupId(), mChunk.getModifierTypes());
+            return false;
         }
 
         this.savedChunks.put(mChunk.getChunkId(), mChunk);
         return chunkGroup.addChunkInGroup(mChunk);
+    }
+
+    @Override
+    public ChunkGroupObj addNewChunkGroup(List<ChunkModifierType> modifiers) {
+        int groupId = Ardal.getInstance().getDb().gettChunkGroup().createChunkGroup(new MChunkGroup(-1, modifiers));
+        ChunkGroupObj chunkGroupObj = new ChunkGroupObj(groupId);
+        this.chunkGroups.add(chunkGroupObj);
+
+        return chunkGroupObj;
     }
 
     @Override
@@ -133,19 +145,17 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
     }
 
     @Override
-    public ChunkGroupObj addNewChunkGroup(int chunkGroupId, List<ChunkModifierType> modifierTypes) {
-        return new ChunkGroupObj(chunkGroupId);
-    }
-
-    @Override
     public boolean deleteChunkGroup(int chunkGroupId) {
         ChunkGroupObj chunkGroup = this.getChunkGroupObj(chunkGroupId);
         if(chunkGroup == null) {
             return false;
         }
 
-        if(Ardal.getInstance().getDb().gettChunk().deleteChunkGroup(chunkGroupId)) {
+        Database db = Ardal.getInstance().getDb();
+
+        if(db.gettChunk().deleteChunkGroup(chunkGroupId)) {
             this.chunkGroups.remove(chunkGroup);
+//            if(db.gettChunkGroup().)
             return true;
         }
 

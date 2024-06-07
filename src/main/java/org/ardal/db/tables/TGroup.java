@@ -17,11 +17,6 @@ public class TGroup {
             if (generatedKeys.next()) {
                 id = generatedKeys.getInt(1);
             }
-
-            statement.close();
-
-            return id;
-
         } catch (SQLException e) {
             Ardal.writeToLogger("Failed to create a new group in the database.");
             e.printStackTrace();

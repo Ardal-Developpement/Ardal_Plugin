@@ -10,10 +10,11 @@ public interface ChunkManagerInfo {
     boolean addChunkInGroup(MChunk mChunk);
     boolean removeChunkFromGroup(MChunk mChunk);
 
-    ChunkGroupObj addNewChunkGroup(int chunkGroupId, List<ChunkModifierType> modifierTypes);
+    ChunkGroupObj addNewChunkGroup(List<ChunkModifierType> modifierTypes);
     boolean deleteChunkGroup(int chunkGroupId);
 
-    boolean chunkIsSaved(Long chunkId);
     @Nullable ChunkGroupObj getChunkGroupObj(int chunkGroupId);
+
+    boolean chunkIsSaved(Long chunkId);
     boolean chunkGroupExist(int chunkGroupId);
 }

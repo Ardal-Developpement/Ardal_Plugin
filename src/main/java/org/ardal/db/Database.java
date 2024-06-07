@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.ardal.Ardal;
 import org.ardal.db.tables.*;
 import org.ardal.db.tables.chunk.TChunk;
+import org.ardal.db.tables.chunk.TChunkGroup;
 import org.ardal.db.tables.chunk.TChunkMob;
 import org.ardal.db.tables.npc.TNpc;
 import org.ardal.db.tables.npc.type.TQuestNpc;
@@ -32,6 +33,7 @@ public class Database {
     private final TAdventureLevel tAdventureLevel;
     private final TChunk tChunk;
     private final TChunkMob tChunkMob;
+    private final TChunkGroup tChunkGroup;
 
     private void checkDbConfigInit() {
         String dbHost = Ardal.getInstance().getConfig().getString("DB_HOST");
@@ -105,6 +107,7 @@ public class Database {
         this.tAdventureLevel = new TAdventureLevel();
         this.tChunk = new TChunk();
         this.tChunkMob = new TChunkMob();
+        this.tChunkGroup = new TChunkGroup();
     }
 
     public Connection getConnection() throws SQLException {
@@ -199,8 +202,7 @@ public class Database {
                 sql = "create table if not exists chunks(" +
                         "id int auto_increment primary key," +
                         "chunk_id long, " +
-                        "chunk_group_id int," +
-                        "type varchar(127))";
+                        "chunk_group_id int)";
                 statement.execute(sql);
 
                 sql = "create table if not exists chunk_mob(" +
@@ -209,6 +211,11 @@ public class Database {
                         "level int," +
                         "cooldown float," +
                         "enable boolean)";
+                statement.execute(sql);
+
+                sql = "create table if not exists chunk_group(" +
+                        "chunk_id_group int auto_increment primary key, " +
+                        "modifiers varchar(255))";
                 statement.execute(sql);
 
                 statement.close();
@@ -276,5 +283,9 @@ public class Database {
 
     public TChunkMob gettChunkMob() {
         return tChunkMob;
+    }
+
+    public TChunkGroup gettChunkGroup() {
+        return tChunkGroup;
     }
 }

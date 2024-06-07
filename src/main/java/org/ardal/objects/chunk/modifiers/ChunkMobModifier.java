@@ -11,6 +11,6 @@ public class ChunkMobModifier extends ChunkModifier {
 
     @Override
     public void onPlayerEnter(Player player) {
-        player.sendMessage("You enter in chunk group mob" + this.getChunkGroupObj().getChunkGroupId());
+        player.sendMessage("You enter in chunk group mob: " + this.getChunkGroupObj().getChunkGroupId());
     }
 }

@@ -14,6 +14,7 @@ public class AddChunkManager extends ArdalCmdNode implements ArdalCmd {
         super(CMD_NAME);
 
         this.registerCmd(new AddChunkCmd());
+        this.registerCmd(new AddChunkGroupCmd());
     }
 
     @Override

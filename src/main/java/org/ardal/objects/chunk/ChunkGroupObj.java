@@ -1,9 +1,13 @@
 package org.ardal.objects.chunk;
 
 import org.ardal.Ardal;
+import org.ardal.api.chunks.ChunkModifierType;
+import org.ardal.db.Database;
 import org.ardal.models.MChunk;
+import org.ardal.objects.chunk.modifiers.ChunkMobModifier;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChunkGroupObj {
@@ -12,9 +16,20 @@ public class ChunkGroupObj {
     public List<ChunkModifier> modifiers;
 
     public ChunkGroupObj(int chunkGroupId) {
+        Database db = Ardal.getInstance().getDb();
+
         this.chunkGroupId = chunkGroupId;
-        this.chunks = Ardal.getInstance().getDb().gettChunk().getAllChunksByGroupId(this.chunkGroupId);
-//        this.modifiers = modifiers;
+        this.chunks = db.gettChunk().getAllChunksByGroupId(this.chunkGroupId);
+        this.modifiers = new ArrayList<>();
+
+        for(ChunkModifierType type : db.gettChunkGroup().getChunkGroupById(this.chunkGroupId).getModifierTypes()) {
+            switch(type) {
+                case MOB:
+                    this.modifiers.add(new ChunkMobModifier(this));
+                    break;
+                default:
+            }
+        }
     }
 
     public void onPlayerEnter(Player player) {

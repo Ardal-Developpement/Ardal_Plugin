@@ -1,7 +1,6 @@
 package org.ardal.db.tables.chunk;
 
 import org.ardal.Ardal;
-import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.models.MChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,11 +16,10 @@ public class TChunk {
     public boolean createChunk(@NotNull MChunk mChunk) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("insert into chunks (chunk_id, chunk_group_id, type) values (?,?,?)"))
+                     .prepareStatement("insert into chunks (chunk_id, chunk_group_id) values (?,?)"))
         {
             statement.setLong(1, mChunk.getChunkId());
             statement.setInt(2, mChunk.getChunkGroupId());
-            statement.setString(3, (mChunk.getModifierTypesAsString()));
 
             statement.execute();
             statement.close();
@@ -38,13 +36,11 @@ public class TChunk {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("update chunks set " +
-                             "chunk_group_id = ?," +
-                             "type = ? " +
+                             "chunk_group_id = ? " +
                              "where chunk_id = ?"))
         {
             statement.setInt(1, mChunk.getChunkGroupId());
             statement.setLong(2, mChunk.getChunkId());
-            statement.setString(3, mChunk.getModifierTypesAsString());
 
 
             return statement.executeUpdate() != 0;
@@ -60,16 +56,14 @@ public class TChunk {
     public MChunk getChunkById(Long chunkId) {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT chunk_group_id, type FROM chunks WHERE chunk_id = ?"))
+                     .prepareStatement("SELECT chunk_group_id FROM chunks WHERE chunk_id = ?"))
         {
             statement.setLong(1, chunkId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new MChunk(
                             chunkId,
-                            resultSet.getInt("chunk_group_id"),
-                            resultSet.getString("type")
-                    );
+                            resultSet.getInt("chunk_group_id"));
                 }
             }
         } catch (SQLException e) {
@@ -81,7 +75,7 @@ public class TChunk {
 
     public List<MChunk> getAllChunksByGroupId(int groupId) {
         List<MChunk> chunks = new ArrayList<>();
-        String request = "select chunk_id, type from chunks where chunk_group_id = ?";
+        String request = "select chunk_id from chunks where chunk_group_id = ?";
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection.prepareStatement(request))
         {
@@ -91,9 +85,7 @@ public class TChunk {
                 while(resultSet.next()){
                     chunks.add(new MChunk(
                             resultSet.getLong("chunk_id"),
-                            groupId,
-                            resultSet.getString("type")
-                    ));
+                            groupId));
                 }
             }
         } catch (SQLException e) {
@@ -106,7 +98,7 @@ public class TChunk {
 
     public List<MChunk> getAllChunks() {
         List<MChunk> chunks = new ArrayList<>();
-        String request = "select chunk_id, chunk_group_id, type from chunks";
+        String request = "select chunk_id, chunk_group_id from chunks";
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection.prepareStatement(request))
         {
@@ -114,9 +106,7 @@ public class TChunk {
                 while(resultSet.next()){
                     chunks.add(new MChunk(
                             resultSet.getLong("chunk_id"),
-                            resultSet.getInt("chunk_group_id"),
-                            resultSet.getString("type")
-                    ));
+                            resultSet.getInt("chunk_group_id")));
                 }
             }
         } catch (SQLException e) {

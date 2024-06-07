@@ -17,7 +17,7 @@ import java.util.List;
 public class RemoveChunkInGroupCmd implements ArdalCmd {
     @Override
     public boolean execute(CommandSender sender, Command command, String s, List<String> argv) {
-        if(argv.size() < 2) {
+        if(argv.isEmpty()) {
             return false;
         }
 
@@ -26,9 +26,8 @@ public class RemoveChunkInGroupCmd implements ArdalCmd {
         long chunkId = ChunkManager.GetChunkId(player.getLocation().getChunk());
         int groupId = Integer.parseInt(argv.get(0));
 
-        ChunkModifierType type = ChunkModifierType.getTypeFromString(argv.get(1));
-        if(type == null) {
-            player.sendMessage("Invalid group type.");
+        if(!chunkManager.chunkGroupExist(groupId)) {
+            player.sendMessage("Chunk group not found.");
             return true;
         }
 
@@ -37,7 +36,7 @@ public class RemoveChunkInGroupCmd implements ArdalCmd {
             return true;
         }
 
-        MChunk mChunk = new MChunk(chunkId, groupId, type);
+        MChunk mChunk = new MChunk(chunkId, groupId);
 
         if(chunkManager.removeChunkFromGroup(mChunk)) {
             player.sendMessage("Success to remove chunk in database.");
