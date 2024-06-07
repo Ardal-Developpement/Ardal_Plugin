@@ -6,13 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum ChunkGroupType {
-    NONE,
+public enum ChunkModifierType {
     MOB;
 
     @Nullable
-    public static ChunkGroupType getTypeFromString(String strType) {
-        for(ChunkGroupType type : ChunkGroupType.values()) {
+    public static ChunkModifierType getTypeFromString(String strType) {
+        for(ChunkModifierType type : ChunkModifierType.values()) {
             if(type.toString().equals(strType)) {
                 return type;
             }
@@ -22,7 +21,7 @@ public enum ChunkGroupType {
     }
 
     public static List<String> getTypesAsList() {
-        return Arrays.stream(ChunkGroupType.values())
+        return Arrays.stream(ChunkModifierType.values())
                 .map(Enum::toString)
                 .collect(Collectors.toList());
     }

@@ -1,17 +1,32 @@
 package org.ardal.models;
 
-import org.ardal.api.chunks.ChunkGroupType;
+import org.ardal.api.chunks.ChunkModifierType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MChunk {
     private Long chunk_id;
     private int chunk_group_id;
-    private ChunkGroupType type;
+    private List<ChunkModifierType> modifierTypes;
 
-    public MChunk(Long id, int chunk_group_id, ChunkGroupType type) {
+    public MChunk(Long id, int chunk_group_id, List<ChunkModifierType> modifierTypes) {
         this.chunk_id = id;
         this.chunk_group_id = chunk_group_id;
-        this.type = type;
+        this.modifierTypes = modifierTypes;
     }
+
+    public MChunk(Long id, int chunk_group_id, String modifierTypesAsString) {
+        this.chunk_id = id;
+        this.chunk_group_id = chunk_group_id;
+
+        this.modifierTypes = new ArrayList<>();
+        for(String strModifierType : modifierTypesAsString.split("\\|")) {
+            this.modifierTypes.add(ChunkModifierType.getTypeFromString(strModifierType));
+        }
+    }
+
+
 
     public Long getChunkId() {
         return chunk_id;
@@ -21,7 +36,16 @@ public class MChunk {
         return chunk_group_id;
     }
 
-    public ChunkGroupType getType() {
-        return type;
+    public List<ChunkModifierType> getModifierTypes() {
+        return modifierTypes;
+    }
+
+    public String getModifierTypesAsString() {
+        StringBuilder sb = new StringBuilder();
+        for(ChunkModifierType modifierType : this.modifierTypes) {
+            sb.append(modifierType.toString()).append('|');
+        }
+
+        return sb.toString();
     }
 }

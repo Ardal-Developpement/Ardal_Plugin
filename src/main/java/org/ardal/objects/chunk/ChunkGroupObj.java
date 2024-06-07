@@ -1,4 +1,4 @@
-package org.ardal.objects;
+package org.ardal.objects.chunk;
 
 import org.ardal.Ardal;
 import org.ardal.models.MChunk;
@@ -9,14 +9,17 @@ import java.util.List;
 public class ChunkGroupObj {
     private final int chunkGroupId;
     public final List<MChunk> chunks;
+    public List<ChunkModifier> modifiers;
 
     public ChunkGroupObj(int chunkGroupId) {
         this.chunkGroupId = chunkGroupId;
         this.chunks = Ardal.getInstance().getDb().gettChunk().getAllChunksByGroupId(this.chunkGroupId);
+//        this.modifiers = modifiers;
     }
 
     public void onPlayerEnter(Player player) {
         player.sendMessage("You enter in chunk group " + this.chunkGroupId);
+        this.modifiers.forEach(modifier -> modifier.onPlayerEnter(player));
     }
 
     public boolean addChunkInGroup(MChunk chunk) {

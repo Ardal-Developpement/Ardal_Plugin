@@ -1,7 +1,7 @@
 package org.ardal.commands.chunk.remove;
 
 import org.ardal.Ardal;
-import org.ardal.api.chunks.ChunkGroupType;
+import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.ChunkManager;
 import org.ardal.models.MChunk;
@@ -26,7 +26,7 @@ public class RemoveChunkInGroupCmd implements ArdalCmd {
         long chunkId = ChunkManager.GetChunkId(player.getLocation().getChunk());
         int groupId = Integer.parseInt(argv.get(0));
 
-        ChunkGroupType type = ChunkGroupType.getTypeFromString(argv.get(1));
+        ChunkModifierType type = ChunkModifierType.getTypeFromString(argv.get(1));
         if(type == null) {
             player.sendMessage("Invalid group type.");
             return true;
@@ -52,7 +52,7 @@ public class RemoveChunkInGroupCmd implements ArdalCmd {
     public List<String> getTabComplete(CommandSender player, Command command, String s, List<String> argv) {
         if(argv.size() == 2) {
             return TabCompleteUtils.getTabCompleteFromStrList(
-                    ChunkGroupType.getTypesAsList(),
+                    ChunkModifierType.getTypesAsList(),
                     argv.get(1)
             );
         } else {

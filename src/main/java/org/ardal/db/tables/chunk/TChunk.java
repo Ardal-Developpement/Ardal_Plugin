@@ -1,7 +1,7 @@
 package org.ardal.db.tables.chunk;
 
 import org.ardal.Ardal;
-import org.ardal.api.chunks.ChunkGroupType;
+import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.models.MChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +21,7 @@ public class TChunk {
         {
             statement.setLong(1, mChunk.getChunkId());
             statement.setInt(2, mChunk.getChunkGroupId());
-            statement.setString(3, (mChunk.getType().toString()));
+            statement.setString(3, (mChunk.getModifierTypesAsString()));
 
             statement.execute();
             statement.close();
@@ -44,7 +44,7 @@ public class TChunk {
         {
             statement.setInt(1, mChunk.getChunkGroupId());
             statement.setLong(2, mChunk.getChunkId());
-            statement.setString(3, mChunk.getType().toString());
+            statement.setString(3, mChunk.getModifierTypesAsString());
 
 
             return statement.executeUpdate() != 0;
@@ -68,7 +68,7 @@ public class TChunk {
                     return new MChunk(
                             chunkId,
                             resultSet.getInt("chunk_group_id"),
-                            ChunkGroupType.getTypeFromString(resultSet.getString("type"))
+                            resultSet.getString("type")
                     );
                 }
             }
@@ -92,7 +92,7 @@ public class TChunk {
                     chunks.add(new MChunk(
                             resultSet.getLong("chunk_id"),
                             groupId,
-                            ChunkGroupType.getTypeFromString(resultSet.getString("type"))
+                            resultSet.getString("type")
                     ));
                 }
             }
@@ -115,7 +115,7 @@ public class TChunk {
                     chunks.add(new MChunk(
                             resultSet.getLong("chunk_id"),
                             resultSet.getInt("chunk_group_id"),
-                            ChunkGroupType.getTypeFromString(resultSet.getString("type"))
+                            resultSet.getString("type")
                     ));
                 }
             }

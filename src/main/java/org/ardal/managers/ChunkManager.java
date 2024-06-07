@@ -1,17 +1,15 @@
 package org.ardal.managers;
 
 import org.ardal.Ardal;
-import org.ardal.api.chunks.ChunkGroupType;
 import org.ardal.api.chunks.ChunkManagerInfo;
+import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.commands.BaseCmdAlias;
 import org.ardal.commands.chunk.add.AddChunkManager;
 import org.ardal.commands.chunk.remove.RemoveChunkManager;
 import org.ardal.models.MChunk;
-import org.ardal.models.MChunkMob;
-import org.ardal.objects.ChunkGroupMob;
-import org.ardal.objects.ChunkGroupObj;
+import org.ardal.objects.chunk.ChunkGroupObj;
 import org.ardal.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -116,7 +114,8 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
     public boolean addChunkInGroup(MChunk mChunk) {
         ChunkGroupObj chunkGroup = this.getChunkGroupObj(mChunk.getChunkGroupId());
         if(chunkGroup == null) {
-            chunkGroup = this.addNewChunkGroup(mChunk.getChunkGroupId(), mChunk.getType());
+            //If the group do not exist:
+            chunkGroup = this.addNewChunkGroup(mChunk.getChunkGroupId(), mChunk.getModifierTypes());
         }
 
         this.savedChunks.put(mChunk.getChunkId(), mChunk);
@@ -134,23 +133,8 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
     }
 
     @Override
-    public ChunkGroupObj addNewChunkGroup(int chunkGroupId, ChunkGroupType type) {
-        ChunkGroupObj chunkGroupObj = this.getChunkGroupObj(chunkGroupId);
-        if(chunkGroupObj != null) {
-            return chunkGroupObj;
-        }
-
-        switch (type) {
-            case MOB:
-                chunkGroupObj = new ChunkGroupMob(new MChunkMob(chunkGroupId, "test1", 1, 1, true));
-                break;
-            default:
-                chunkGroupObj = new ChunkGroupObj(chunkGroupId);
-        }
-
-        this.chunkGroups.add(chunkGroupObj);
-
-        return chunkGroupObj;
+    public ChunkGroupObj addNewChunkGroup(int chunkGroupId, List<ChunkModifierType> modifierTypes) {
+        return new ChunkGroupObj(chunkGroupId);
     }
 
     @Override

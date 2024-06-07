@@ -2,7 +2,7 @@ package org.ardal.commands.chunk.add;
 
 
 import org.ardal.Ardal;
-import org.ardal.api.chunks.ChunkGroupType;
+import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.api.commands.ArdalCmd;
 import org.ardal.managers.ChunkManager;
 import org.ardal.models.MChunk;
@@ -27,18 +27,24 @@ public class AddChunkCmd implements ArdalCmd {
         long chunkId = ChunkManager.GetChunkId(player.getLocation().getChunk());
         int groupId = Integer.parseInt(argv.get(0));
 
-        ChunkGroupType type = ChunkGroupType.getTypeFromString(argv.get(1));
-        if(type == null) {
-            player.sendMessage("Invalid group type.");
-            return true;
+        List<ChunkModifierType> modifiers = new ArrayList<>();
+
+        for(int i = 1; i < argv.size(); i++) {
+            ChunkModifierType chunkModifierType = ChunkModifierType.getTypeFromString(argv.get(i));
+            if(chunkModifierType == null) {
+                player.sendMessage("Invalid group type.");
+                return true;
+            }
+
+            modifiers.add(chunkModifierType);
         }
 
         if(chunkManager.chunkIsSaved(chunkId)) {
-            player.sendMessage("Chunk already saved in the group.");
+            player.sendMessage("Chunk already saved.");
             return true;
         }
 
-        if(chunkManager.addChunkInGroup(new MChunk(chunkId, groupId, type))) {
+        if(chunkManager.addChunkInGroup(new MChunk(chunkId, groupId, modifiers))) {
             player.sendMessage("Success to save in database.");
         } else {
             player.sendMessage("Failed to save in database.");
@@ -51,7 +57,7 @@ public class AddChunkCmd implements ArdalCmd {
     public List<String> getTabComplete(CommandSender player, Command command, String s, List<String> argv) {
         if(argv.size() == 2) {
             return TabCompleteUtils.getTabCompleteFromStrList(
-                        ChunkGroupType.getTypesAsList(),
+                        ChunkModifierType.getTypesAsList(),
                         argv.get(1)
                     );
         } else {
