@@ -51,7 +51,7 @@ public class AddChunkCmd implements ArdalCmd {
 
     @Override
     public String getHelp() {
-        return String.format("%s%s:%s save chunk where the player are.",
+        return String.format("%s%s:%s save chunk where the player is.",
                 ChatColor.GOLD,
                 getCmdName(),
                 ChatColor.WHITE);

@@ -55,9 +55,19 @@ Base command: `/custom_npc`.
   - `skin [npc uuid]`: set the skin of a npc. 
 - `teleport [npc uuid]`: teleport a npc to a new location (or just to change his face/body orientation).
 
-### Npc command usage:
+### Custom mob command usage:
 Base command: `/custom_mob`.
 - `invoke [mob type] [mob level]`: invoke a new mob.
+
+### Chunk command usage:
+Base command: `/chunk`.
+- `add`: invoke a new mob.
+  - `chunk`: save chunk where the player is.
+  - `chunkGroup`: add chunk group.
+- `map`: open the chunk map.
+- `remove`: 
+  - `chunk`: remove chunk in group where the player is.
+  - `group`: remove chunk group.
 
 ### Shortcut commands usage:
 - `/ec [@Nullable player]`: open enderchest of the player (or of itself).
