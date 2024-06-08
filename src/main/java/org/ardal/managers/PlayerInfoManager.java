@@ -51,7 +51,6 @@ public class PlayerInfoManager extends ArdalCmdManager implements PlayerManagerI
 
     @Override
     public void onDisable(){
-        this.registerPlayers.values().forEach(playerObj -> {this.unregisterPlayer(playerObj.getUuid());});
     }
 
     @Override
