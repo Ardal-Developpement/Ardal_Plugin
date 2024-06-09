@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ChunkGroupObj {
     private final int chunkGroupId;
-    public final List<MChunk> chunks;
-    public List<ChunkModifier> modifiers;
+    private final List<MChunk> chunks;
+    private final List<ChunkModifier> modifiers;
 
     public ChunkGroupObj(int chunkGroupId) {
         Database db = Ardal.getInstance().getDb();
@@ -73,5 +73,18 @@ public class ChunkGroupObj {
         }
 
         return false;
+    }
+
+    public List<ChunkModifier> getModifiers() {
+        return modifiers;
+    }
+
+    public List<ChunkModifierType> getModifierTypes() {
+        List<ChunkModifierType> types = new ArrayList<>();
+        for(ChunkModifier modifiers : this.getModifiers()) {
+            types.add(modifiers.getChunkModifierType());
+        }
+
+        return types;
     }
 }

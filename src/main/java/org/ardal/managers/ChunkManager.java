@@ -6,6 +6,7 @@ import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.api.commands.ArdalCmdManager;
 import org.ardal.api.managers.ArdalManager;
 import org.ardal.commands.BaseCmdAlias;
+import org.ardal.commands.chunk.ChunkEditorCmd;
 import org.ardal.commands.chunk.ShowChunkMapCmd;
 import org.ardal.commands.chunk.add.AddChunkManager;
 import org.ardal.commands.chunk.remove.RemoveChunkManager;
@@ -45,6 +46,7 @@ public class ChunkManager extends ArdalCmdManager implements ChunkManagerInfo, A
         this.registerCmd(new AddChunkManager());
         this.registerCmd(new RemoveChunkManager());
         this.registerCmd(new ShowChunkMapCmd());
+        this.registerCmd(new ChunkEditorCmd());
 
         Ardal.getInstance().getServer().getPluginManager().registerEvents(this, Ardal.getInstance());
     }
