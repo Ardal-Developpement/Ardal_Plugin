@@ -3,8 +3,9 @@ package org.ardal.inventories.chunk;
 import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.api.inventories.CICell;
 import org.ardal.inventories.CICarousel;
+import org.ardal.inventories.chunk.modifiers.mob_chunk.MobModifierEditorInventory;
 import org.ardal.objects.chunk.ChunkGroupObj;
-import org.ardal.objects.chunk.ChunkModifier;
+import org.ardal.objects.chunk.modifiers.ChunkMobModifier;
 import org.ardal.utils.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -17,12 +18,10 @@ import java.util.List;
 
 public class ChunkEditorInventory extends CICarousel {
     private final ChunkGroupObj chunkGroupObj;
-    private final List<ChunkModifier> savedModifiers;
 
     public ChunkEditorInventory(Player player, ChunkGroupObj chunkGroupObj) {
         super("Chunk Editor", 36, player);
         this.chunkGroupObj = chunkGroupObj;
-        this.savedModifiers = this.chunkGroupObj.getModifiers();
 
         this.buildCarousel(this.modifiersAsItems(), new CICell(null,
                 -1,
@@ -68,6 +67,8 @@ public class ChunkEditorInventory extends CICarousel {
         switch (material) {
             case CREEPER_HEAD:
                 event.getWhoClicked().sendMessage("Clicked on Mob chunk editor.");
+                this.closeInventory();
+                new MobModifierEditorInventory(this.chunkGroupObj.getModifier(ChunkMobModifier.class), this.getPlayer()).showInventory();
         }
     }
 }

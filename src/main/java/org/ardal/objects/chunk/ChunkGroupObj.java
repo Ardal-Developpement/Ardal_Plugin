@@ -79,6 +79,16 @@ public class ChunkGroupObj {
         return modifiers;
     }
 
+    public <T extends ChunkModifier> T getModifier(Class<T> modifierClass) {
+        for(ChunkModifier modifier : this.modifiers) {
+            if(modifierClass.isInstance(modifier)) {
+                return modifierClass.cast(modifier);
+            }
+        }
+
+        throw new RuntimeException("No modifier found for " + modifierClass);
+    }
+
     public List<ChunkModifierType> getModifierTypes() {
         List<ChunkModifierType> types = new ArrayList<>();
         for(ChunkModifier modifiers : this.getModifiers()) {
