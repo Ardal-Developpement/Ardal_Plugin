@@ -2,7 +2,7 @@ package org.ardal.inventories.chunk;
 
 import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.api.inventories.CICell;
-import org.ardal.inventories.CICarousel;
+import org.ardal.inventories.CIWithBackBtn;
 import org.ardal.inventories.chunk.modifiers.mob_chunk.MobModifierEditorInventory;
 import org.ardal.objects.chunk.ChunkGroupObj;
 import org.ardal.objects.chunk.modifiers.ChunkMobModifier;
@@ -16,11 +16,13 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChunkEditorInventory extends CICarousel {
+public class ChunkEditorInventory extends CIWithBackBtn {
+    public static final String PAGE_NAME = "Chunk Editor";
+
     private final ChunkGroupObj chunkGroupObj;
 
     public ChunkEditorInventory(Player player, ChunkGroupObj chunkGroupObj) {
-        super("Chunk Editor", 36, player);
+        super("Chunk Editor", 36, player, "");
         this.chunkGroupObj = chunkGroupObj;
 
         this.buildCarousel(this.modifiersAsItems(), new CICell(null,
@@ -57,7 +59,7 @@ public class ChunkEditorInventory extends CICarousel {
     }
 
     private ItemStack getItemForMobModifier() {
-        return ItemUtils.QuickItemSet(Material.CREEPER_HEAD, "Mob modifier editor");
+        return ItemUtils.QuickItemSet(Material.CREEPER_HEAD, MobModifierEditorInventory.PAGE_NAME);
     }
 
 
@@ -66,9 +68,13 @@ public class ChunkEditorInventory extends CICarousel {
         Material material = event.getCurrentItem().getType();
         switch (material) {
             case CREEPER_HEAD:
-                event.getWhoClicked().sendMessage("Clicked on Mob chunk editor.");
                 this.closeInventory();
-                new MobModifierEditorInventory(this.chunkGroupObj.getModifier(ChunkMobModifier.class), this.getPlayer()).showInventory();
+                new MobModifierEditorInventory(this.chunkGroupObj, this.getPlayer()).showInventory();
         }
+    }
+
+    @Override
+    public void onBackBtnClick(InventoryClickEvent event) {
+
     }
 }

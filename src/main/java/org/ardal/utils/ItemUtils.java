@@ -25,4 +25,13 @@ public class ItemUtils {
 
         return itemCp;
     }
+
+    public static ItemStack QuickItemSetAndEnchant(Material mat, String name, Enchantment ench, int level) {
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        meta.addEnchant(ench, level, true);
+        item.setItemMeta(meta);
+        return item;
+    }
 }
