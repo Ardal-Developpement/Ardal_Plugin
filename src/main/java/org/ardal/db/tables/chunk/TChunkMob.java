@@ -63,6 +63,7 @@ public class TChunkMob {
     @Nullable
     public MChunkMob getChunkMobByChunkGroupId(int chunkIdGroup) {
         String request = "select mob_type, level, cooldown, enable from chunk_mob where chunk_id_group = ?";
+
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection.prepareStatement(request))
         {
@@ -70,7 +71,7 @@ public class TChunkMob {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if(resultSet.next()){
-                    new MChunkMob(
+                    return new MChunkMob(
                             chunkIdGroup,
                             resultSet.getString("mob_type"),
                             resultSet.getInt("level"),

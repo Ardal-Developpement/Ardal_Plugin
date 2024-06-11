@@ -1,5 +1,11 @@
 package org.ardal.models;
 
+import org.ardal.Ardal;
+import org.ardal.api.entities.mobs.MobType;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MChunkMob {
     private int chunk_id_group;
     private String mob_type;
@@ -15,6 +21,18 @@ public class MChunkMob {
         this.enable = enable;
     }
 
+    public boolean updateChunkMob(){
+        return Ardal.getInstance().getDb().gettChunkMob().updateChunkMob(this);
+    }
+
+    public void addSpawningMob(MobType mobType) {
+        this.mob_type += mobType.toString() + "|";
+    }
+
+    public void removeSpawningMob(MobType mobType) {
+        this.mob_type = this.mob_type.replace(mobType.toString() + "|", "");
+    }
+
     public int getChunkIdGroup() {
         return chunk_id_group;
     }
@@ -25,6 +43,21 @@ public class MChunkMob {
 
     public String getMobType() {
         return mob_type;
+    }
+
+    public List<MobType> getMobTypesAsList() {
+        List<MobType> mobTypes = new ArrayList<>();
+
+        for(String e : this.mob_type.split("\\|")) {
+            if(!e.isEmpty()) {
+                MobType type = MobType.getMobTypeByName(e);
+                if(type != null) {
+                    mobTypes.add(type);
+                }
+            }
+        }
+
+        return mobTypes;
     }
 
     public void setMobType(String mob_type) {
