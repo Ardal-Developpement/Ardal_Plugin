@@ -54,7 +54,7 @@ public abstract class CIWithBackBtn extends CustomInventory implements CellCallB
         }
     }
 
-    public void buildCarousel(List<ItemStack> items, CICell cellTemplate) {
+    public void build(List<ItemStack> items, CICell cellTemplate) {
         if(items.size() > 45) {
             Ardal.getInstance().getLogger().severe("CIWithBackBtn max size is 45!");
         }
@@ -62,7 +62,7 @@ public abstract class CIWithBackBtn extends CustomInventory implements CellCallB
         for(int i = 0; i < items.size() && i < 45; i++) {
             this.setCell(new CICell(
                     items.get(i),
-                    i++,
+                    i,
                     cellTemplate.getOnRightClickCB(),
                     cellTemplate.getOnRightShieftClickCB(),
                     cellTemplate.getOnLeftClickCB(),

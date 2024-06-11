@@ -25,7 +25,7 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
         this.chunkGroupObj = chunkGroupObj;
         this.mobModifier = this.chunkGroupObj.getModifier(ChunkMobModifier.class);
 
-        this.buildCarousel(
+        this.build(
                 this.getItems(),
                 new CICell(null,
                         -1,

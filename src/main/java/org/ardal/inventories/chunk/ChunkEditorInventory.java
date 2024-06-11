@@ -5,7 +5,6 @@ import org.ardal.api.inventories.CICell;
 import org.ardal.inventories.CIWithBackBtn;
 import org.ardal.inventories.chunk.modifiers.mob_chunk.MobModifierEditorInventory;
 import org.ardal.objects.chunk.ChunkGroupObj;
-import org.ardal.objects.chunk.modifiers.ChunkMobModifier;
 import org.ardal.utils.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -25,7 +24,7 @@ public class ChunkEditorInventory extends CIWithBackBtn {
         super("Chunk Editor", 36, player, "");
         this.chunkGroupObj = chunkGroupObj;
 
-        this.buildCarousel(this.modifiersAsItems(), new CICell(null,
+        this.build(this.modifiersAsItems(), new CICell(null,
                 -1,
                 null,
                 null,
@@ -75,6 +74,6 @@ public class ChunkEditorInventory extends CIWithBackBtn {
 
     @Override
     public void onBackBtnClick(InventoryClickEvent event) {
-
+        this.closeInventory();
     }
 }
