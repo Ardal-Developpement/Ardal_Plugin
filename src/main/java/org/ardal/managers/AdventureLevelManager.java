@@ -57,7 +57,7 @@ public class AdventureLevelManager implements ArdalManager {
     }
 
     private void createDefaultLevel() {
-        System.out.println("Creating default adventure level.");
+        Ardal.getInstance().getLogger().info("Creating default adventure level.");
 
         TAdventureLevel tAdventureLevel = Ardal.getInstance().getDb().gettAdventureLevel();
         tAdventureLevel.createAdventureLevel(new MAdventureLevel(0, "Paysan", 0));

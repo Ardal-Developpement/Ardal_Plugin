@@ -46,7 +46,7 @@ public abstract class CIWithBackBtn extends CustomInventory implements CellCallB
             return;
         }
 
-        if(event.getSlot() <= 45) {
+        if(event.getSlot() < this.backBtnSlot) {
             this.onItemsClick(event);
         } else if(event.getSlot() == this.backBtnSlot) {
             this.closeInventory();

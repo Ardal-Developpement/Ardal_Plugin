@@ -68,7 +68,7 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
         switch (event.getCurrentItem().getType()) {
             case CREEPER_SPAWN_EGG:
                 this.closeInventory();
-                new SpawningMobEditorInventory(this.mobModifier, this.getPlayer()).showInventory();
+                new SpawningMobEditorInventory(this.chunkGroupObj, this.mobModifier, this.getPlayer()).showInventory();
                 break;
             case DIAMOND_AXE:
                 break;
@@ -83,6 +83,6 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
 
     @Override
     public void onBackBtnClick(InventoryClickEvent event) {
-        new ChunkEditorInventory(this.getPlayer(), this.chunkGroupObj);
+        new ChunkEditorInventory(this.getPlayer(), this.chunkGroupObj).showInventory();
     }
 }
