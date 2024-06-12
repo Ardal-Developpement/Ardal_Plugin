@@ -60,7 +60,9 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
     }
 
     private ItemStack getCooldownItem() {
-        return ItemUtils.QuickItemSet(Material.CLOCK, "Spawning cooldown");
+        ItemStack item = ItemUtils.QuickItemSet(Material.CLOCK, "Spawning cooldown");
+        this.setCooldown(item);
+        return item;
     }
 
     private ItemStack getEnableItem() {
@@ -75,24 +77,10 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
                 new SpawningMobEditorInventory(this.chunkGroupObj, this.mobModifier, this.getPlayer()).showInventory();
                 break;
             case DIAMOND_AXE:
-                int nbLevel = 3;
-                if(event.isLeftClick()) {
-                    // Add level
-                    this.mobModifier.getMChunkMob().addLevel(nbLevel);
-                    this.mobModifier.getMChunkMob().updateChunkMob();
-                    this.setMobLevel(event.getCurrentItem());
-                } else if(event.isRightClick()){
-                    // Remove level
-                    if(this.mobModifier.getMChunkMob().getLevel() - nbLevel  < 1){
-                        return;
-                    }
-
-                    this.mobModifier.getMChunkMob().addLevel(-nbLevel);
-                    this.mobModifier.getMChunkMob().updateChunkMob();
-                    this.setMobLevel(event.getCurrentItem());
-                }
+                this.levelProcess(event);
                 break;
             case CLOCK:
+                this.cooldownProcess(event);
                 break;
                 case REDSTONE_TORCH:
                     break;
@@ -106,6 +94,44 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
         new ChunkEditorInventory(this.getPlayer(), this.chunkGroupObj).showInventory();
     }
 
+    private void levelProcess(InventoryClickEvent event) {
+        int nbLevel = 3;
+        if(event.isLeftClick()) {
+            // Add level
+            this.mobModifier.getMChunkMob().addLevel(nbLevel);
+            this.mobModifier.getMChunkMob().updateChunkMob();
+            this.setMobLevel(event.getCurrentItem());
+        } else if(event.isRightClick()){
+            // Remove level
+            if(this.mobModifier.getMChunkMob().getLevel() - nbLevel  < 1){
+                return;
+            }
+
+            this.mobModifier.getMChunkMob().addLevel(-nbLevel);
+            this.mobModifier.getMChunkMob().updateChunkMob();
+            this.setMobLevel(event.getCurrentItem());
+        }
+    }
+
+    private void cooldownProcess(InventoryClickEvent event) {
+        float nbCooldown = 5f;
+        if(event.isLeftClick()) {
+            // Add level
+            this.mobModifier.getMChunkMob().addCooldown(nbCooldown);
+            this.mobModifier.getMChunkMob().updateChunkMob();
+            this.setCooldown(event.getCurrentItem());
+        } else if(event.isRightClick()){
+            // Remove level
+            if(this.mobModifier.getMChunkMob().getCooldown() - nbCooldown  < 0){
+                return;
+            }
+
+            this.mobModifier.getMChunkMob().addCooldown(-nbCooldown);
+            this.mobModifier.getMChunkMob().updateChunkMob();
+            this.setCooldown(event.getCurrentItem());
+        }
+    }
+
     private void setMobLevel(ItemStack spawningMobLevelItem) {
         ItemMeta meta = spawningMobLevelItem.getItemMeta();
         List<String> lore = new ArrayList<>();
@@ -113,5 +139,14 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
 
         meta.setLore(lore);
         spawningMobLevelItem.setItemMeta(meta);
+    }
+
+    private void setCooldown(ItemStack cooldownItem) {
+        ItemMeta meta = cooldownItem.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        lore.add("Cooldown: " + this.mobModifier.getMChunkMob().getCooldown() + "sec");
+
+        meta.setLore(lore);
+        cooldownItem.setItemMeta(meta);
     }
 }

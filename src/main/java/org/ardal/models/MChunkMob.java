@@ -89,6 +89,10 @@ public class MChunkMob {
         this.cooldown = cooldown;
     }
 
+    public void addCooldown(float cooldownAdd) {
+        this.cooldown += cooldownAdd;
+    }
+
     public boolean isEnable() {
         return enable;
     }
