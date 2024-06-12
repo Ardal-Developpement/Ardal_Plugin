@@ -46,8 +46,8 @@ public class ChunkMobModifier extends ChunkModifier {
     }
 
     public boolean addSpawningMob(MobType mobType) {
-        if(this.spawningMobTypes.contains(mobType)) {
-            Ardal.getInstance().getLogger().info("Try adding a spawning mob that has already been set.!");
+        if(this.hasMobType(mobType)) {
+            Ardal.getInstance().getLogger().severe("Try adding a spawning mob that has already been set.!");
             return false;
         }
 
@@ -58,8 +58,8 @@ public class ChunkMobModifier extends ChunkModifier {
     }
 
     public boolean removeSpawningMob(MobType mobType) {
-        if(!this.spawningMobTypes.contains(mobType)) {
-            Ardal.getInstance().getLogger().info("Try removing a spawning mob that has already been set.!");
+        if(!this.hasMobType(mobType)) {
+            Ardal.getInstance().getLogger().severe("Try removing a spawning mob that has already been set.!");
             return false;
         }
 
@@ -67,5 +67,9 @@ public class ChunkMobModifier extends ChunkModifier {
 
         this.mChunkMob.removeSpawningMob(mobType);
         return this.mChunkMob.updateChunkMob();
+    }
+
+    public boolean hasMobType(MobType mobType) {
+        return this.spawningMobTypes.contains(mobType);
     }
 }

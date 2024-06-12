@@ -37,18 +37,18 @@ public class TChunkMob {
         try (Connection connection = Ardal.getInstance().getDb().getConnection();
              PreparedStatement statement = connection
                      .prepareStatement("update chunk_mob set " +
-                             "chunk_id_group = ?," +
                              "mob_type = ?," +
                              "level = ?," +
                              "cooldown = ?, " +
                              "enable = ? " +
                              "where chunk_id_group = ?"))
         {
-            statement.setInt(1, mChunkMob.getChunkIdGroup());
-            statement.setString(2, mChunkMob.getMobTypesAsString());
-            statement.setInt(3, mChunkMob.getLevel());
-            statement.setFloat(4, mChunkMob.getCooldown());
-            statement.setBoolean(5, mChunkMob.isEnable());
+            statement.setString(1, mChunkMob.getMobTypesAsString());
+            statement.setInt(2, mChunkMob.getLevel());
+            statement.setFloat(3, mChunkMob.getCooldown());
+            statement.setBoolean(4, mChunkMob.isEnable());
+            statement.setInt(5, mChunkMob.getChunkIdGroup());
+
 
 
             return statement.executeUpdate() != 0;

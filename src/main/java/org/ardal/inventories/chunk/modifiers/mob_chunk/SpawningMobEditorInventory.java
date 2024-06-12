@@ -47,6 +47,10 @@ public class SpawningMobEditorInventory extends CIWithBackBtn {
     }
 
     private ItemStack getCustomSkeletonItem() {
+        if(this.mobModifier.hasMobType(MobType.SKELETON)) {
+            return ItemUtils.QuickItemSetAndEnchant(Material.SKELETON_SPAWN_EGG, "Skeleton", Enchantment.VANISHING_CURSE, 1);
+        }
+
         return ItemUtils.QuickItemSet(Material.SKELETON_SPAWN_EGG, "Skeleton");
     }
 
