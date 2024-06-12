@@ -8,6 +8,7 @@ import org.ardal.objects.chunk.ChunkGroupObj;
 import org.ardal.objects.chunk.modifiers.ChunkMobModifier;
 import org.ardal.utils.ItemUtils;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -66,7 +67,9 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
     }
 
     private ItemStack getEnableItem() {
-        return ItemUtils.QuickItemSet(Material.REDSTONE_TORCH, "Enable Spawning");
+        ItemStack item = ItemUtils.QuickItemSet(Material.REDSTONE_TORCH, "Enable Spawning");
+        this.setSpawningMobEnable(item);
+        return item;
     }
 
     @Override
@@ -82,8 +85,9 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
             case CLOCK:
                 this.cooldownProcess(event);
                 break;
-                case REDSTONE_TORCH:
-                    break;
+            case REDSTONE_TORCH:
+                this.spawningMobEnable(event);
+                break;
             default:
                 System.err.println("Unknown item type: " + event.getCurrentItem().getType());
         }
@@ -132,6 +136,14 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
         }
     }
 
+    private void spawningMobEnable(InventoryClickEvent event) {
+        boolean currentState = this.mobModifier.getMChunkMob().isEnable();
+        this.mobModifier.getMChunkMob().setEnable(!currentState);
+        this.mobModifier.getMChunkMob().updateChunkMob();
+
+        this.setSpawningMobEnable(event.getCurrentItem());
+    }
+
     private void setMobLevel(ItemStack spawningMobLevelItem) {
         ItemMeta meta = spawningMobLevelItem.getItemMeta();
         List<String> lore = new ArrayList<>();
@@ -149,4 +161,21 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
         meta.setLore(lore);
         cooldownItem.setItemMeta(meta);
     }
+
+    private void setSpawningMobEnable(ItemStack enabledItem) {
+        ItemMeta meta = enabledItem.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        boolean status = this.mobModifier.getMChunkMob().isEnable();
+        lore.add("is enable: " + status);
+
+        if (status) {
+            meta.addEnchant(Enchantment.VANISHING_CURSE, 1, true);
+        } else {
+            meta.removeEnchant(Enchantment.VANISHING_CURSE);
+        }
+
+        meta.setLore(lore);
+        enabledItem.setItemMeta(meta);
+    }
+
 }
