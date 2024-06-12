@@ -3,6 +3,7 @@ package org.ardal.inventories.chunk.modifiers.mob_chunk;
 import org.ardal.api.inventories.CICell;
 import org.ardal.inventories.CIWithBackBtn;
 import org.ardal.inventories.chunk.ChunkEditorInventory;
+import org.ardal.models.MChunkMob;
 import org.ardal.objects.chunk.ChunkGroupObj;
 import org.ardal.objects.chunk.modifiers.ChunkMobModifier;
 import org.ardal.utils.ItemUtils;
@@ -10,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
                 this.getItems(),
                 new CICell(null,
                         -1,
-                        null,
+                        this,
                         null,
                         this,
                         null
@@ -52,7 +54,9 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
     }
 
     private ItemStack getSpawningMobLevelItem() {
-        return ItemUtils.QuickItemSet(Material.DIAMOND_AXE, "Spawning mob level.");
+        ItemStack item = ItemUtils.QuickItemSet(Material.DIAMOND_AXE, "Spawning mob level.");
+        this.setMobLevel(item);
+        return item;
     }
 
     private ItemStack getCooldownItem() {
@@ -71,6 +75,22 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
                 new SpawningMobEditorInventory(this.chunkGroupObj, this.mobModifier, this.getPlayer()).showInventory();
                 break;
             case DIAMOND_AXE:
+                int nbLevel = 3;
+                if(event.isLeftClick()) {
+                    // Add level
+                    this.mobModifier.getMChunkMob().addLevel(nbLevel);
+                    this.mobModifier.getMChunkMob().updateChunkMob();
+                    this.setMobLevel(event.getCurrentItem());
+                } else if(event.isRightClick()){
+                    // Remove level
+                    if(this.mobModifier.getMChunkMob().getLevel() - nbLevel  < 1){
+                        return;
+                    }
+
+                    this.mobModifier.getMChunkMob().addLevel(-nbLevel);
+                    this.mobModifier.getMChunkMob().updateChunkMob();
+                    this.setMobLevel(event.getCurrentItem());
+                }
                 break;
             case CLOCK:
                 break;
@@ -84,5 +104,14 @@ public class MobModifierEditorInventory extends CIWithBackBtn {
     @Override
     public void onBackBtnClick(InventoryClickEvent event) {
         new ChunkEditorInventory(this.getPlayer(), this.chunkGroupObj).showInventory();
+    }
+
+    private void setMobLevel(ItemStack spawningMobLevelItem) {
+        ItemMeta meta = spawningMobLevelItem.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        lore.add("Mob level: " + this.mobModifier.getMChunkMob().getLevel());
+
+        meta.setLore(lore);
+        spawningMobLevelItem.setItemMeta(meta);
     }
 }

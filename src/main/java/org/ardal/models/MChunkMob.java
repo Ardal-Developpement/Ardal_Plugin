@@ -77,6 +77,10 @@ public class MChunkMob {
         this.level = level;
     }
 
+    public void addLevel(int levelAdd) {
+        this.level += levelAdd;
+    }
+
     public float getCooldown() {
         return cooldown;
     }

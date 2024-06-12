@@ -29,7 +29,7 @@ public class ChunkMobModifier extends ChunkModifier {
             this.mChunkMob = new MChunkMob(
                     this.getChunkGroupObj().getChunkGroupId(),
                     "",
-                    0,
+                    1,
                     15,
                     false
             );
@@ -71,5 +71,9 @@ public class ChunkMobModifier extends ChunkModifier {
 
     public boolean hasMobType(MobType mobType) {
         return this.spawningMobTypes.contains(mobType);
+    }
+
+    public MChunkMob getMChunkMob() {
+        return mChunkMob;
     }
 }
