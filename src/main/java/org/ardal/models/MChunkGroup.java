@@ -19,10 +19,9 @@ public class MChunkGroup {
 
         this.modifierTypes = new ArrayList<>();
         for(String strModifierType : modifierTypesAsString.split("\\|")) {
-            if(strModifierType.trim().isEmpty()) {
-                continue;
+            if(!strModifierType.trim().isEmpty()) {
+                this.modifierTypes.add(ChunkModifierType.getTypeFromString(strModifierType));
             }
-            this.modifierTypes.add(ChunkModifierType.getTypeFromString(strModifierType));
         }
     }
 

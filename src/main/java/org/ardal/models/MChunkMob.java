@@ -1,6 +1,7 @@
 package org.ardal.models;
 
 import org.ardal.Ardal;
+import org.ardal.api.chunks.ChunkModifierType;
 import org.ardal.api.entities.mobs.MobType;
 
 import java.util.ArrayList;
@@ -8,17 +9,31 @@ import java.util.List;
 
 public class MChunkMob {
     private int chunk_id_group;
-    private String mob_type;
+    private List<MobType> mob_types;
     private int level;
     private float cooldown;
     private boolean enable;
 
-    public MChunkMob(int chunk_id_group, String mob_type, int level, float cooldown, boolean enable) {
+    public MChunkMob(int chunk_id_group, List<MobType> mobTypes, int level, float cooldown, boolean enable) {
         this.chunk_id_group = chunk_id_group;
-        this.mob_type = mob_type;
+        this.mob_types = mob_types;
         this.level = level;
         this.cooldown = cooldown;
         this.enable = enable;
+    }
+
+    public MChunkMob(int chunk_id_group, String mob_types, int level, float cooldown, boolean enable) {
+        this.chunk_id_group = chunk_id_group;
+        this.mob_types = new ArrayList<>();
+        this.level = level;
+        this.cooldown = cooldown;
+        this.enable = enable;
+
+        for(String strMobType : mob_types.split("\\|")) {
+            if(!strMobType.trim().isEmpty()) {
+                this.mob_types.add(MobType.getMobTypeByName(strMobType));
+            }
+        }
     }
 
     public boolean updateChunkMob(){
@@ -26,11 +41,11 @@ public class MChunkMob {
     }
 
     public void addSpawningMob(MobType mobType) {
-        this.mob_type += mobType.toString() + "|";
+        this.mob_types.add(mobType);
     }
 
     public void removeSpawningMob(MobType mobType) {
-        this.mob_type = this.mob_type.replace(mobType.toString() + "|", "");
+        this.mob_types.remove(mobType);
     }
 
     public int getChunkIdGroup() {
@@ -41,27 +56,17 @@ public class MChunkMob {
         this.chunk_id_group = chunk_id_group;
     }
 
-    public String getMobType() {
-        return mob_type;
-    }
-
-    public List<MobType> getMobTypesAsList() {
-        List<MobType> mobTypes = new ArrayList<>();
-
-        for(String e : this.mob_type.split("\\|")) {
-            if(!e.isEmpty()) {
-                MobType type = MobType.getMobTypeByName(e);
-                if(type != null) {
-                    mobTypes.add(type);
-                }
-            }
+    public String getMobTypesAsString() {
+        StringBuilder sb = new StringBuilder();
+        for(MobType mobType : this.mob_types) {
+            sb.append(mobType.toString()).append('|');
         }
 
-        return mobTypes;
+        return sb.toString();
     }
 
-    public void setMobType(String mob_type) {
-        this.mob_type = mob_type;
+    public List<MobType> getMobTypes() {
+        return this.mob_types;
     }
 
     public int getLevel() {

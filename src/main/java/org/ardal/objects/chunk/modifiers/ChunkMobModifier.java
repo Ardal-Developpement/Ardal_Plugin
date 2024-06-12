@@ -37,7 +37,7 @@ public class ChunkMobModifier extends ChunkModifier {
             Ardal.getInstance().getDb().gettChunkMob().createChunkMob(this.mChunkMob);
         }
 
-        this.spawningMobTypes = new HashSet<>(this.mChunkMob.getMobTypesAsList());
+        this.spawningMobTypes = new HashSet<>(this.mChunkMob.getMobTypes());
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ChunkMobModifier extends ChunkModifier {
             return false;
         }
 
-        this.addSpawningMob(mobType);
+        this.spawningMobTypes.add(mobType);
 
         this.mChunkMob.addSpawningMob(mobType);
         return this.mChunkMob.updateChunkMob();
@@ -63,7 +63,7 @@ public class ChunkMobModifier extends ChunkModifier {
             return false;
         }
 
-        this.removeSpawningMob(mobType);
+        this.spawningMobTypes.remove(mobType);
 
         this.mChunkMob.removeSpawningMob(mobType);
         return this.mChunkMob.updateChunkMob();

@@ -17,7 +17,7 @@ public class TChunkMob {
                      .prepareStatement("insert into chunk_mob (chunk_id_group, mob_type, level, cooldown, enable) values (?,?,?,?,?)"))
         {
             statement.setInt(1, mChunkMob.getChunkIdGroup());
-            statement.setString(2, mChunkMob.getMobType());
+            statement.setString(2, mChunkMob.getMobTypesAsString());
             statement.setInt(3, mChunkMob.getLevel());
             statement.setFloat(4, mChunkMob.getCooldown());
             statement.setBoolean(5, mChunkMob.isEnable());
@@ -45,7 +45,7 @@ public class TChunkMob {
                              "where chunk_id_group = ?"))
         {
             statement.setInt(1, mChunkMob.getChunkIdGroup());
-            statement.setString(2, mChunkMob.getMobType());
+            statement.setString(2, mChunkMob.getMobTypesAsString());
             statement.setInt(3, mChunkMob.getLevel());
             statement.setFloat(4, mChunkMob.getCooldown());
             statement.setBoolean(5, mChunkMob.isEnable());
